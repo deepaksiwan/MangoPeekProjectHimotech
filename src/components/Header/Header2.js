@@ -1,18 +1,21 @@
 import React, { useState, useContext } from "react";
 import Box from "@mui/material/Box";
-import { Drawer, Avatar, InputAdornment, Input } from "@mui/material";
+import { Drawer, Avatar, InputAdornment, Input, IconButton, Dialog } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from "@mui/icons-material/Close";
 import { Link, useNavigate } from "react-router-dom";
 import { List, ListItem, ListItemButton, ListItemText, } from "@mui/material";
 import { UserContext } from "../../context/User/UserContext";
 import { actionTypes } from "../../context/User/UserReducer";
 import { makeStyles } from "@mui/styles";
-import logo from '../../../src/pages/images/logo.svg'
+import logo from '../../../src/pages/images/logo.gif'
+import logocont from '../../../src/pages/images/logocont.svg'
 import user from '../../../src/pages/images/user.svg'
 import setting from '../../../src/pages/images/setting.svg'
+import Slide from '@mui/material/Slide';
 import add from '../../../src/pages/images/add.svg'
 import Badge from '@mui/material/Badge';
 import notification from '../../../src/pages/images/notification.svg'
@@ -46,7 +49,26 @@ const useStyle = makeStyles((theme) => ({
 
   },
   logo: {
-    width: '140px'
+    width: '70px',
+  },
+
+  logocont: {
+    width: '90px',
+  },
+
+
+  logomob: {
+    width: '70px',
+    '@media(max-width : 900px)':{
+      width: '40px',
+    }
+  },
+
+  logocontmob: {
+    width: '90px',
+    '@media(max-width : 900px)':{
+      width: '60px',
+    }
   },
   roundbutn: {
     backgroundImage: 'linear-gradient(180deg, #ebeaea, #efefef3b)',
@@ -97,8 +119,11 @@ const useStyle = makeStyles((theme) => ({
   toolbarmain: {
     display: 'flex !important',
     justifyContent: 'space-between',
-    padding : '0.5rem 13rem 0rem 11rem !important',
-    backgroundColor : '#fff',
+    padding: '0.5rem 13rem 0rem 11rem !important',
+    backgroundColor: '#fff',
+    '@media(max-width : 1200px)': {
+      padding: '0.5rem 2rem 0rem 2rem !important'
+    }
   },
   listpadding: {
     padding: '0px 10px !important'
@@ -109,10 +134,67 @@ const useStyle = makeStyles((theme) => ({
   headerposition: {
     position: 'fixed !important',
     right: 0,
-    left : 0,
-    zIndex : '1000'
-  }
+    left: 0,
+    zIndex: '1000',
+    '@media(max-width : 900px)': {
+      display: 'none !important'
+    }
+  },
+  mobile: {
+    display: 'none',
+    '@media(max-width : 900px)': {
+      display: 'block',
+
+    }
+  },
+  mobhdrbox: {
+    position: 'fixed',
+    zIndex: '100 !important',
+    backgroundColor: '#fff !important',
+    left: 0,
+    padding: '10px 10px',
+    boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 4%), 0px 4px 5px 0px rgb(0 0 0 / 2%), 0px 1px 10px 0px rgb(0 0 0 / 2%)',
+    width: '100%'
+  },
+  mobwrp: {
+    display: 'flex !important',
+    justifyContent: 'space-between',
+    // paddingTop:'20px !important'
+
+  },
+  moblogo: {
+    width: '100px',
+    alignSelf: 'center',
+  },
+
+  mobtoolbar: {
+    justifyContent: 'end',
+    backgroundColor: '#fff',
+    '@media(max-width : 900px)': {
+      padding: '10px !important'
+    }
+  },
+  mobappbar: {
+    boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 4%), 0px 4px 5px 0px rgb(0 0 0 / 2%), 0px 1px 10px 0px rgb(0 0 0 / 2%) !important'
+  },
+  navendmob : {
+    textAlign : 'center'
+  },
+  listpaddingmob : {
+    justifyContent : 'center !important'
+  },
+  hdrlistbox2 : {
+    backgroundColor : '#fff',
+    minHeight : '100vh'
+  },
 }));
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
+
+
 const Header2 = () => {
   const [{ token, userData }, dispatch] = useContext(UserContext);
   const sideBar = [
@@ -140,9 +222,19 @@ const Header2 = () => {
   };
 
   const classes = useStyle();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen(false);
+  };
+
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, padding:0}}>
         <AppBar
           className={classes.headerposition}
           color="transparent"
@@ -163,7 +255,10 @@ const Header2 = () => {
                   style={{}}
                   className={classes.ghjk}
                 >
+                 <Box sx={{display : 'flex'}}>
                   <Typography className={classes.logo} component="img" src={logo}></Typography>
+                  <Typography className={classes.logocont} component="img" src={logocont}></Typography>
+                  </Box>
                 </Link>
               </Typography>
               <List className={classes.navend2}>
@@ -213,7 +308,7 @@ const Header2 = () => {
             <List className={classes.navend}>
 
               <ListItem className={classes.listpadding}>
-                <Link className={classes.textbutn} to="#">
+                <Link className={classes.textbutn} to="/not_link_wallet">
                   Explore
                 </Link>
               </ListItem>
@@ -225,7 +320,7 @@ const Header2 = () => {
               </ListItem>
 
               <ListItem className={classes.listpadding}>
-                <Link className={classes.roundbutn} to="#">
+                <Link className={classes.roundbutn} to="/profile2">
                   <Typography width={20} component="img" src={user}></Typography>
                 </Link>
               </ListItem>
@@ -235,6 +330,115 @@ const Header2 = () => {
 
         </AppBar>
 
+        <Box className={classes.mobile}>
+          <Box className={classes.mobhdrbox}>
+            <Box className={classes.mobwrp}>
+              <Box className={classes.moblogo}>
+                <Link
+                  to={token ? `/explore` : `/`}
+                  style={{}}
+                  className={classes.ghjk}
+                >
+                <Box sx={{display : 'flex'}}>
+                  <Typography className={classes.logomob} component="img" src={logo}></Typography>
+                  <Typography className={classes.logocontmob} component="img" src={logocont}></Typography>
+                  </Box>
+                </Link>
+              </Box>
+              <Box>
+                <Box>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={handleClickOpen}
+                    aria-label="close"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            </Box>
+            <Dialog
+              fullScreen
+              open={open}
+              onClose={handleClose2}
+              TransitionComponent={Transition}
+            >
+              <AppBar sx={{ position: 'relative', padding : 0 }}
+                className={classes.mobappbar}
+              >
+                <Toolbar className={classes.mobtoolbar}>
+
+                  <IconButton sx={{ color: '#000' }}
+                    edge="start"
+                    color="inherit"
+                    onClick={handleClose2}
+                    aria-label="close"
+                  >
+                    <CloseIcon color="#000" />
+                  </IconButton>
+                </Toolbar>
+
+                <Box className={classes.hdrlistbox2}>
+
+                  <List className={classes.navendmob}>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Box className={classes.searchinpt}>
+                        <Box sx={{ alignSelf: 'center' }}>
+                          <Typography width={30} component="img" src={search}></Typography>
+                        </Box>
+                        <Box>
+                          <Input
+                            width="100%"
+                            type="search"
+                            variant="contained"
+                            margin="normal"
+
+                            disableUnderline
+                            InputProps={{
+                              startAdornment: (
+
+                                <InputAdornment position="start">
+                                  <SearchIcon />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </Box>
+                      </Box>
+
+                    </ListItem>
+
+                  </List>
+
+                  <List className={classes.navendmob}>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.textbutn} to="/not_link_wallet">
+                        Explore
+                      </Link>
+                    </ListItem>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.roundbutn} to="#">
+                        <Typography width={20} component="img" src={setting}></Typography>
+                      </Link>
+                    </ListItem>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.roundbutn} to="/profile2">
+                        <Typography width={20} component="img" src={user}></Typography>
+                      </Link>
+                    </ListItem>
+
+                  </List>
+                </Box>
+              </AppBar>
+
+            </Dialog>
+          </Box>
+        </Box>
       </Box>
       <Drawer
         sx={{

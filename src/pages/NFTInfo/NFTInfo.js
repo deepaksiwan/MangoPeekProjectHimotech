@@ -63,14 +63,27 @@ const useStyle = makeStyles({
     buynowbtn: {
         backgroundColor: '#33CC33 !important',
         color: '#fff !important',
-        padding: '12px 50px !important',
+        padding: '12px 20px !important',
         borderRadius: '30px !important',
+        width: '180px',
+        textTransform: 'none !important',
+        '@media(max-width : 1200px)': {
+            marginTop: '15px !important',
+            '@media(max-width : 600px)': {
+                width: '100%',
+            }
+        }
     },
     clearbtn: {
         color: '#FF5F29',
         marginLeft: '15px',
         "& : hover": {
-            color: 'FF5F29'
+            color: 'FF5F29',
+        },
+        '@media(max-width : 600px)':{
+            marginLeft : '0px',
+            marginTop : '15px !important',
+            display : 'block'
         }
     },
     salebtn: {
@@ -81,14 +94,29 @@ const useStyle = makeStyles({
         border: '1px solid #FF5F29 !important',
         color: '#7A7A7A !important',
         textTransform: 'none !important',
-        marginLeft: '15px !important'
+        marginLeft: '15px !important',
+        '@media(max-width : 600px)': {
+            marginLeft: '0px !important',
+            marginTop: '15px !important',
+            width: '100%',
+            justifyContent: 'space-between !important'
+        }
     },
     makeofferbtn: {
         backgroundColor: '#7C7C7C !important',
         color: '#fff !important',
-        padding: '12px 50px !important',
+        padding: '12px 20px !important',
         borderRadius: '30px !important',
-        marginTop: '15px !important'
+        marginTop: '15px !important',
+        width: '180px',
+        textTransform: 'none !important',
+        '@media(max-width : 1200px)': {
+            marginLeft: '15px !important',
+            '@media(max-width : 600px)': {
+                width: '100%',
+                marginLeft: '0px !important',
+            }
+        }
     },
     ellipsenft: {
         width: '50px'
@@ -106,7 +134,13 @@ const useStyle = makeStyles({
         }
     },
     maindiv: {
-        padding: '40px 0px 80px 0px'
+        padding: '6rem 0rem 6rem 0rem',
+        '@media(max-width : 900px)': {
+            padding: '90px 0px 80px 0px',
+            '@media(max-width : 600px)': {
+                padding: '90px 0px 30px 0px',
+            }
+        }
     },
     nftinfobx: {
         backgroundColor: '#efefef96 ',
@@ -125,10 +159,22 @@ const useStyle = makeStyles({
         boxShadow: 'inset 0px 7px 15px -4px #00000024',
         borderRadius: '30px',
         backgroundColor: '#efefef96',
+        '@media(max-width : 1200px)': {
+            marginTop: '30px',
+            '@media(max-width : 600px)': {
+                marginTop: '20px',
+                padding: '15px',
+                textAlign: 'center'
+            },
+        },
     },
     owned: {
         display: 'flex',
         padding: '20px 0px',
+        '@media(max-width : 600px)': {
+            justifyContent: 'space-between',
+
+        }
 
     },
     btnmainwrp: {
@@ -140,38 +186,84 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96',
         border: '1px solid #FF5F29',
         marginTop: '32px !important',
-
+        '@media(max-width : 600px)': {
+            display: 'inherit'
+        }
     },
     flex: {
         display: 'flex',
-        width: '20% !important'
+        width: '20% !important',
+        '@media(max-width : 1200px)': {
+            width: '50% !important',
+            '@media(max-width : 900px)': {
+                width: '100% !important',
+                display: 'inherit',
+                '@media(max-width : 600px)': {
+                    justifyContent: 'center',
+                }
+            },
+        },
     },
     flex7: {
         display: 'flex',
-        width: '40% !important'
+        width: '40% !important',
+        '@media(max-width : 1200px)': {
+            width: '60% !important',
+            '@media(max-width : 900px)': {
+                width: '100% !important',
+                '@media(max-width : 600px)': {
+                    justifyContent: 'center',
+                }
+            }
+        }
     },
     flex6: {
         display: 'flex',
-        width: '90% !important'
+        width: '90% !important',
+        '@media(max-width : 900px)': {
+            width: '100% !important',
+            '@media(max-width : 600px)': {
+                justifyContent: 'center',
+            }
+        }
     },
     flex5: {
         display: 'flex',
         marginTop: '30px',
-        alignItems: 'center'
+        alignItems: 'center',
+        '@media(max-width : 900px)': {
+            width: '100% !important',
+            '@media(max-width : 600px)': {
+                display: 'inherit',
+                textAlign: 'center'
+            }
+        }
     },
     flex2: {
         display: 'flex',
         justifyContent: 'space-between',
+        '@media(max-width : 900px)': {
+            width: '100% !important',
+        }
     },
     flex3: {
         display: 'flex',
         justifyContent: 'space-between',
-        marginTop: '30px'
+        marginTop: '30px',
+        '@media(max-width : 900px)': {
+            width: '100% !important',
+            '@media(max-width : 600px)': {
+                marginTop: '10px',
+            }
+        }
     },
     divider: {
-
         width: '100%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        '@media(max-width : 900px)': {
+            display: 'none'
+        }
+
     },
     propertiesbox: {
         border: '1px solid #FFCC00',
@@ -179,12 +271,18 @@ const useStyle = makeStyles({
         padding: '15px',
         borderRadius: '50px',
         backgroundColor: '#F2F2F2',
-        marginTop: '8px !important'
+        marginTop: '8px !important',
+        '@media(max-width : 1200px)': {
+            padding: '15px 35px',
+        }
     },
     pboxwrp: {
         display: 'flex',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
+        '@media(max-width : 600px)': {
+            display: 'inherit'
+        }
     },
     rbx: {
         textAlign: 'center'
@@ -195,11 +293,17 @@ const useStyle = makeStyles({
         boxShadow: 'inset 0px 7px 15px -4px #00000024',
         borderRadius: '40px',
         backgroundColor: '#efefef96',
+        '@media(max-width : 600px)': {
+            padding: '15px !important',
+        }
     },
     dis_sidebox2: {
         padding: '30px !important',
         borderRadius: '40px',
         backgroundColor: 'transparent',
+        '@media(max-width : 600px)': {
+            padding: '15px !important',
+        }
     },
 
 
@@ -217,7 +321,11 @@ const useStyle = makeStyles({
     },
     noactive: {
         textAlign: 'center',
-        paddingTop: '185px'
+        paddingTop: '185px',
+        '@media(max-width : 900px)': {
+            paddingTop: '30px',
+        }
+
     }
 
 })
@@ -253,7 +361,7 @@ const NFTInfo = () => {
                 <Header />
                 <Box className={classes.maindiv}>
                     <Grid container spacing={2}>
-                        <Grid item lg={6} md={6} xs={12}>
+                        <Grid item lg={6} md={12} sm={12} xs={12}>
                             <Box className={classes.nftinfobx}>
                                 <Typography component="img" src={nftimg} width="100%"></Typography>
                                 <Box
@@ -305,7 +413,7 @@ const NFTInfo = () => {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item lg={6} md={6} xs={12}>
+                        <Grid item lg={6} md={12} sm={12} xs={12}>
                             <Box className={classes.nftrbox}>
                                 <Box>
                                     <Typography variant="h6" color="#FF5F29">Lorem ipsum Club of Dot matrix</Typography>
@@ -330,7 +438,7 @@ const NFTInfo = () => {
                                 <Box className={classes.btnmainwrp}>
                                     <Box>
                                         <Typography variant="h6" color="#7A7A7A" fontWeight={500}>Current Price</Typography>
-                                        <Box sx={{ display: 'flex', marginTop: '10px' }}>
+                                        <Box sx={{ display: 'flex', marginTop: '10px', '@media(max-width : 600px)': { justifyContent: 'center' } }}>
                                             <Typography component="img" src={ethrepo}></Typography>
                                             <Typography variant="h4" fontWeight={700} ml={1} color="#7A7A7A">0.019
                                                 <Typography component="span" color="#7A7A7A" fontWeight={600} ml={1}>$27.19</Typography>
@@ -339,7 +447,7 @@ const NFTInfo = () => {
                                     </Box>
                                     <Box sx={{ textAlign: 'right' }}>
                                         <Button className={classes.buynowbtn}>Buy now</Button>
-                                        <Button className={classes.makeofferbtn}>Buy now</Button>
+                                        <Button className={classes.makeofferbtn}>Make an offer</Button>
                                     </Box>
                                 </Box>
                             </Box>
@@ -348,7 +456,7 @@ const NFTInfo = () => {
 
                     <Box className={classes.secsecond}>
                         <Grid container spacing={0}>
-                            <Grid item lg={6} md={6} xs={12}>
+                            <Grid item lg={6} md={6} sm={12} xs={12}>
                                 <Box className={classes.dis_sidebox}>
                                     <Box className={classes.flex2}>
                                         <Box className={classes.flex}>
@@ -359,7 +467,14 @@ const NFTInfo = () => {
                                             <Typography component="img" className={classes.divider} src={divider} />
                                         </Box>
                                     </Box>
-                                    <Box sx={{ marginLeft: '35px' }}>
+                                    <Box sx={{
+                                        marginLeft: '35px',
+                                        '@media(max-width : 600px)': {
+                                            marginLeft: '0px',
+                                            marginTop: '15px',
+                                            textAlign: 'center'
+                                        }
+                                    }}>
                                         <Typography color="#AAAAAA" fontWeight={500}>By 5879C
                                             <Typography color="#AAAAAA" fontWeight={500}>Exclusive Ape Billionaire Club</Typography></Typography>
                                     </Box>
@@ -453,8 +568,8 @@ const NFTInfo = () => {
                                         </Box>
                                     </Box>
                                     <Box className={classes.flex5}>
-                                        <Typography component="img" src={exclusive}></Typography>
-                                        <Typography sx={{ marginLeft: '20px' }} fontWeight={700} color="#AAAAAA">
+                                        <Typography display="inline-block" component="img" src={exclusive}></Typography>
+                                        <Typography sx={{ marginLeft: '20px', '@media(max-width : 600px)': { marginTop: '20px', marginLeft: '0px' } }} fontWeight={700} color="#AAAAAA">
                                             Exclusive  collection  for  the  best  0% royaltis! Supply  will be reduced to  5000 after we sold that  amount,   the  mutant   airdrop    foreach   holder  and  we  are  working on a   3D  version  that will be claimable in the near  the future for free just gas fees.
                                         </Typography>
                                     </Box>
@@ -468,7 +583,7 @@ const NFTInfo = () => {
                                         </Box>
                                     </Box>
                                     <Box className={classes.flex}>
-                                        <Box p={0} mt={2} component="ul">
+                                        <Box p={0} mt={2} component="ul" sx={{ '@media(max-width : 600px)': { textAlign: 'center' } }}>
                                             <Typography component="li" color="#AAAAAA">Contract Address</Typography>
                                             <Typography component="li" color="#AAAAAA">Token ID</Typography>
                                             <Typography component="li" color="#AAAAAA">Token Standard</Typography>
@@ -476,7 +591,7 @@ const NFTInfo = () => {
                                             <Typography component="li" color="#AAAAAA">Metadata</Typography>
                                             <Typography component="li" color="#AAAAAA">Creator Earnings</Typography>
                                         </Box>
-                                        <Box p={0} mt={2} sx={{ marginLeft: '60px' }} component="ul">
+                                        <Box p={0} mt={2} sx={{ marginLeft: '60px', '@media(max-width : 900px)': { marginLeft: '0px','@media(max-width : 600px)': { textAlign: 'center', } } }} component="ul">
                                             <Typography component="li" color="#AAAAAA">Contract Address</Typography>
                                             <Typography component="li" color="#AAAAAA">Token ID</Typography>
                                             <Typography component="li" color="#AAAAAA">Token Standard</Typography>
@@ -487,7 +602,7 @@ const NFTInfo = () => {
                                     </Box>
                                 </Box>
                             </Grid>
-                            <Grid item lg={6} md={6} xs={12}>
+                            <Grid item lg={6} md={6} sm={12} xs={12}>
                                 <Box className={classes.dis_sidebox2}>
                                     <Box className={classes.flex2}>
                                         <Box className={classes.flex7}>
@@ -498,7 +613,7 @@ const NFTInfo = () => {
                                             <Typography component="img" className={classes.divider} src={divider3} />
                                         </Box>
                                     </Box>
-                                    <Box sx={{ marginTop: '20px' }}>
+                                    <Box sx={{ marginTop: '20px', '@media (max-width : 600px)': { textAlign: 'center', marginBottom: '20px' } }}>
                                         <FormControl sx={{ minWidth: 150, }} size="small">
                                             <InputLabel id="demo-select-small">All time</InputLabel>
                                             <Select
@@ -578,10 +693,10 @@ const NFTInfo = () => {
                                             <Typography component="img" className={classes.divider} src={divider4} />
                                         </Box>
                                     </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '20px' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '20px', '@media(max-width : 600px)': { display: 'inherit', padding: '0px' } }}>
                                         <Box>
-                                            <FormControl sx={{ minWidth: 120, }} size="small">
-                                                <InputLabel id="demo-select-small">Filter</InputLabel>
+                                            <FormControl sx={{ minWidth: 120, '@media(max-width : 600px)': { width: '100%' } }} size="small">
+                                                <InputLabel id="demo-select-small" sx={{'@media(max-width : 600px)':{lineHeight : '2.4375em !important'}}}>Filter</InputLabel>
                                                 <Select
                                                     sx={{
                                                         width: '100%',
@@ -638,7 +753,7 @@ const NFTInfo = () => {
                                                 NftBoxs.map((e, id) => {
                                                     const { Image, } = e
                                                     return (
-                                                        <Grid item lg={3} md={12} xs={12}>
+                                                        <Grid item lg={3} md={6} sm={6} xs={12}>
                                                             <Box className={classes.nftinfobx2}>
                                                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                                     <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>

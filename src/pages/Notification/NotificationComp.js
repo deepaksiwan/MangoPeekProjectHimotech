@@ -23,6 +23,14 @@ const useStyle = makeStyles({
         top: 0,
         position: 'fixed',
         marginTop: '5.8rem',
+        '@media(max-width : 1200px)':{
+            width :'335px',
+            '@media (max-width : 600px)':{
+                position : 'inherit',
+                width : '100%',
+                marginTop : '2.8rem'
+            }
+        }
     },
     searchinpt: {
         backgroundImage: 'linear-gradient(180deg, #ebeaea, #efefef3b) !important',

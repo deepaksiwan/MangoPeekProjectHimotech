@@ -224,7 +224,7 @@ const NFTMsg = () => {
                         const { title, Image } = e
                         return (
 
-                            <Grid item lg={6} md={12} xs={12} key={id}>
+                            <Grid item lg={6} md={6} xs={12} key={id}>
                                 <Box className={classes.nftinfobx2}>
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>

@@ -134,8 +134,15 @@ export default function UnstyledTabsIntroduction() {
     return (
         <TabsUnstyled defaultValue={0}>
 
-            <Box sx={{ display: 'flex', marginTop: '40px' }}>
-                <TabsList sx={{ width: '70%' }}>
+            <Box sx={{ display: 'flex', marginTop: '40px','@media(max-width : 600px)':{
+       display : 'inherit',
+       
+    } }}>
+                <TabsList sx={{ width: '70%',
+            '@media(max-width : 600px)':{
+                 width : '100%',
+                 flexWrap : 'wrap'
+              } }}>
                     <Tab>Collected</Tab>
                     <Tab>Created</Tab>
                     <Tab>Favorited</Tab>
@@ -181,7 +188,12 @@ export default function UnstyledTabsIntroduction() {
                     </Box>
 
                 </TabsList >
-                <List sx={{ width: '30%', display: 'flex', padding: '0px', marginLeft: '10px' }}>
+                <List sx={{ width: '30%', display: 'flex', padding: '0px', marginLeft: '10px',
+            '@media(max-width : 600px)':{
+                width : '100%',
+                justifyContent : 'center',
+                marginTop : '20px'
+              } }}>
                     <ListItem className={classes.listpadding}>
                         <Link className={classes.roundbutn} to="#">
                             <Typography component="img" src={wishlist}></Typography>

@@ -23,9 +23,10 @@ const useStyle = makeStyles({
     sidemenu: {
         boxShadow: 'inset 0px 7px 15px -4px #00000024',
         borderRadius: '50px',
-        backgroundColor: '#efefef96',
+        backgroundColor: '#efefef',
         padding: '10px 10px 7px 10px !important',
-        display: 'inline-block'
+        display: 'inline-block',
+        
     },
     listpadding: {
         padding: '10px 0px !important'
@@ -62,7 +63,8 @@ const useStyle = makeStyles({
     menuposition: {
         position: 'fixed',
         top: 0,
-        marginTop: '9.10rem'
+        marginTop: '9.10rem',
+        
     },
 
     explorenft: {
@@ -117,7 +119,7 @@ const Withoutmenucomp = () => {
                 </ListItem>
 
                 <ListItem className={classes.listpadding}>
-                    <Link className={classes.roundbutn} to="#">
+                    <Link className={classes.roundbutn} to="/create">
                         <Typography width={20} component="img" src={add}></Typography>
                     </Link>
                 </ListItem>

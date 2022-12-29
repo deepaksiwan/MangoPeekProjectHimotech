@@ -14,7 +14,8 @@ const useStyle = makeStyles({
 
     maindiv: {
         padding: '30px 0px 80px 0px',
-        display: 'flex'
+        display: 'flex',
+         
     },
 
 })

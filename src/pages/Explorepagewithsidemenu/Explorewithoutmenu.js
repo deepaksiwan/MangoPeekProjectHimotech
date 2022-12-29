@@ -15,11 +15,21 @@ const useStyle = makeStyles({
     menuposition: {
         position: 'fixed',
         top: 0,
-        marginTop: '9.10rem'
+        marginTop: '9.10rem',
+        '@media(max-width : 1200px)': {
+            marginTop: '12.1rem',
+            '@media(max-width : 900px)': {
+                marginTop: '18.1rem !important',
+                '@media(max-width : 600px)': {
+                    marginTop: '11.1rem !important',
+                }
+            }
+        }
     },
     explorenft: {
         marginLeft: '5rem',
-        marginTop: '1rem'
+        marginTop: '1rem',
+         
     },
 
 

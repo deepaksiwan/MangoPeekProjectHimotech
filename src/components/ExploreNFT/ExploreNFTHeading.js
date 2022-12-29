@@ -17,6 +17,10 @@ const useStyle = makeStyles({
         },
         '@media(max-width : 900px)':{
             width : '75%',
+        },
+        '@media(max-width : 600px)':{
+            width : '100%',
+            textAlign : 'center'
         }
       },
       viewbtn  : { 
@@ -26,6 +30,10 @@ const useStyle = makeStyles({
         fontWeight: '700 !important',
         '&:hover':{
           backgroundColor : 'transparent !important'
+        },
+        '@media(max-width : 600px)':{
+            width : '100%',
+            textAlign : 'center'
         }
       }
 })
@@ -43,6 +51,11 @@ const ExploreNFTHeading = (props) => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     flexWrap: "wrap",
+                    '@media(max-width : 600px)':{
+                        width : '100%',
+                        justifyContent : 'center',
+                        marginTop : '20px',
+                    }
                 }}
             >
                 {/* <Box> */}

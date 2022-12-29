@@ -14,10 +14,10 @@ const useStyles = makeStyles({
         backgroundColor: '#24273100',
         boxShadow: 'inherit',
         borderRadius: '20px',
-        
+
     },
     tablelist2: {
-        color : '#ACACAC !important',
+        color: '#ACACAC !important',
         borderBottom: 'none !important',
         padding: '10px 0px !important',
         '@media(max-width : 1200px)': {
@@ -25,14 +25,14 @@ const useStyles = makeStyles({
         }
     },
     tablelist: {
-        color : '#626262 !important',
+        color: '#626262 !important',
         borderBottom: 'none !important',
         padding: '10px 0px !important',
         '@media(max-width : 1200px)': {
             padding: '10px 10px !important',
         }
     },
-    
+
 })
 
 
@@ -41,11 +41,14 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-    createData('1.21 ETH ','243 ETH', '243 ETH', '243 ETH',<Box><Button sx={{  backgroundColor: '#33CC33 !important',
-    color: '#fff !important',
-    padding: '12px 20px !important',
-    borderRadius: '30px !important',}}>Buy now</Button></Box>,),
-    
+    createData('1.21 ETH ', '243 ETH', '243 ETH', '243 ETH', <Box><Button sx={{
+        backgroundColor: '#33CC33 !important',
+        color: '#fff !important',
+        padding: '12px 20px !important',
+        borderRadius: '30px !important',
+        '@media(max-width : 600px)': { width: 'max-content', padding: '8px 20px !important', }
+    }}>Buy now</Button></Box>,),
+
 ];
 
 

@@ -10,7 +10,8 @@ import { List, ListItem, ListItemButton, ListItemText, } from "@mui/material";
 import { UserContext } from "../../context/User/UserContext";
 import { actionTypes } from "../../context/User/UserReducer";
 import { makeStyles } from "@mui/styles";
-import logo from '../../../src/pages/images/logo.svg'
+import logo from '../../../src/pages/images/logo.gif'
+import logocont from '../../../src/pages/images/logocont.svg'
 import user from '../../../src/pages/images/user.svg'
 import setting from '../../../src/pages/images/setting.svg'
 import add from '../../../src/pages/images/add.svg'
@@ -47,8 +48,31 @@ const useStyle = makeStyles((theme) => ({
 
   },
   logo: {
-    width: '140px'
+    width: '70px',
   },
+
+  logocont: {
+    width: '90px',
+  },
+
+
+  logomob: {
+    width: '70px',
+    '@media(max-width : 900px)':{
+      width: '40px',
+    }
+  },
+
+  logocontmob: {
+    width: '90px',
+    '@media(max-width : 900px)':{
+      width: '60px',
+    }
+  },
+
+
+
+
   roundbutn: {
     backgroundImage: 'linear-gradient(180deg, #ebeaea, #efefef3b)',
     padding: '14px',
@@ -97,17 +121,28 @@ const useStyle = makeStyles((theme) => ({
   toolbarmain: {
     display: 'flex !important',
     justifyContent: 'space-between',
-    padding: ' 10px 0px !important'
+    padding: ' 0.5rem 11rem 0rem 11rem !important',
+    '@media(max-width : 1200px)':{
+      padding : '0.5rem 4rem 0rem 4rem !important'
+    }
   },
   listpadding: {
     padding: '0px 10px !important'
   },
+  listpaddingmob : {
+    justifyContent : 'center !important'
+  },
   badge: {
     marginTop: '10px',
   },
-  desktopwrp : {
-    '@media(max-width : 900px)':{
-      display : 'none !important'
+  desktopwrp: {
+    backgroundColor : '#fff !important',
+    position: 'fixed !important',
+    right: 0,
+    left: 0,
+    zIndex: '1000',
+    '@media(max-width : 900px)': {
+      display: 'none !important'
     }
   },
   mobile: {
@@ -121,7 +156,7 @@ const useStyle = makeStyles((theme) => ({
     position: 'fixed',
     zIndex: '100 !important',
     backgroundColor: '#fff !important',
-    left : 0,
+    left: 0,
     padding: '10px 10px',
     boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 4%), 0px 4px 5px 0px rgb(0 0 0 / 2%), 0px 1px 10px 0px rgb(0 0 0 / 2%)',
     width: '100%'
@@ -144,8 +179,15 @@ const useStyle = makeStyles((theme) => ({
       padding: '10px !important'
     }
   },
-  mobappbar :{
-    boxShadow :'0px 2px 4px -1px rgb(0 0 0 / 4%), 0px 4px 5px 0px rgb(0 0 0 / 2%), 0px 1px 10px 0px rgb(0 0 0 / 2%) !important'
+  mobappbar: {
+    boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 4%), 0px 4px 5px 0px rgb(0 0 0 / 2%), 0px 1px 10px 0px rgb(0 0 0 / 2%) !important'
+  },
+  hdrlistbox2 : {
+    backgroundColor : '#fff',
+    minHeight : '100vh'
+  },
+  navendmob : {
+    textAlign : 'center'
   }
 
 }));
@@ -191,16 +233,17 @@ const Header = () => {
     setOpen(false);
   };
 
-  
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
-        className={classes.desktopwrp}
+          className={classes.desktopwrp}
           color="transparent"
           component="div"
           position="relative"
           elevation={0}
+          padding={0}
         >
 
           <Toolbar className={classes.toolbarmain}>
@@ -215,7 +258,10 @@ const Header = () => {
                   style={{}}
                   className={classes.ghjk}
                 >
+                  <Box sx={{display : 'flex'}}>
                   <Typography className={classes.logo} component="img" src={logo}></Typography>
+                  <Typography className={classes.logocont} component="img" src={logocont}></Typography>
+                  </Box>
                 </Link>
               </Typography>
               <List className={classes.navend2}>
@@ -273,7 +319,7 @@ const Header = () => {
 
 
                 <ListItem className={classes.listpadding}>
-                  <Link className={classes.roundbutn} to="#">
+                  <Link className={classes.roundbutn} to="/create">
                     <Typography width={20} component="img" src={add}></Typography>
                   </Link>
                 </ListItem>
@@ -296,7 +342,7 @@ const Header = () => {
             <List className={classes.navend}>
 
               <ListItem className={classes.listpadding}>
-                <Link className={classes.textbutn} to="#">
+                <Link className={classes.textbutn} to="/not_link_wallet">
                   Explore
                 </Link>
               </ListItem>
@@ -308,7 +354,7 @@ const Header = () => {
               </ListItem>
 
               <ListItem className={classes.listpadding}>
-                <Link className={classes.roundbutn} to="#">
+                <Link className={classes.roundbutn} to="/profile2">
                   <Typography width={20} component="img" src={user}></Typography>
                 </Link>
               </ListItem>
@@ -320,62 +366,145 @@ const Header = () => {
 
 
         <Box className={classes.mobile}>
-              <Box className={classes.mobhdrbox}>
-                <Box className={classes.mobwrp}>
-                  <Box className={classes.moblogo}>
-                  <Link
+          <Box className={classes.mobhdrbox}>
+            <Box className={classes.mobwrp}>
+              <Box className={classes.moblogo}>
+                <Link
                   to={token ? `/explore` : `/`}
                   style={{}}
                   className={classes.ghjk}
                 >
-                  <Typography className={classes.logo} component="img" src={logo}></Typography>
+                  <Box sx={{display : 'flex'}}>
+                  <Typography className={classes.logomob} component="img" src={logo}></Typography>
+                  <Typography className={classes.logocontmob} component="img" src={logocont}></Typography>
+                  </Box>
                 </Link>
-                  </Box>
-                  <Box>
-                    <Box>
-                      <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={handleClickOpen}
-                        aria-label="close"
-                      >
-                        <MenuIcon />
-                      </IconButton>
-                    </Box>
-                  </Box>
-                </Box>
-                <Dialog
-                  fullScreen
-                  open={open}
-                  onClose={handleClose2}
-                  TransitionComponent={Transition}
-                >
-                  <AppBar sx={{ position: 'relative' }}
-                  className={classes.mobappbar}
+              </Box>
+              <Box>
+                <Box>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={handleClickOpen}
+                    aria-label="close"
                   >
-                    <Toolbar className={classes.mobtoolbar}>
-
-                      <IconButton sx={{ color: '#000' }}
-                        edge="start"
-                        color="inherit"
-                        onClick={handleClose2}
-                        aria-label="close"
-                      >
-                        <CloseIcon color="#000" />
-                      </IconButton>
-                    </Toolbar>
-
-                    <Box className={classes.hdrlistbox2}>
-
-                      
-
-                       
-                    </Box>
-                  </AppBar>
-
-                </Dialog>
+                    <MenuIcon />
+                  </IconButton>
+                </Box>
               </Box>
             </Box>
+            <Dialog
+              fullScreen
+              open={open}
+              onClose={handleClose2}
+              TransitionComponent={Transition}
+            >
+              <AppBar sx={{ position: 'relative', padding : 0 }}
+                className={classes.mobappbar}
+              >
+                <Toolbar className={classes.mobtoolbar}>
+
+                  <IconButton sx={{ color: '#000' }}
+                    edge="start"
+                    color="inherit"
+                    onClick={handleClose2}
+                    aria-label="close"
+                  >
+                    <CloseIcon color="#000" />
+                  </IconButton>
+                </Toolbar>
+
+                <Box className={classes.hdrlistbox2}>
+
+                  <List className={classes.navendmob}>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Box className={classes.searchinpt}>
+                        <Box sx={{ alignSelf: 'center' }}>
+                          <Typography width={30} component="img" src={search}></Typography>
+                        </Box>
+                        <Box>
+                          <Input
+                            width="120px"
+                            type="search"
+                            variant="contained"
+                            margin="normal"
+
+                            disableUnderline
+                            InputProps={{
+                              startAdornment: (
+
+                                <InputAdornment position="start">
+                                  <SearchIcon />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </Box>
+                      </Box>
+
+                    </ListItem>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Badge className={classes.badge} badgeContent={8} sx={{
+                        "& .MuiBadge-badge": {
+                          backgroundColor: '#FFCC00', color: '#fff'
+                        },
+                      }}>
+                        <Link className={classes.roundbutn2} to="/messaging">
+                          <Typography width={20} component="img" src={message}></Typography>
+                        </Link>
+                      </Badge>
+                    </ListItem>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Badge className={classes.badge} badgeContent={3} sx={{
+                        "& .MuiBadge-badge": {
+                          backgroundColor: '#ff5f29', color: '#fff'
+                        },
+                      }}>
+                        <Link className={classes.roundbutn2} to="/notification">
+                          <Typography width={20} component="img" src={notification}></Typography>
+                        </Link>
+                      </Badge>
+                    </ListItem>
+
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.roundbutn} to="/create">
+                        <Typography width={20} component="img" src={add}></Typography>
+                      </Link>
+                    </ListItem>
+
+                  </List>
+
+                  <List className={classes.navendmob}>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.textbutn} to="/not_link_wallet">
+                        Explore
+                      </Link>
+                    </ListItem>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.roundbutn} to="#">
+                        <Typography width={20} component="img" src={setting}></Typography>
+                      </Link>
+                    </ListItem>
+
+                    <ListItem className={classes.listpaddingmob}>
+                      <Link className={classes.roundbutn} to="/profile2">
+                        <Typography width={20} component="img" src={user}></Typography>
+                      </Link>
+                    </ListItem>
+
+                  </List>
+                </Box>
+              </AppBar>
+
+            </Dialog>
+          </Box>
+        </Box>
 
 
 

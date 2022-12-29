@@ -19,7 +19,7 @@ const useStyle = makeStyles({
 
     messagemain: {
         width: '370px',
-        minHeight : '83vh !important',
+        minHeight: '83vh !important',
         display: 'inline-block',
         padding: '10px 20px !important',
         boxShadow: 'inset 0px 7px 15px -4px #00000024',
@@ -28,6 +28,15 @@ const useStyle = makeStyles({
         top: 0,
         position: 'fixed',
         marginTop: '5.8rem',
+        '@media(max-width : 1200px)': {
+            width: '300px',
+            '@media(max-width : 600px)': {
+                position: 'inherit',
+                width: '100%',
+                marginTop: '3.8rem',
+                padding: '10px 20px 10px 55px !important'
+            }
+        }
     },
     searchinpt: {
         backgroundImage: 'linear-gradient(180deg, #ebeaea, #efefef3b) !important',
@@ -39,24 +48,27 @@ const useStyle = makeStyles({
 
     },
     listitem: {
-        display : 'inherit !important',
-        padding : '0px !important',
+        display: 'inherit !important',
+        padding: '0px !important',
+        transition: '0.8s'
     },
 
     listitem1: {
         padding: '10px !important',
         justifyContent: 'space-between !important',
+        transition: '0.8s'
     },
     listitem2: {
-        display : 'flex !important',
+        display: 'flex !important',
         padding: '10px !important',
+
         justifyContent: 'space-between !important',
-        backgroundColor : '#F1F1F1',
-        marginTop : '10px !important',
-        borderRadius : '35px',
-        transition : '0.5s',
-        '&:hover' : {
-            backgroundColor : '#e9e7e7'
+        backgroundColor: '#F1F1F1',
+        marginTop: '10px !important',
+        borderRadius: '35px',
+        transition: '0.5s',
+        '&:hover': {
+            backgroundColor: '#e9e7e7'
         }
     },
     para: {
@@ -77,10 +89,89 @@ const useStyle = makeStyles({
     widthright: {
         display: 'flex',
         width: '75%',
-        justifyContent : 'space-between'
+        justifyContent: 'space-between'
+    },
+    msgscroll: {
+        height: '63vh',
+        overflowY: 'scroll'
     }
 
 })
+
+
+const data = [
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:45"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:00"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Checkout this nft",
+        time: "1:12"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "12:00"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "12:00"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    },
+    {
+        heading: "Lorem Ipsum",
+        message: "Hi, are you up?",
+        time: "11:50"
+    }
+]
+
 
 
 const MessagingComp = () => {
@@ -91,7 +182,7 @@ const MessagingComp = () => {
     return (
         <>
             <Box className={classes.messagemain}>
-                <List>
+                <List sx={{ p: 0 }}>
                     <ListItem className={classes.listitem}>
                         <Typography color="#949494" variant="h5" fontWeight={700}>Messages</Typography>
                     </ListItem>
@@ -136,58 +227,32 @@ const MessagingComp = () => {
                     </ListItem>
 
                     <ListItem className={classes.listitem}>
-                        <Link className={classes.listitem2} to="/messagingExpend">
-                        <Box className={classes.widthleft}>
-                            <Typography component="img" src={messageimg1}></Typography>
+                        <Box className={classes.msgscroll}>
+                            {data.map((v) => {
+                                return (
+                                    <Link to="/messagingExpend" className={classes.listitem}>
+                                        <Box className={classes.listitem2}>
+                                            <Box className={classes.widthleft}>
+                                                <Typography component="img" src={messageimg2}></Typography>
+                                            </Box>
+                                            <Box className={classes.widthright}>
+                                                <Box>
+                                                    <Typography variant="h6" color="#949494">{v.heading}</Typography>
+                                                    <Typography className={classes.para2} color="#949494">{v.message}</Typography>
+                                                </Box>
+                                                <Box textAlign="right">
+                                                    <Typography display="inline-block" component="img" src={doublecheck}></Typography>
+                                                    <Typography className={classes.para}>{v.time}</Typography>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Link>
+                                )
+                            })}
                         </Box>
-                        <Box className={classes.widthright}>
-                            <Box>
-                                <Typography variant="h6" color="#949494">Lorem Ipsum</Typography>
-                                <Typography className={classes.para2} color="#949494">Hi, are you up?</Typography>
-                            </Box>
-                            <Box textAlign="right">
-                                <Typography display="inline-block" component="img" src={doublecheck1}></Typography>
-                                <Typography className={classes.para}>11:45 PM</Typography>
-                            </Box>
-                        </Box>
-                        </Link>
                     </ListItem>
 
-                    <Link to="/messagingExpend" className={classes.listitem}>
-                        <Box className={classes.listitem2}>
-                        <Box className={classes.widthleft}>
-                            <Typography component="img" src={messageimg2}></Typography>
-                        </Box>
-                        <Box className={classes.widthright}>
-                        <Box>
-                            <Typography variant="h6" color="#949494">Lorem Ipsum</Typography>
-                            <Typography className={classes.para2} color="#949494">Checkout this nft</Typography>
-                        </Box>
-                        <Box textAlign="right">
-                            <Typography display="inline-block" component="img" src={doublecheck}></Typography>
-                            <Typography className={classes.para}>11:45 PM</Typography>
-                        </Box>
-                        </Box>
-                        </Box>
-                    </Link>
 
-                    <Link to="/messagingExpend" className={classes.listitem}>
-                       <Box className={classes.listitem2}>
-                       <Box className={classes.widthleft}>
-                            <Typography component="img" src={messageimg3}></Typography>
-                        </Box>
-                        <Box className={classes.widthright}>
-                        <Box>
-                            <Typography variant="h6" color="#949494">Lorem Ipsum</Typography>
-                            <Typography className={classes.para2} color="#949494">Bro, have you found anythi....</Typography>
-                        </Box>
-                        <Box textAlign="right">
-                            <Typography display="inline-block" component="img" src={doublecheck}></Typography>
-                            <Typography className={classes.para}>11:45 PM</Typography>
-                        </Box>
-                        </Box>
-                       </Box>
-                    </Link>
 
 
                 </List>

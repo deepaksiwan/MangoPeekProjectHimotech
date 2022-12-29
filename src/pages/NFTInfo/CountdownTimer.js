@@ -8,7 +8,10 @@ const useStyle = makeStyles({
   maindiv: {
     display: 'flex !important',
     justifyContent : 'space-between',
-    marginTop : '15px'
+    marginTop : '15px',
+    '@media(max-width : 600px)':{
+      display : 'inherit !important'
+    }
   },
   mr : {
     marginLeft : '20px !important'

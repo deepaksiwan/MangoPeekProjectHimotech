@@ -53,7 +53,7 @@ const useStyle = makeStyles({
         padding: '6px 15px 6px 30px !important',
         color: '#FFF',
         fontSize: '12px !important',
-        fontWeight : 'bold !important'
+        fontWeight: 'bold !important'
     },
     chatimgright: {
         backgroundImage: `url(${chatimgright})`,
@@ -62,7 +62,7 @@ const useStyle = makeStyles({
         padding: '10px 30px 10px 20px !important',
         color: '#9A9A9A',
         fontSize: '12px !important',
-        fontWeight : 'bold !important'
+        fontWeight: 'bold !important'
     },
     chatimgright2: {
         backgroundImage: `url(${chatimgright2})`,
@@ -71,7 +71,7 @@ const useStyle = makeStyles({
         padding: '10px 30px 10px 31px !important',
         color: '#9A9A9A',
         fontSize: '12px !important',
-        fontWeight : 'bold !important'
+        fontWeight: 'bold !important'
     },
     chatimgright3: {
         backgroundImage: `url(${chatimgright2})`,
@@ -80,7 +80,7 @@ const useStyle = makeStyles({
         padding: '10px 30px 10px 15px !important',
         color: '#9A9A9A',
         fontSize: '12px !important',
-        fontWeight : 'bold !important'
+        fontWeight: 'bold !important'
     },
     chatimgright4: {
         backgroundImage: `url(${chatimgright3})`,
@@ -89,7 +89,7 @@ const useStyle = makeStyles({
         padding: '10px 20px 10px 15px !important',
         color: '#9A9A9A',
         fontSize: '12px !important',
-        fontWeight : 'bold !important'
+        fontWeight: 'bold !important'
     },
 
     chatinpt: {
@@ -102,7 +102,31 @@ const useStyle = makeStyles({
 
     chatlist: {
         position: 'fixed',
-        marginLeft: '2rem'
+        marginLeft: '1.4rem',
+        backgroundColor: '#f1f1f1',
+        borderRadius: '40px',
+        padding: '10px 15px',
+
+        '@media(max-width : 1200px)': {
+            marginLeft: '0rem',
+            padding : '10px 10px',
+            '@media(max-width : 600px)': {
+                position: 'inherit',
+                marginLeft: '0rem',
+                marginTop : '1rem'
+            }
+        }
+    },
+    msgscroll: {
+        height: '57vh',
+        overflowY: 'scroll',
+        '@media(max-width : 1200px)':{
+            height: '60vh', 
+            '@media(max-width : 900px)':{
+                height: '66.5vh', 
+                
+            }
+        }
     }
 
 })
@@ -114,7 +138,7 @@ const MessageChat = () => {
         <>
             <Box className={classes.chatlist}>
 
-                <List>
+                <List sx={{p : 0}}>
                     <ListItem className={classes.listitem}>
                         <Link className={classes.listitem2} to="#">
                             <Box className={classes.widthleft}>
@@ -137,61 +161,61 @@ const MessageChat = () => {
                             </Box>
                         </Link>
                     </ListItem>
+                    <Box className={classes.msgscroll}>
+                        <ListItem className={classes.listitem1}>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography className={classes.chatimgleft}>
+                                    Hey the one you have send me<br />
+                                    yesterday is rocket
+                                </Typography>
+                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:45 PM</Typography>
+                            </Box>
+                        </ListItem>
 
-                    <ListItem className={classes.listitem1}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography className={classes.chatimgleft}>
-                                Hey the one you have send me<br />
-                                yesterday is rocket
-                            </Typography>
-                            <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:45 PM</Typography>
-                        </Box>
-                    </ListItem>
+                        <ListItem className={classes.listitem1}>
+                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:45 PM
+                                    <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
+                                </Typography>
+                                <Typography className={classes.chatimgright}>
+                                    Okay thanks
+                                </Typography>
 
-                    <ListItem className={classes.listitem1}>
-                        <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                            <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:45 PM
-                                <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
-                            </Typography>
-                            <Typography className={classes.chatimgright}>
-                                Okay thanks
-                            </Typography>
+                            </Box>
+                        </ListItem>
 
-                        </Box>
-                    </ListItem>
+                        <ListItem className={classes.listitem1}>
+                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:50 PM
+                                    <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
+                                </Typography>
+                                <Typography className={classes.chatimgright4}>
+                                    Also, if you found anything special<br />
+                                    please send me too
+                                </Typography>
 
-                    <ListItem className={classes.listitem1}>
-                        <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                            <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:50 PM
-                                <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
-                            </Typography>
-                            <Typography className={classes.chatimgright4}>
-                                Also, if you found anything special<br />
-                                please send me too
-                            </Typography>
+                            </Box>
+                        </ListItem>
 
-                        </Box>
-                    </ListItem>
+                        <ListItem className={classes.listitem1}>
+                            <Box sx={{ display: 'flex', justifyContent: 'left', }}>
+                                <Typography component="img" src={nftexpandm}></Typography>
 
-                    <ListItem className={classes.listitem1}>
-                        <Box sx={{ display: 'flex', justifyContent: 'left', }}>
-                            <Typography component="img" src={nftexpandm}></Typography>
+                            </Box>
+                        </ListItem>
 
-                        </Box>
-                    </ListItem>
+                        <ListItem className={classes.listitem1}>
+                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:50 PM
+                                    <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
+                                </Typography>
+                                <Typography className={classes.chatimgright3}>
+                                    Nice one! considering this too
+                                </Typography>
 
-                    <ListItem className={classes.listitem1}>
-                        <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                            <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:50 PM
-                                <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
-                            </Typography>
-                            <Typography className={classes.chatimgright3}>
-                                Nice one! considering this too
-                            </Typography>
-
-                        </Box>
-                    </ListItem>
-
+                            </Box>
+                        </ListItem>
+                    </Box>
                     <ListItem className={classes.listitem1}>
                         <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
                             <Input

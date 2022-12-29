@@ -6,6 +6,9 @@ import { makeStyles } from '@mui/styles';
 const useStyle = makeStyles({
   maindiv: {
     display: 'flex !important',
+    '@media(max-width : 600px)':{
+      justifyContent : 'center',
+    }
   }
 })
 

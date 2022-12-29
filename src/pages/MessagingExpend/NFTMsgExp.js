@@ -32,6 +32,9 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96',
         padding: '10px 20px !important',
         display: 'inline-block',
+        '@media(max-width : 600px)':{
+            width : '100%',
+        }
     },
     listpadding: {
         padding: '5px 0px !important',
@@ -117,6 +120,9 @@ const useStyle = makeStyles({
         width: '125px',
         marginTop: '5px !important',
         boxShadow: '0px 4px 22px -3px #00000036',
+        '@media(max-width : 1200px)':{
+            width : '100%'
+        }
     },
     fav: {
         padding: "0 !important",
@@ -211,7 +217,7 @@ const NFTMsgExp = () => {
                         </ListItem>
 
                     </List>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between','@media(max-width : 1200px)':{display : 'inherit', width : '100%'} }}>
                         {expnft.map((e, id) => {
                             const { Image, } = e
                             return (

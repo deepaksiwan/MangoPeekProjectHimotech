@@ -159,6 +159,12 @@ const useStyle = makeStyles((theme) => ({
     '&:hover':{
       backgroundColor : 'transparent !important'
     }
+  },
+  loadmorebtn : {
+    backgroundColor : '#FF5F29 !important',
+    color : '#fff !important',
+    borderRadius : '30px !important',
+    padding : '10px 24px !important',
   }
 }));
 const ExploreNFTSingle = (props) => {
@@ -271,21 +277,13 @@ const ExploreNFTSingle = (props) => {
                 {isFetchingEthereum && !isFetchingNextPageEthereum ? (
                   <CircularProgress color="primary" />
                 ) : null}
-                <Box sx={{ "display": "block", "width": "100%", "textAlign": "center", marginTop: "1rem" }}>
+                <Box sx={{ "display": "block", "width": "100%", "textAlign": "center", marginTop: "1rem", marginBottom : '2rem' }}>
                   {(dataEthereum?.pages[0] && hasNextPageEthereum) && (
                     <Button
                       variant="contained"
                       disabled={!hasNextPageEthereum}
                       onClick={() => fetchNextPageEthereum()}
-                      sx={{
-                        background: "#000",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "20px",
-                        margin: "10px",
-                        fontSize: "0.7rem",
-                        fontWeight: "bold",
-                      }}
+                       className={classes.loadmorebtn}
                     >
                       Load More
                     </Button>

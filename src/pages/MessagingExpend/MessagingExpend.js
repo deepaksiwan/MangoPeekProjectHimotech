@@ -17,18 +17,40 @@ const useStyle = makeStyles({
     menuposition: {
         position: 'fixed',
         top: 0,
-        marginTop: '9.10rem'
+        marginTop: '9.10rem',
+        '@media(max-width : 1200px)': {
+            marginTop: '12.1rem',
+            '@media(max-width : 900px)': {
+                marginTop: '18.1rem',
+                '@media(max-width : 600px)': {
+                    marginTop: '11.1rem',
+                    zIndex: '100',
+
+                }
+            }
+        }
     },
     explorenft: {
         marginTop: '4rem',
+        '@media(max-width : 900px)': {
+            display: 'none',
+            '@media(max-width : 600px)': {
+                display: 'block',
+                marginTop: '1rem',
+            }
+        }
     },
 
 
-    chatboxwrp : {
-        backgroundColor: '#efefef96 !important',
-        marginTop : '80px !important',
-        paddingRight : '20px !important',
-        borderRadius : '45px',
+    chatboxwrp: {
+
+        marginTop: '66px !important',
+        paddingRight: '20px !important',
+        borderRadius: '45px',
+        '@media(max-width : 600px)': {
+            marginTop: '0px !important',
+            paddingRight: '0px !important',
+        }
     }
 
 })
@@ -47,27 +69,27 @@ const MessagingExpend = () => {
 
 
                     <Grid container spacing={2}>
-                        <Grid item lg={0.9}>
+                        <Grid item lg={0.9} md={0.9} sm={1.2} xs={12}>
                             <Box className={classes.menuposition}>
                                 <Withoutmenucomp />
                             </Box>
                         </Grid>
-                        <Grid item lg={7.9}>
-                            <Box >
+                        <Grid item lg={7.9} md={7.9} sm={10.8} xs={12}>
+                            <Box>
                                 <Grid container spacing={0} className={classes.chatboxwrp}>
-                                    <Grid item lg={6}>
+                                    <Grid item lg={6} md={6} sm={6} xs={12}>
                                         <MessagingComp />
                                     </Grid>
-                                    <Grid item lg={6}>
+                                    <Grid item lg={6} md={6} sm={6} xs={12}>
                                         <MessageChat />
                                     </Grid>
                                 </Grid>
 
                             </Box>
                         </Grid>
-                        <Grid item lg={3.2}>
+                        <Grid item lg={3.2} md={3.2} sm={2} xs={12}>
                             <Box className={classes.explorenft}>
-                                <NFTMsgExp/>
+                                <NFTMsgExp />
                             </Box>
                         </Grid>
                     </Grid>

@@ -20,7 +20,11 @@ const useStyle = makeStyles({
         color: '#fff !important',
         padding: '12px 50px !important',
         borderRadius: '30px !important',
-        marginLeft: '20px !important'
+        marginLeft: '20px !important',
+        '@media(max-width : 600px)': {
+            width: '100%',
+            marginLeft: '0px !important',
+        }
     },
     upload: {
         display: 'inherit !important',
@@ -75,7 +79,10 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96 !important',
         marginTop: '15px !important',
         boxShadow: '0px 10px 20px -8px #00000036',
-        padding: '15px 30px !important'
+        padding: '15px 30px !important',
+        '@media(max-width : 900px)': {
+            marginTop: '0px !important'
+        }
     },
     listbutn6: {
         justifyContent: 'space-between !important',
@@ -83,7 +90,10 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96 !important',
         marginTop: '30px !important',
         boxShadow: '0px 10px 20px -8px #00000036',
-        padding: '30px !important'
+        padding: '30px !important',
+        '@media(max-width : 900px)': {
+            marginTop: '10px !important',
+        }
     },
     listbutn3: {
         justifyContent: 'space-between !important',
@@ -99,14 +109,21 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96 !important',
         margin: '20px 20px 0px 0px !important',
         boxShadow: '0px 10px 20px -8px #00000036',
-        padding: '0px !important'
+        padding: '0px !important',
+        '@media(max-width : 900px)': {
+            margin: '20px 0px 0px 0px !important',
+        }
     },
 
     freeze: {
         backgroundColor: '#efefef96',
         padding: '20px !important',
         borderRadius: '20px',
-        marginTop: '40px'
+        marginTop: '40px',
+        '@media(max-width : 900px)': {
+            marginTop: '0px !important',
+            marginBottom: '20px !important',
+        }
     }
 
 
@@ -151,7 +168,11 @@ const Create = () => {
         <>
             <Container>
                 <Header />
-                <Box sx={{ textAlign: 'center', margin: '30px 0px 50px 0px' }}>
+                <Box sx={{
+                    textAlign: 'center', padding: '30px 0px 50px 0px', '@media(max-width : 900px)': {
+                        padding: '0px 0px 50px 0px',
+                    }
+                }}>
                     <Typography variant="h4" color="#999999">Create New Item</Typography>
                 </Box>
                 <Grid lg={12} container spacing={2}>
@@ -217,7 +238,12 @@ const Create = () => {
 
                 <Grid lg={12} container spacing={2}>
                     <Grid item lg={6} md={6} xs={12}>
-                        <Box className={classes.getintouch4} sx={{ width: '100%', marginTop: '36px' }}>
+                        <Box className={classes.getintouch4} sx={{
+                            width: '100%', marginTop: '36px',
+                            '@media(max-width : 900px)': {
+                                marginTop: '20px'
+                            }
+                        }}>
                             <Typography color="#7C7C7C" fontWeight={700} >Enter Collection,</Typography>
                             <Box sx={{ width: '100%', }}>
                                 <TextField
@@ -240,7 +266,11 @@ const Create = () => {
 
                         >
                             <ListItemButton className={classes.listbutn} onClick={handleClick}>
-                                <ListItemIcon>
+                                <ListItemIcon sx={{
+                                    '@media(max-width : 600px)': {
+                                        width: '95%'
+                                    }
+                                }}>
                                     <Box sx={{ alignSelf: 'center' }}>
                                         <Typography component="img" src={properties}></Typography>
                                     </Box>
@@ -280,12 +310,20 @@ const Create = () => {
                             aria-labelledby="nested-list-subheader"
 
                         >
-                            <ListItemButton className={classes.listbutn} onClick={handleClick2}>
-                                <ListItemIcon>
+                            <ListItemButton sx={{
+                                '@media(max-width : 900px)': {
+                                    marginTop: '10px !important'
+                                }
+                            }} className={classes.listbutn} onClick={handleClick2}>
+                                <ListItemIcon sx={{
+                                    '@media(max-width : 600px)': {
+                                        width: '95%'
+                                    }
+                                }}>
                                     <Box sx={{ alignSelf: 'center' }}>
                                         <Typography component="img" src={levels}></Typography>
                                     </Box>
-                                    <Box ml={2}>
+                                    <Box ml={2} >
                                         <Typography variant="h6">Levels</Typography>
                                         <Typography>Numerical traits that show as a progress bar</Typography>
                                     </Box>
@@ -319,7 +357,11 @@ const Create = () => {
 
                         >
                             <ListItemButton className={classes.listbutn} onClick={handleClick3}>
-                                <ListItemIcon>
+                                <ListItemIcon sx={{
+                                    '@media(max-width : 600px)': {
+                                        width: '95%'
+                                    }
+                                }}>
                                     <Box sx={{ alignSelf: 'center' }}>
                                         <Typography component="img" src={stats}></Typography>
                                     </Box>
@@ -393,7 +435,11 @@ const Create = () => {
                             </List>
                         </Grid>
                         <Grid item lg={6} md={6} xs={12}>
-                            <Box sx={{ margin: '40px 0px 0px 20px' }}>
+                            <Box sx={{
+                                margin: '40px 0px 0px 20px', '@media(max-width : 900px)': {
+                                    margin: '30px 0px 30px 20px',
+                                }
+                            }}>
                                 <Typography>Enter content ( access key, code to redeem, link to a file, etc. )</Typography>
                             </Box>
                         </Grid>
@@ -505,7 +551,12 @@ const Create = () => {
 
                 <Grid lg={12} container spacing={2}>
                     <Grid item lg={6} md={6} xs={12}>
-                        <Box sx={{ marginLeft: '20px', padding: '30px 0px' }}>
+                        <Box sx={{
+                            marginLeft: '20px', padding: '30px 0px',
+                            '@media(max-width : 900px)': {
+                                padding: '20px 0px',
+                            }
+                        }}>
                             <Typography variant="h6" color="#7A7A7A">Unlockable Content</Typography>
                             <Typography color="#CCCCCC">Freezing  your  metadata  will  allow  you  to permanently lock and store all of this item's content in decentralized file storage.</Typography>
                         </Box>
@@ -520,7 +571,11 @@ const Create = () => {
 
                 <Grid lg={12} container spacing={2}>
                     <Grid item lg={12} md={12} xs={12}>
-                        <Box sx={{ marginBottom: '60px' }}>
+                        <Box sx={{
+                            marginBottom: '60px', '@media(max-width : 900px)': {
+                                marginBottom: '30px'
+                            }
+                        }}>
                             <Button className={classes.submitbtn}>Create</Button>
                         </Box>
                     </Grid>
