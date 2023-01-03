@@ -23,12 +23,12 @@ const useStyle = makeStyles({
         top: 0,
         position: 'fixed',
         marginTop: '5.8rem',
-        '@media(max-width : 1200px)':{
-            width :'335px',
-            '@media (max-width : 600px)':{
-                position : 'inherit',
-                width : '100%',
-                marginTop : '2.8rem'
+        '@media(max-width : 1200px)': {
+            width: '335px',
+            '@media (max-width : 600px)': {
+                position: 'inherit',
+                width: '100%',
+                marginTop: '2.8rem'
             }
         }
     },
@@ -146,9 +146,9 @@ const NotificationComp = () => {
                     </ListItem>
 
                     <ListItem className={classes.listitem}>
-                        <Box sx={{textAlign : 'center', marginTop : '10px'}}>
-                        <Typography fontSize={12} color="#C6C6C6">a day ago</Typography>
-                         <Divider sx={{m:"10px 0px"}}/>
+                        <Box sx={{ textAlign: 'center', marginTop: '10px' }}>
+                            <Typography fontSize={12} color="#C6C6C6">a day ago</Typography>
+                            <Divider sx={{ m: "10px 0px" }} />
                         </Box>
                     </ListItem>
 
@@ -193,8 +193,8 @@ const NotificationComp = () => {
                     </ListItem>
 
                     <ListItem className={classes.listitem}>
-                        <Box sx={{textAlign : 'center', marginTop : '5px'}}>
-                        <Typography fontSize={12} color="#C6C6C6">15 min ago</Typography>
+                        <Box sx={{ textAlign: 'center', marginTop: '5px' }}>
+                            <Typography fontSize={12} color="#C6C6C6">15 min ago</Typography>
                         </Box>
                     </ListItem>
 
@@ -219,8 +219,8 @@ const NotificationComp = () => {
                     </ListItem>
 
                     <ListItem className={classes.listitem}>
-                        <Box sx={{textAlign : 'center', marginTop : '5px'}}>
-                        <Typography fontSize={12} color="#C6C6C6">30 min ago</Typography>
+                        <Box sx={{ textAlign: 'center', marginTop: '5px' }}>
+                            <Typography fontSize={12} color="#C6C6C6">30 min ago</Typography>
                         </Box>
                     </ListItem>
 

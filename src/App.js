@@ -64,7 +64,7 @@ function App() {
           <Route exact path="/explore" element={<AuthGuard><Explore /></AuthGuard>} />
           <Route exact path="/wallet" element={<AuthGuard><Wallet /></AuthGuard>} />
           <Route exact path="/nftdetailpage/:id" element={<NFTdetailpage />} />
-          <Route exact path="/signup" name="Signup Page" element={<UserGuard><Signup /></UserGuard>} />
+          <Route exact path="/register" name="Signup Page" element={<UserGuard><Signup /></UserGuard>} />
           <Route exact path="/login" name="Login Page" element={<UserGuard><Login /></UserGuard>} />
           <Route exact path="/forget" name="Reset Page" element={<UserGuard><Forget /></UserGuard>} />
           <Route exact path="/reset" element={<UserGuard><Reset /></UserGuard>} />

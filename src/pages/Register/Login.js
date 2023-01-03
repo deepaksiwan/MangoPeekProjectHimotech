@@ -6,7 +6,7 @@ import { login } from "../../api/ApiCall/login";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, Grid, Container } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { UserContext } from "../../context/User/UserContext";
 import { actionTypes } from "../../context/User/UserReducer";
@@ -18,51 +18,19 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Slider from "./Slider";
+import Footer from "../../components/Footer/Footer";
+import Footer2 from "../../components/Footer/Footer2";
 
 const useStyle = makeStyles((theme) => ({
-  signupbox: {
-    width: "33%",
-    margin: "5rem auto",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
-    // [theme.breakpoints.up("md")]: {
-    //   width: "100%",
-    // },
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-    },
-    // [theme.breakpoints.up("lg")]: {
-    //   width: "28%",
-    // },
-    "& input::placeholder": {
-      fontSize: "13px",
-      // padding:"0 10px"
-    },
-    "& input": {
-      fontSize: "13px",
-      padding: "20px 20px !important"
+  formmainwrp: {
+    padding: '7rem 0rem 3rem 0rem !important',
+    '@media(max-width : 900px)': {
+      padding: '6rem 0rem 3rem 0rem !important',
+      '@media(max-width : 600px)': {
+        padding: '5rem 0rem 0rem 0rem !important',
+      }
     }
-  },
-  btn: {
-    textAlign: "center",
-    margin: "2rem 0",
-    "& button": {
-      background: "#000",
-      padding: "10px 27px",
-      border: "none",
-      borderRadius: "36px",
-    }, "& button:hover": {
-      background: "#000", padding: "10px 27px", border: "none", borderRadius: "36px"
-    }
-  },
-  signup: {
-    textAlign: 'center',
-    margin: "3rem 0",
-    "& h1": {
-      fontSize: "2rem",
-      fontWeight: "500",
-    },
   },
   typ: {
     color: "#000",
@@ -73,7 +41,68 @@ const useStyle = makeStyles((theme) => ({
     color: 'red',
     paddingTop: '10px',
     fontSize: '12px !important',
-  }
+  },
+  btnwrp: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    '@media(max-width : 600px)': {
+      display: 'inherit !important',
+    }
+  },
+  loginbtn: {
+    backgroundColor: '#FFCC00 !important',
+    color: '#fff !important',
+    borderRadius: '30px !important',
+    padding: '14px !important',
+    width: '240px !important',
+    '@media(max-width : 1200px)': {
+      width: '190px !important',
+      '@media(max-width : 900px)': {
+        width: '270px !important',
+        '@media(max-width : 600px)': {
+          width: '130px !important',
+        }
+      }
+    }
+  },
+  signupbtn: {
+    display: 'inherit',
+    backgroundColor: '#FF5F29 !important',
+    color: '#fff !important',
+    borderRadius: '30px !important',
+    padding: '14px !important',
+    width: '240px !important',
+    '@media(max-width : 1200px)': {
+      width: '190px !important',
+      '@media(max-width : 900px)': {
+        width: '270px !important',
+        '@media(max-width : 600px)': {
+          width: '130px !important',
+        }
+      }
+    }
+  },
+  formbox: {
+    padding: '5.5rem 5rem !important',
+    boxShadow: 'inset 0px 7px 15px -4px #00000024',
+    borderRadius: '40px',
+    backgroundColor: '#efefef96',
+    '@media(max-width : 600px)': {
+      padding: '1.5rem !important'
+    }
+  },
+  input: {
+    backgroundColor: '#fcfcfc75',
+    boxShadow: 'inset 0px 7px 15px -4px #00000024 !important',
+    padding: '12px 20px !important',
+    borderRadius: '30px !important'
+  },
+  input2: {
+    backgroundColor: '#fcfcfc75',
+    boxShadow: 'inset 0px 7px 15px -4px #00000024 !important',
+    borderRadius: '30px !important'
+  },
+
 }));
 const Login = () => {
   const classes = useStyle();
@@ -122,10 +151,20 @@ const Login = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email format").required("Enter valid email addresss"),
+      email: Yup.string().when("isEmail", {
+        is: '1',
+        then: Yup.string()
+          .email("Enter valid username / email")
+          .required("Enter valid username / email"),
+        otherwise: Yup.string()
+          .required("Enter valid username / email")
+          .min(4, 'Username must be at least 4 digit')
+          .max(20, 'Username must not exceed 20 digit'),
+      }),
+      
       password: Yup.string()
-        // .min(4, "Minimum 4 characters")
         .required("Enter valid password"),
+
     }),
     onSubmit: async (values) => {
       try {
@@ -147,120 +186,84 @@ const Login = () => {
     event.preventDefault();
   };
   return (
-    <div>
+    <Box>
       <Header />
-      <section id="signup">
-        <div className="container">
-          <div className={classes.signup}>
-            <h1>Log In</h1>
-          </div>
-          <form onSubmit={formik.handleSubmit} className={classes.signupbox}>
-            <TextField
-              variant="outlined"
-              id="email"
-              name="email"
-              // label="Email"
-              placeholder="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              // error={formik.touched.email && Boolean(formik.errors.email)}
-              // helperText={formik.touched.email && formik.errors.email}
-              sx={{
-                display: "flex",
-                boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px",
-                borderRadius: "8px",
-              }}
-              InputProps={{
-                disableUnderline: true,
-              }}
-            />
-            <Typography className={classes.error}> {formik.errors.email}</Typography>
-            {/* <TextField
-              variant="outlined"
-              id="password"
-              name="password"
-              placeholder="Password"
-              label="Password"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              sx={{
-                display: "flex",
-                margin: "12px",
-                boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px",
-                borderRadius: "35px",
-              }}
-              InputProps={{
-                disableUnderline: true,
-              }}
-            /> */}
+      <Container>
+        <Box className={classes.formmainwrp}>
+          <Grid container spacing={2}>
+            <Grid item lg={5} md={5} sm={12} xs={12}>
+              <Slider />
+            </Grid>
+            <Grid item lg={7} md={7} sm={12} xs={12}>
+              <Box className={classes.formbox}>
+                <FormControl fullWidth onSubmit={formik.handleSubmit} >
+                  <TextField
+                    className={classes.input}
+                    variant="standard"
+                    id="email"
+                    name="email"
+                    placeholder="Username/Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
 
-            <FormControl sx={{ marginTop: '10px', width: '100%', boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }} variant="outlined">
-              {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
-              <OutlinedInput
-                name="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                // error={formik.touched.password && Boolean(formik.errors.password)}
-                // helperText={formik.touched.password && formik.errors.password}
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
-                InputProps={{
-                  disableUnderline: true,
-                }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                // label="Password"
-              />
-            </FormControl>
-            <Typography className={classes.error}> {formik.errors.password}</Typography>
 
-            <Box className={classes.btn}>
-              <button
-                variant="contained"
-                color="primary"
-                type="submit"
-                className="btn btn-primary"
-              >
-                login
-              </button>
-            </Box>
-            <Box sx={{ textAlign: 'center' }}>
-              <p className="sig-pr">
-                Don't have an account?
-                <span>
-                  <Link to="/signup" className={classes.typ}>
-                    {" "}
-                    Sign up.
-                  </Link>
-                </span>
-              </p>
-              <p className="sig-pr">
-                <span>
-                  <Link to="/forget" className={classes.typ}>
-                    {" "}
-                    Forgot your password?
-                  </Link>
-                </span>
-              </p>
-            </Box>
-          </form>
-        </div>
-      </section>
-    </div>
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
+                  />
+                  <Typography className={classes.error}> {formik.errors.email}</Typography>
+
+
+                  <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}  >
+                    <OutlinedInput
+                      className={classes.input2}
+                      sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
+                      variant="standard"
+                      name="password"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Password"
+                      disableUnderline={false}
+
+                      InputProps={{
+                        disableUnderline: true
+                      }}
+                      endAdornment={
+
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+
+                      }
+                    // label="Password"
+                    />
+                  </FormControl>
+                  <Typography className={classes.error}> {formik.errors.password}</Typography>
+                  <Box height={10} />
+                  <Box className={classes.btnwrp}>
+                    <Button className={classes.loginbtn}>Login</Button>
+                    <Button className={classes.signupbtn} href="/signup">Register</Button>
+                  </Box>
+
+                </FormControl>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+        <Footer2 />
+      </Container>
+
+    </Box>
   );
 };
 
