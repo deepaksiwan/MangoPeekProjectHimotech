@@ -44,6 +44,9 @@ const useStyle = makeStyles({
 
 const Notification = () => {
     const classes = useStyle();
+    
+
+    
 
 
 
@@ -65,7 +68,7 @@ const Notification = () => {
                         </Grid>
                         <Grid item lg={7} md={6.7} sm={5.2} xs={12}>
                             <Box className={classes.explorenft}>
-                                <NFTMsg />
+                                <NFTMsg  />
                             </Box>
                         </Grid>
                     </Grid>

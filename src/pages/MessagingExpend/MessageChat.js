@@ -1,17 +1,19 @@
-import { Box, IconButton, Input, List, ListItem, TextField, Typography } from "@mui/material";
+import { Box,  ListItem, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import messageimg1 from '../../../src/pages/images/messageimg1.svg'
-import doublecheck1 from '../../../src/pages/images/doublecheck1.svg'
-import doublecheck from '../../../src/pages/images/doublecheck.svg'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+// import doublecheck1 from '../../../src/pages/images/doublecheck1.svg'
+
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import chatimgleft from '../../../src/pages/images/chatimgleft.svg'
-import chatimgright from '../../../src/pages/images/chatimgright.svg'
+//import chatimgright from '../../../src/pages/images/chatimgright.svg'
 import chatimgright2 from '../../../src/pages/images/chatimgright2.svg'
 import chatimgright3 from '../../../src/pages/images/chatimgright3.svg'
-import nftexpandm from '../../../src/pages/images/nftexpandm.svg'
-import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
+// import nftexpandm from '../../../src/pages/images/nftexpandm.svg'
+import { format } from "timeago.js";
+
+
 
 
 const useStyle = makeStyles({
@@ -20,10 +22,26 @@ const useStyle = makeStyles({
         padding: '0px !important',
     },
 
-    listitem1: {
+    listitemleft: {
         display: 'inherit !important',
-        padding: '0px !important',
-        marginTop: '10px !important'
+        padding: '10px  20px !important',
+        marginTop: '10px !important',
+        color: "#fff",
+        fontWeight:"bold !important",
+        justifyContent: "right",
+        backgroundColor: "#9A9A9A",
+        fontSize: "12px !important",
+        borderRadius: "20px",
+        boxShadow: 'inset 0px 7px 15px -4px #00000024',
+    },
+    listitemright:{
+        display: 'inherit !important',
+        padding: '5px !important',
+        marginTop: '10px !important',
+        justifyContent: "left",
+    
+        
+
     },
     listitem2: {
         display: 'flex !important',
@@ -56,13 +74,16 @@ const useStyle = makeStyles({
         fontWeight: 'bold !important'
     },
     chatimgright: {
-        backgroundImage: `url(${chatimgright})`,
-        backgroundSize: '100% 100%',
+        //backgroundImage: `url(${chatimgright})`,
+        backgroundSize: '100%',
         backgroundRepeat: 'no-repeat',
         padding: '10px 30px 10px 20px !important',
         color: '#9A9A9A',
+        borderRadius: "20px",
         fontSize: '12px !important',
-        fontWeight: 'bold !important'
+        fontWeight: 'bold !important',
+        
+        backgroundColor: "#E1E1E1",
     },
     chatimgright2: {
         backgroundImage: `url(${chatimgright2})`,
@@ -92,161 +113,89 @@ const useStyle = makeStyles({
         fontWeight: 'bold !important'
     },
 
-    chatinpt: {
-        backgroundColor: '#efefef96',
-        boxShadow: 'inset 0px 7px 15px -4px #00000024',
-        padding: '10px !important',
-        width: '100%',
-        borderRadius: '30px'
-    },
+    // chatinpt: {
+    //     backgroundColor: '#efefef96',
+    //     boxShadow: 'inset 0px 7px 15px -4px #00000024',
+    //     padding: '10px !important',
+    //     width: '100%',
+    //     borderRadius: '30px'
+    // },
 
-    chatlist: {
-        position: 'fixed',
-        marginLeft: '1.4rem',
-        backgroundColor: '#f1f1f1',
-        borderRadius: '40px',
-        padding: '10px 15px',
+    msgmainboxright:{
+        display: 'flex', justifyContent: 'right', alignItems: 'center'
 
-        '@media(max-width : 1200px)': {
-            marginLeft: '0rem',
-            padding : '10px 10px',
-            '@media(max-width : 600px)': {
-                position: 'inherit',
-                marginLeft: '0rem',
-                marginTop : '1rem'
-            }
-        }
     },
-    msgscroll: {
-        height: '57vh',
-        overflowY: 'scroll',
-        '@media(max-width : 1200px)':{
-            height: '60vh', 
-            '@media(max-width : 900px)':{
-                height: '66.5vh', 
-                
-            }
-        }
+    msgmainboxleft:{
+        display: 'flex', justifyContent: 'left', alignItems: 'center',
+        // backgroundColor: "#1877f2",
+        color: "white"
+    
+    },
+    timeleft:{
+        width: "25%"
+    },
+    timeright:{
+        width: "25%",
+        
     }
+
+
+
+    // chatlist: {
+    //     position: 'fixed',
+    //     marginLeft: '1.4rem',
+    //     backgroundColor: '#f1f1f1',
+    //     borderRadius: '40px',
+    //     padding: '10px 15px',
+
+    //     '@media(max-width : 1200px)': {
+    //         marginLeft: '0rem',
+    //         padding: '10px 10px',
+    //         '@media(max-width : 600px)': {
+    //             position: 'inherit',
+    //             marginLeft: '0rem',
+    //             marginTop: '1rem'
+    //         }
+    //     }
+    // },
+    // msgscroll: {
+    //     height: '57vh',
+    //     overflowY: 'scroll',
+    //     '@media(max-width : 1200px)': {
+    //         height: '60vh',
+    //         '@media(max-width : 900px)': {
+    //             height: '66.5vh',
+
+    //         }
+    //     }
+    // }
 
 })
 
 
-const MessageChat = () => {
+const MessageChat = ({ message, own }) => {
     const classes = useStyle();
     return (
-        <>
-            <Box className={classes.chatlist}>
+      
 
-                <List sx={{p : 0}}>
-                    <ListItem className={classes.listitem}>
-                        <Link className={classes.listitem2} to="#">
-                            <Box className={classes.widthleft}>
-                                <Typography component="img" src={messageimg1}></Typography>
-                            </Box>
-                            <Box className={classes.widthright}>
-                                <Box>
-                                    <Typography variant="h6" color="#949494">Lorem Ipsum</Typography>
-                                    <Typography className={classes.para2} color="#949494">Hi, are you up?</Typography>
-                                </Box>
-                                <Box textAlign="right">
-                                    <IconButton
-                                        aria-label="more"
-                                        id="long-button"
-                                        aria-haspopup="true"
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                </Box>
-                            </Box>
-                        </Link>
-                    </ListItem>
-                    <Box className={classes.msgscroll}>
-                        <ListItem className={classes.listitem1}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Typography className={classes.chatimgleft}>
-                                    Hey the one you have send me<br />
-                                    yesterday is rocket
-                                </Typography>
-                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:45 PM</Typography>
-                            </Box>
-                        </ListItem>
+        <>  
+        <ListItem className={classes.listitemright} >
+            <Box className={own?classes.msgmainboxright: classes.msgmainboxleft}>
+                <Typography className={own?classes.timeright: classes.timeleft} ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">{message ? format(message?.createdAt) : "time"}
+                    {/* <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography> */}
+                </Typography>
+                <Typography className={own?classes.chatimgright: classes.listitemleft}>
+                    {message?message?.text: ""}
+                </Typography>
 
-                        <ListItem className={classes.listitem1}>
-                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:45 PM
-                                    <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
-                                </Typography>
-                                <Typography className={classes.chatimgright}>
-                                    Okay thanks
-                                </Typography>
-
-                            </Box>
-                        </ListItem>
-
-                        <ListItem className={classes.listitem1}>
-                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:50 PM
-                                    <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
-                                </Typography>
-                                <Typography className={classes.chatimgright4}>
-                                    Also, if you found anything special<br />
-                                    please send me too
-                                </Typography>
-
-                            </Box>
-                        </ListItem>
-
-                        <ListItem className={classes.listitem1}>
-                            <Box sx={{ display: 'flex', justifyContent: 'left', }}>
-                                <Typography component="img" src={nftexpandm}></Typography>
-
-                            </Box>
-                        </ListItem>
-
-                        <ListItem className={classes.listitem1}>
-                            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                                <Typography ml={1} fontSize="11px" fontWeight={700} color="#ADADAD">11:50 PM
-                                    <Typography mr={1} ml={1} display="inline-block" component="img" src={doublecheck1}></Typography>
-                                </Typography>
-                                <Typography className={classes.chatimgright3}>
-                                    Nice one! considering this too
-                                </Typography>
-
-                            </Box>
-                        </ListItem>
-                    </Box>
-                    <ListItem className={classes.listitem1}>
-                        <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
-                            <Input
-                                className={classes.chatinpt}
-                                id="outlined-basic"
-                                placeholder="Nice one! considering this too"
-                                variant="contained"
-                                disableUnderline
-                            />
-                            <IconButton
-                                sx={{
-                                    backgroundColor: '#90DD90',
-                                    color: '#fff',
-                                    marginLeft: '-50px',
-                                    padding: '13px',
-                                    transition: '0.5s',
-                                    "&:hover": {
-                                        backgroundColor: '#33CC33'
-                                    }
-                                }}
-                                aria-label="rightarrow">
-                                <KeyboardArrowRightRoundedIcon />
-                            </IconButton>
-                        </Box>
-                    </ListItem>
-                </List>
             </Box>
-        </>
+        </ListItem>
+
+    
+    </>
+
+
 
     )
 }
-
-
 export default MessageChat

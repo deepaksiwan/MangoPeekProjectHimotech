@@ -1,46 +1,19 @@
 import {
   Box,
-  Container,
   Grid,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
   Typography,
   Button,
-  CircularProgress,
 } from "@mui/material";
-import FormHelperText from "@mui/material/FormHelperText";
-
 import React, { useState } from "react";
-//   import Header from "../Header/Header";
 import { makeStyles } from "@mui/styles";
-//   import Data from "../ExploreData";
-// import Data from "../../pages/Explore/ExploreData";
-import Data1 from "../../pages/Explore/Polygon/PolygonData";
-import Data2 from "../../pages/Explore/Solana/SolanaData";
-import Data3 from "../../pages/Explore/Wax/WaxData";
-import Data4 from "../../pages/Explore/Tezos/TezosData";
 import NftBox from "../../pages/Explore/NftBox";
-import Polygon from "../../pages/Explore/Polygon/Polygon";
-import Solana from "../../pages/Explore/Solana/Solana";
-import Tezos from "../../pages/Explore/Tezos/Tezos";
 import { getAllNftCollection } from "../../api/ApiCall/nftCollection/getAllNftCollection";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { recentlyListedNft } from "../../api/ApiCall/nftCollection/recentlyListedNft";
-import { mostViewNft } from "../../api/ApiCall/nftCollection/mostViewNft";
-import { mostLikeNft } from "../../api/ApiCall/nftCollection/mostLikeNft";
-
 import { useQuery, useInfiniteQuery } from "react-query";
-import { WOLFPUPS_NFT_address, WOLFPUPS_NFT_address_BSC } from "../../config";
+// import { WOLFPUPS_NFT_address, WOLFPUPS_NFT_address_BSC } from "../../config";
 import { getAllNftByChainName } from "../../api/ApiCall/nftCollection/getAllNftByChainName";
-import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import Loader from "../.././pages/Loader/Loader"
+ import ExploreNFTHeading from "./ExploreNFTHeading";
 
-import arrow from '../../../src/pages/images/arrow.svg'
-import ExploreNFTHeading from "./ExploreNFTHeading";
- 
 
 
 
@@ -64,6 +37,7 @@ const useStyle = makeStyles((theme) => ({
   },
   bag8: {
     // position: "relative",
+
     margin: "0",
     height: "auto",
     position: "relative",
@@ -148,55 +122,39 @@ const useStyle = makeStyles((theme) => ({
     backgroundColor: '#efefef96',
     borderRadius: '40px',
     padding: '8px 20px',
-    width : '83%',
-    textAlign : 'left',
+    width: '83%',
+    textAlign: 'left',
   },
-  viewbtn  : { 
-    color : '#666666 !important',
+  viewbtn: {
+    color: '#666666 !important',
     textTransform: 'none !important',
     fontSize: '18px !important',
     fontWeight: '700 !important',
-    '&:hover':{
-      backgroundColor : 'transparent !important'
+    '&:hover': {
+      backgroundColor: 'transparent !important'
     }
   },
-  loadmorebtn : {
-    backgroundColor : '#FF5F29 !important',
-    color : '#fff !important',
-    borderRadius : '30px !important',
-    padding : '10px 24px !important',
+  loadmorebtn: {
+    backgroundColor: '#FF5F29 !important',
+    color: '#fff !important',
+    borderRadius: '30px !important',
+    padding: '10px 24px !important',
   }
 }));
 const ExploreNFTSingle = (props) => {
   const [show, setShow] = useState(true);
   const [show1, setShow1] = useState(true);
   const [totalNftPages, setTotalNftPages] = useState(5);
-  // const [show2, setShow2] = useState(true);
-  // const [show3, setShow3] = useState(true);
-  // const [show4, setShow4] = useState(true);
   const [chainName, setChainName] = useState({ BSC_Testnet: "BSC Testnet" })
+  const [filter, setFilter] = useState(0);
 
   const Active = () => {
     setShow(!show);
-
-    // setTimeout(() => {
-    //   setShow(!show)
-    // }, 1000);
   };
   const inActive = () => {
     setChainName({ Ethereum: "Ethereum", BSC_Testnet: "BSC Testnet" })
     setShow1(!show1);
   };
-  // const DisActive = () => {
-  //   setShow2(!show2);
-  // };
-  // const unActive = () => {
-  //   setShow3(!show3);
-  // };
-  // const DActive = () => {
-  //   setShow4(!show4);
-  // };
-
 
 
   const { data } =
@@ -206,11 +164,14 @@ const ExploreNFTSingle = (props) => {
       {
         onSuccess: (data) => {
           setTotalNftPages(Math.ceil(data?.responseResult.length));
-          // console.log(data?.responseResult.length);
         }
 
       }
     );
+
+    //console.log("datasmdfdnsm", data)
+
+  
 
   const { data: dataEthereum, fetchNextPage: fetchNextPageEthereum, hasNextPage: hasNextPageEthereum, isFetchingNextPage: isFetchingNextPageEthereum, isFetching: isFetchingEthereum } =
     useInfiniteQuery(
@@ -233,16 +194,16 @@ const ExploreNFTSingle = (props) => {
     );
 
 
-  const [filter, setFilter] = useState(0);
-  // console.log(filter);
 
-  // const _recentlyListedNft = useQuery(
-  //   ["recentlyListedNft"],
-  //   recentlyListedNft,
-  //   {}
-  // );
-  // const _mostViewNft = useQuery(["mostViewNft"], mostViewNft, {});
-  // const _mostLikeNft = useQuery(["mostLikeNft"], mostLikeNft, {});
+    
+
+    
+
+
+    //  console.log("dataEthereum", dataEthereum?.pages[0]?.responseResult[1]?.userId?.firstName
+     
+ 
+
 
   const handleChange = (event) => {
     setFilter(event.target.value);
@@ -250,63 +211,55 @@ const ExploreNFTSingle = (props) => {
   const classes = useStyle();
 
 
-
   return (
     <>
       <Box className={classes.wrap7}>
-        
-          <Grid item lg={6}>
-            {/* <ExploreNFTHeading/> */}
-          </Grid>
 
-          <Box>
-            {filter === 0 && (
-              <Grid container justifyContent="center">
-                {dataEthereum?.pages[0] &&
-                  dataEthereum?.pages.map((page, i) =>
-                    page?.responseResult?.map((nfts, index) => {
-                      return (
-                        <>
-                          <Grid item key={index} lg={4} md={4} sm={6}>
-                            <NftBox data={nfts} />
-                          </Grid>
-                        </>
-                      );
-                    })
-                  )}
-                {isFetchingEthereum && !isFetchingNextPageEthereum ? (
-                  <CircularProgress color="primary" />
-                ) : null}
-                <Box sx={{ "display": "block", "width": "100%", "textAlign": "center", marginTop: "1rem", marginBottom : '2rem' }}>
-                  {(dataEthereum?.pages[0] && hasNextPageEthereum) && (
-                    <Button
-                      variant="contained"
-                      disabled={!hasNextPageEthereum}
-                      onClick={() => fetchNextPageEthereum()}
-                       className={classes.loadmorebtn}
-                    >
-                      Load More
-                    </Button>
+        {/* <Grid item lg={6}>
+          <ExploreNFTHeading/>
+        </Grid> */}
 
-                  )}
-                </Box>
-              </Grid>
-            )}
+        <Box>
+          {filter === 0 && (
+            <Grid container justifyContent="center">
+              {dataEthereum?.pages[0] &&
+                dataEthereum?.pages.map((page, i) =>
+                  page?.responseResult?.map((nfts, index) => {
+                    return (
+                      <>
+                        <Grid item key={index} lg={4} md={4} sm={6}>
+                          <NftBox styles={{ curser: "pointer" }} data={nfts} />
+                        </Grid>
+                      </>
+                    );
+                  })
+                )}
+              {isFetchingEthereum && !isFetchingNextPageEthereum ? (
+                <Typography> <Loader /></Typography>
+              ) : null}
+              <Box sx={{ "display": "block", "width": "100%", "textAlign": "center", marginTop: "1rem", marginBottom: '2rem' }}>
+                {(dataEthereum?.pages[0] && hasNextPageEthereum) && (
+                  <Button
+                    variant="contained"
+                    disabled={!hasNextPageEthereum}
+                    onClick={() => fetchNextPageEthereum()}
+                    className={classes.loadmorebtn}
+                  >
+                    Load More
+                  </Button>
 
-          </Box>
-
-
-          {!dataEthereum?.pages[0] && show && (
-
-            <Grid container md={12} justifyContent="center" className={classes.bin1}>
-              <Typography variant="h5">No NFTs Added Yet</Typography>
+                )}
+              </Box>
             </Grid>
-
           )}
 
+        </Box>
+        {!dataEthereum?.pages[0] && show && (
+          <Grid container md={12} justifyContent="center" className={classes.bin1}>
+            <Typography variant="h5">No NFTs Added Yet</Typography>
+          </Grid>
 
-
- 
+        )}
 
       </Box>
     </>

@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, List, MenuItem, Select, Typography, } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer2 from "../../components/Footer/Footer2";
 import Header from "../../components/Header/Header";
 import { makeStyles } from "@mui/styles";
@@ -30,6 +30,12 @@ import swaparrow from '../../../src/pages/images/swaparrow.svg'
 import ellipsenft from '../../../src/pages/images/ellipsenft.svg'
 import { Link } from "react-router-dom";
 import NftBox from "../Explore/NftBox";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getNftByNftCollectionId } from "../../api/ApiCall/nftCollection/getNftByNftCollectionId"
+import { getAllNftCollection } from "../../api/ApiCall/nftCollection/getAllNftCollection";
+import Loader from "../Loader/Loader"
+
 
 
 
@@ -80,10 +86,10 @@ const useStyle = makeStyles({
         "& : hover": {
             color: 'FF5F29',
         },
-        '@media(max-width : 600px)':{
-            marginLeft : '0px',
-            marginTop : '15px !important',
-            display : 'block'
+        '@media(max-width : 600px)': {
+            marginLeft: '0px',
+            marginTop: '15px !important',
+            display: 'block'
         }
     },
     salebtn: {
@@ -335,8 +341,11 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
 
-const NFTInfo = () => {
+const NFTDetails = () => {
     const classes = useStyle();
+    const { id: nftDetails } = useParams();
+    const [fourNftdata, setFourNftData] = useState([])
+
 
     const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
     const NOW_IN_MS = new Date().getTime();
@@ -355,6 +364,43 @@ const NFTInfo = () => {
     const handleChangeDropdown2 = (event) => {
         setDropdown2(event.target.value);
     };
+
+
+    const { data } = useQuery(["getNftByNftCollectionId", nftDetails],
+        () => getNftByNftCollectionId(nftDetails), {
+        onSuccess: (data) => {
+            // console.log(data?.responseResult.likes)
+
+        }
+    })
+
+
+    const { data: fourNftData } =
+        useQuery(
+            ["getAllNftCollection"],
+            getAllNftCollection,
+            {
+                onSuccess: (fourNftData) => {
+                    // setFourNftData(fourNftData?.responseResult?.slice(-4))
+                    let randomfourNft = [];
+                    if (fourNftData?.responseResult?.length) {
+                        for (let i = fourNftData?.responseResult?.length; i >= 0; i--) {
+                            var randomnft = Math.floor(Math.random() * i);
+                            randomfourNft.push(fourNftData?.responseResult[randomnft]);
+                            if (i == fourNftData?.responseResult?.length - 3) break;
+                        }
+                    }
+                    setFourNftData(randomfourNft)
+                }
+            }
+        );
+
+
+
+
+
+
+
     return (
         <>
             <Container>
@@ -363,10 +409,10 @@ const NFTInfo = () => {
                     <Grid container spacing={2}>
                         <Grid item lg={6} md={12} sm={12} xs={12}>
                             <Box className={classes.nftinfobx}>
-                                <Typography component="img" src={nftimg} width="100%"></Typography>
+                                <Typography component="img" src={data?.responseResult?.metadata?.image ? `${data?.responseResult?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/")}` : ""} width="100%"></Typography>
                                 <Box
                                     sx={{
-                                        display: "flex",
+                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "space-between",
                                         padding: "10px"
@@ -416,19 +462,21 @@ const NFTInfo = () => {
                         <Grid item lg={6} md={12} sm={12} xs={12}>
                             <Box className={classes.nftrbox}>
                                 <Box>
-                                    <Typography variant="h6" color="#FF5F29">Lorem ipsum Club of Dot matrix</Typography>
-                                    <Typography variant="h4" mt={1} fontWeight={700} color="#7C7C7C">Lorem ipsum club of Dot Matrix</Typography>
-                                    <Typography variant="h4" mt={1} fontWeight={700} color="#ADADAD">#875</Typography>
+                                    {/* <Typography variant="h6" color="#FF5F29">Lorem ipsum Club of Dot matrix</Typography> */}
+                                    <Typography variant="h6" color="#FF5F29">{data?.responseResult ? data?.responseResult?.lazyName : "lazyname"}</Typography>
+                                    {/* <Typography variant="h4" mt={1} fontWeight={700} color="#7C7C7C">Lorem ipsum club of Dot Matrix</Typography> */}
+                                    <Typography variant="h4" mt={1} fontWeight={700} color="#7C7C7C">{data?.responseResult?.metadata?.description}</Typography>
+                                    <Typography variant="h4" mt={1} fontWeight={700} color="#ADADAD">{data?.responseResult ? data?.responseResult?.metadata?.name : "name"}</Typography>
                                 </Box>
                                 <Box className={classes.owned}>
                                     <Box>
                                         <Typography color="#7C7C7C">Owned by
-                                            <Typography component="span" color="#FF5F29" ml={1}>5879C</Typography>
+                                            <Typography component="span" color="#FF5F29" ml={1}>{data?.responseResult?.tokenOwner.substring(0, 6) + "..." + (data?.responseResult?.tokenOwner.length - 6)}</Typography>
                                         </Typography>
                                     </Box>
                                     <Box sx={{ display: 'flex', marginLeft: '30px' }}>
                                         <Typography component="img" src={nfteye}></Typography>
-                                        <Typography component="span" color="#7C7C7C" ml={1}>8000 Views</Typography>
+                                        <Typography component="span" color="#7C7C7C" ml={1}>{data?.responseResult?.viewsCount} Views</Typography>
                                     </Box>
                                 </Box>
                                 <Box>
@@ -476,7 +524,7 @@ const NFTInfo = () => {
                                         }
                                     }}>
                                         <Typography color="#AAAAAA" fontWeight={500}>By 5879C
-                                            <Typography color="#AAAAAA" fontWeight={500}>Exclusive Ape Billionaire Club</Typography></Typography>
+                                            <Typography color="#AAAAAA" fontWeight={500}>{data?.responseResult ? data?.responseResult?.lazyDescription : "lazydesciption"}</Typography></Typography>
                                     </Box>
                                     <Box className={classes.flex3}>
                                         <Box className={classes.flex}>
@@ -488,75 +536,26 @@ const NFTInfo = () => {
                                         </Box>
                                     </Box>
                                     <List className={classes.pboxwrp}>
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
+                                        {data?.responseResult?.metadata?.attributes.map((v) => {
+                                            return (
+                                                <Box className={classes.rbx}>
+                                                    <Typography mt={1} color="#7A7A7A">{v.trait_type}</Typography>
+                                                    <Box className={classes.propertiesbox}>
+                                                        <Typography color="#F9A98D" fontWeight={500}>{v.value}</Typography>
+                                                        <Typography color="#A9A9A9">6% have the traite</Typography>
+                                                    </Box>
+                                                </Box>
+                                            )
+                                        })}
 
-                                        <Box className={classes.rbx}>
+                                        {/* <Box className={classes.rbx}>
                                             <Typography mt={1} color="#7A7A7A">Background</Typography>
                                             <Box className={classes.propertiesbox}>
                                                 <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
                                                 <Typography color="#A9A9A9">6% have the traite</Typography>
                                             </Box>
-                                        </Box>
+                                        </Box>*/}
 
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
-
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
-
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
-
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
-
-                                        <Box className={classes.rbx}>
-                                            <Typography mt={1} color="#7A7A7A">Background</Typography>
-                                            <Box className={classes.propertiesbox}>
-                                                <Typography color="#F9A98D" fontWeight={500}>Red</Typography>
-                                                <Typography color="#A9A9A9">6% have the traite</Typography>
-                                            </Box>
-                                        </Box>
                                     </List>
                                     <Box className={classes.flex3}>
                                         <Box className={classes.flex6}>
@@ -591,11 +590,11 @@ const NFTInfo = () => {
                                             <Typography component="li" color="#AAAAAA">Metadata</Typography>
                                             <Typography component="li" color="#AAAAAA">Creator Earnings</Typography>
                                         </Box>
-                                        <Box p={0} mt={2} sx={{ marginLeft: '60px', '@media(max-width : 900px)': { marginLeft: '0px','@media(max-width : 600px)': { textAlign: 'center', } } }} component="ul">
-                                            <Typography component="li" color="#AAAAAA">Contract Address</Typography>
-                                            <Typography component="li" color="#AAAAAA">Token ID</Typography>
+                                        <Box p={0} mt={2} sx={{ marginLeft: '60px', '@media(max-width : 900px)': { marginLeft: '0px', '@media(max-width : 600px)': { textAlign: 'center', } } }} component="ul">
+                                            <Typography component="li" color="#AAAAAA">{data?.responseResult?.tokenAddress.substring(0, 6) + "..." + (data?.responseResult?.tokenAddress.length - 6)}</Typography>
+                                            <Typography component="li" color="#AAAAAA">{data?.responseResult?.tokenId}</Typography>
                                             <Typography component="li" color="#AAAAAA">Token Standard</Typography>
-                                            <Typography component="li" color="#AAAAAA">Blockchain</Typography>
+                                            <Typography component="li" color="#AAAAAA">{data?.responseResult?.chainName}</Typography>
                                             <Typography component="li" color="#AAAAAA">Metadata</Typography>
                                             <Typography component="li" color="#AAAAAA">Creator Earnings</Typography>
                                         </Box>
@@ -696,7 +695,7 @@ const NFTInfo = () => {
                                     <Box sx={{ display: 'flex', alignItems: 'center', paddingLeft: '20px', '@media(max-width : 600px)': { display: 'inherit', padding: '0px' } }}>
                                         <Box>
                                             <FormControl sx={{ minWidth: 120, '@media(max-width : 600px)': { width: '100%' } }} size="small">
-                                                <InputLabel id="demo-select-small" sx={{'@media(max-width : 600px)':{lineHeight : '2.4375em !important'}}}>Filter</InputLabel>
+                                                <InputLabel id="demo-select-small" sx={{ '@media(max-width : 600px)': { lineHeight: '2.4375em !important' } }}>Filter</InputLabel>
                                                 <Select
                                                     sx={{
                                                         width: '100%',
@@ -743,15 +742,14 @@ const NFTInfo = () => {
                                         </Box>
                                     </Box>
                                     <Box mt={2}>
-                                        <TableLeft2 />
+                                        <TableLeft2 Address={data?.responseResult?.tokenOwner} />
                                     </Box>
 
 
                                     <Box sx={{ marginTop: '30px' }}>
-                                        <Grid container spacing={2}>
-                                            {
-                                                NftBoxs.map((e, id) => {
-                                                    const { Image, } = e
+                                        <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+                                            {fourNftdata?.length > 0 ?
+                                                fourNftdata.map((v, id) => {
                                                     return (
                                                         <Grid item lg={3} md={6} sm={6} xs={12}>
                                                             <Box className={classes.nftinfobx2}>
@@ -759,8 +757,9 @@ const NFTInfo = () => {
                                                                     <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>
                                                                         <Box><Typography component="img" className={classes.ellipsenft} src={ellipsenft}></Typography></Box>
                                                                         <Box sx={{ alignSelf: 'center', ml: '10px' }}>
-                                                                            <Typography variant="h6" className={classes.hding6}>Lorem Ipsum</Typography>
-                                                                            <Typography className={classes.para}>@loremipsum</Typography>
+                                                                            <Typography variant="h6" className={classes.hding6}> {v?.lazyName ? v?.lazyName : "Lorem Ipsum"}</Typography>
+
+                                                                            <Typography className={classes.para}>{v?.lazyDescription ? v?.lazyDescription : "@loremipsum"}</Typography>
                                                                         </Box>
                                                                     </Box>
                                                                     <Box sx={{ marginLeft: '10px' }}>
@@ -771,7 +770,7 @@ const NFTInfo = () => {
                                                                         />
                                                                     </Box>
                                                                 </Box>
-                                                                <Typography component="img" src={Image} width="100%"></Typography>
+                                                                <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : <Loader />} width="100%"></Typography>
                                                                 <Box
                                                                     sx={{
                                                                         display: "flex",
@@ -795,9 +794,8 @@ const NFTInfo = () => {
                                                                                         }
                                                                                     />
                                                                                 </Badge>
-                                                                                <Typography style={{ color: '#606060' }}>1.2k</Typography>
+                                                                                <Typography style={{ color: '#606060' }}>{v.likes?.length}</Typography>
                                                                             </Box>
-
                                                                             <Box sx={{ display: 'flex', marginLeft: '10px' }}>
                                                                                 <Box sx={{ alignSelf: 'center' }}>
                                                                                     <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
@@ -817,6 +815,10 @@ const NFTInfo = () => {
                                                         </Grid>
                                                     )
                                                 })
+                                                :
+                                                <Typography>
+                                                    <Loader />
+                                                </Typography>
                                             }
 
                                         </Grid>
@@ -835,4 +837,4 @@ const NFTInfo = () => {
     )
 }
 
-export default NFTInfo
+export default NFTDetails

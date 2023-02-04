@@ -298,7 +298,7 @@ const Wallet = () => {
             <Grid item md={12} sx={{ marginTop: 5 }}>
               <Box className={classes.bag5}>
                 <Typography component={"div"} variant="h6">
-                  No Wallets Added Yet{" "}
+                  No Wallets Added Yet{" "} 
                 </Typography>
               </Box>
             </Grid>

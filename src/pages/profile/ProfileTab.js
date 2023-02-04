@@ -16,6 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import NftByUserName from "./NftByUserName";
 
 const useStyle = makeStyles({
     listpadding: {
@@ -128,8 +129,11 @@ const top100Films = [
 ];
 
 
-export default function UnstyledTabsIntroduction() {
+export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, addFriends}) {
     const classes = useStyle();
+    let dataByUserName = DataByUserName;
+    let LoadingDatafetch = LoadingData;
+   
 
     return (
         <TabsUnstyled defaultValue={0}>
@@ -201,7 +205,7 @@ export default function UnstyledTabsIntroduction() {
                     </ListItem>
 
                     <ListItem className={classes.listpadding}>
-                        <Link className={classes.roundbutn} to="#">
+                        <Link className={classes.roundbutn} to="#" onClick={addFriends}>
                             <Typography component="img" src={userplus}></Typography>
                         </Link>
                     </ListItem>
@@ -215,7 +219,8 @@ export default function UnstyledTabsIntroduction() {
             </Box>
 
             <TabPanel value={0}>
-                <ExploreNFT />
+                {/* <ExploreNFT /> */}
+                <NftByUserName AllNftDataByUserName={dataByUserName} Datafetch={LoadingDatafetch}/>
             </TabPanel>
             <TabPanel value={1}>Created page</TabPanel>
             <TabPanel value={2}>Favorited page</TabPanel>

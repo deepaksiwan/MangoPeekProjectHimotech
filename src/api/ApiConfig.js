@@ -1,19 +1,34 @@
-// const url = "http://localhost:5001";
-const url ="https://d2ugm2w8bdhvj3.cloudfront.net"
+//const url = "http://localhost:8900";
+const url = "https://d38fct4fjh0hub.cloudfront.net"
+//const url1 ="https://d2ugm2w8bdhvj3.cloudfront.net"
 
 
 const ApiConfigs = {
+  //chatting start ......
+  getConversation: `${url}/api/v1/chat/getConversation`,
+  getMessage: `${url}/api/v1/chat/getMessage`,
+  AddMessage: `${url}/api/v1/chat/AddMessage`,
+  Getfriends: `${url}/api/v1/chat/getFriends`,
+  getUser: `${url}/api/v1/chat/getUser`,
+  AddComment: `${url}/api/v1/chat/Comments`,
+  getComment: `${url}/api/v1/chat/getcomments`,
+  AddConversation: `${url}/api/v1/chat/AddConversation`,
+  follow: `${url}/api/v1/chat/follow`,
+  unFollow: `${url}/api/v1/chat/unFollow`,
+
+ // ......chating end
+
   login: `${url}/api/v1/profile/login`,
   signup: `${url}/api/v1/profile/signup`,
-  forget:`${url}/api/v1/profile/forget`,
-  reset:`${url}/api/v1/profile/reset`,
+  // forget:`${url}/api/v1/profile/forget`,
+  // reset:`${url}/api/v1/profile/reset`,
   viewProfile: `${url}/api/v1/profile/viewProfile`,
   getProfileByUserName:`${url}/api/v1/profile/getProfileByUserName`,
   editProfile: `${url}/api/v1/profile/editProfile`,
   viewWallet: `${url}/api/v1/userWallet/view`,
   addWallet:`${url}/api/v1/userWallet/add`,
   removeWallet:`${url}/api/v1/userWallet/remove/`,
-  updateProfilePic:`${url}/api/v1/profile/updateProfilePic`,
+  // updateProfilePic:`${url}/api/v1/profile/updateProfilePic`,
   addorUpdateNftCollection:`${url}/api/v1/nftCollection/addorUpdate`,
   updateNftNameOrDescription:`${url}/api/v1/nftCollection/updateNftNameOrDescription`,
   getAllNftCollection:`${url}/api/v1/nftCollection/getAllNft`,
@@ -22,14 +37,14 @@ const ApiConfigs = {
   getNftCollectionByChainNameAndUserName:`${url}/api/v1/nftCollection/getNftCollectionByChainNameAndUserName`,
   getNftByNftCollectionId:`${url}/api/v1/nftCollection/getNftByNftCollectionId`,
   getAllNftByUserName:`${url}/api/v1/nftCollection/getAllNftByUserName`,
-  hideToggleNft:`${url}/api/v1/nftCollection/hideToggleNft`,
-  getAllHideNft:`${url}/api/v1/nftCollection/getAllHideNft`,
-  pinnedToggleNft:`${url}/api/v1/nftCollection/pinnedToggleNft`,
-  getAllPinnedNftByUserName:`${url}/api/v1/nftCollection/getAllPinnedNftByUserName`,
+  // hideToggleNft:`${url}/api/v1/nftCollection/hideToggleNft`,
+  // getAllHideNft:`${url}/api/v1/nftCollection/getAllHideNft`,
+  // pinnedToggleNft:`${url}/api/v1/nftCollection/pinnedToggleNft`,
+  // getAllPinnedNftByUserName:`${url}/api/v1/nftCollection/getAllPinnedNftByUserName`,
   toggleLike:`${url}/api/v1/nftCollection/toggleLike`,
-  mostLikeNft:`${url}/api/v1/nftCollection/mostLikeNft`,
-  mostViewNft:`${url}/api/v1/nftCollection/mostViewNft`,
-  recentlyListedNft:`${url}/api/v1/nftCollection/recentlyListedNft`,
+  //mostLikeNft:`${url}/api/v1/nftCollection/mostLikeNft`,
+  // mostViewNft:`${url}/api/v1/nftCollection/mostViewNft`,
+  //recentlyListedNft:`${url}/api/v1/nftCollection/recentlyListedNft`,
   // getUserNFT:`https://deep-index.moralis.io/api/v2/`
 };
 

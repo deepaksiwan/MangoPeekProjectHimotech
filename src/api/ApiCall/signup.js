@@ -1,20 +1,25 @@
 import axios from "axios";
 import ApiConfigs from "../ApiConfig";
 
-export const signup = async ({ email,userName, password }) => {
+export const signup = async ({ firstName,lastName,userName,email,password, conformPassword }) => {
     try {
+      console.log(firstName);
       const { data } = await axios({
         method:'POST',
         url:ApiConfigs.signup, 
         data:{ 
-        email:email, 
+        firstName:firstName,  
+        lastName:lastName,
         userName:userName,
-        password:password
+        email:email, 
+        password:password,
+        conformPassword
         }
     });
-    // console.log(data);
+     
     return data;
     } catch (error) {
+      console.log(error)
     }
   };
 

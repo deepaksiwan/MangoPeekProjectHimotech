@@ -74,7 +74,7 @@ const useStyle = makeStyles({
 })
 
 
-const Withoutmenucomp = () => {
+const Withoutmenucomp = ({messagecount}) => {
     const classes = useStyle();
 
 
@@ -91,7 +91,7 @@ const Withoutmenucomp = () => {
                 </ListItem>
 
                 <ListItem className={classes.listpadding}>
-                    <Badge className={classes.badge} badgeContent={8} sx={{
+                    <Badge className={classes.badge} badgeContent={messagecount} sx={{
                         "& .MuiBadge-badge": {
                             backgroundColor: '#FFCC00', color: '#fff',
                             marginRight: '7px',

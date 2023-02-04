@@ -7,11 +7,13 @@ export const login = async ({ email, password }) => {
         method:'POST',
         url:ApiConfigs.login, 
         data:{ 
-        email:email, 
+        email:email,
         password:password
          }
     });
+    console.log("datatoekn", data)
     return data;
+    
     } catch (error) {
     
     }

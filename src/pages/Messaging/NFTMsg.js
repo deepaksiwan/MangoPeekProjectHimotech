@@ -1,5 +1,5 @@
-import { Badge, Box, Button, Checkbox, Grid, Typography, } from "@mui/material";
-import React from "react";
+import { Badge, Box, Button, Checkbox, Grid, Typography } from "@mui/material";
+import React, { useState,useContext } from "react";
 import { makeStyles } from "@mui/styles";
 import arrowright from '../../../src/pages/images/arrowright.svg'
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
@@ -8,40 +8,44 @@ import nftimg from '../../../src/pages/images/nftimg.svg'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ellipsenft from '../../../src/pages/images/ellipsenft.svg'
+import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftByUserName"
+import { useQuery } from "react-query";
+import Loader from "../Loader/Loader"
+import { UserContext } from "../../context/User/UserContext";
 
 
-const Nftdat = [
-    {
-        id: 1,
-        Image: nftimg,
-        title: "Lorem Ipsum"
-    },
-    {
-        id: 2,
-        Image: nftimg,
-        title: "Lorem Ipsum"
-    },
-    {
-        id: 3,
-        Image: nftimg,
-        title: "Lorem Ipsum"
-    },
-    {
-        id: 4,
-        Image: nftimg,
-        title: "Lorem Ipsum"
-    },
-    {
-        id: 5,
-        Image: nftimg,
-        title: "Lorem Ipsum"
-    },
-    {
-        id: 6,
-        Image: nftimg,
-        title: "Lorem Ipsum"
-    },
-]
+// const Nftdat = [
+//     {
+//         id: 1,
+//         Image: nftimg,
+//         title: "Lorem Ipsum"
+//     },
+//     {
+//         id: 2,
+//         Image: nftimg,
+//         title: "Lorem Ipsum"
+//     },
+//     {
+//         id: 3,
+//         Image: nftimg,
+//         title: "Lorem Ipsum"
+//     },
+//     {
+//         id: 4,
+//         Image: nftimg,
+//         title: "Lorem Ipsum"
+//     },
+//     {
+//         id: 5,
+//         Image: nftimg,
+//         title: "Lorem Ipsum"
+//     },
+//     {
+//         id: 6,
+//         Image: nftimg,
+//         title: "Lorem Ipsum"
+//     },
+// ]
 
 
 const useStyle = makeStyles({
@@ -203,6 +207,10 @@ const useStyle = makeStyles({
     noactive: {
         textAlign: 'center',
         paddingTop: '185px'
+    },
+    NoNftAdded: {
+        marginTop: "20rem !important",
+        fontSize: "1.5rem !important"
     }
 
 })
@@ -214,24 +222,33 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const NFTMsg = () => {
     const classes = useStyle();
+   
+
+    const [{userData},] = useContext(UserContext);
+
+    const { data: dataByUserName, isLoading: loadingData } = useQuery(
+        ["getAllNftByUserName", userData?.userName],
+        () => getAllNftByUserName(userData?.userName), {
+        onSuccess: (data) => {
+            //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
+        }
+    },
+    )
 
     return (
         <>
             <Box>
-
-                <Grid container spacing={2}>
-                    {Nftdat.map((e, id) => {
-                        const { title, Image } = e
+                <Grid container spacing={2} justifyContent="center">
+                    {loadingData == false ? dataByUserName?.responseResult?.map((v, id) => {
                         return (
-
                             <Grid item lg={6} md={6} xs={12} key={id}>
                                 <Box className={classes.nftinfobx2}>
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>
                                             <Box><Typography component="img" className={classes.ellipsenft} src={ellipsenft}></Typography></Box>
                                             <Box sx={{ alignSelf: 'center', ml: '10px' }}>
-                                                <Typography variant="h6" className={classes.hding6}>{title}</Typography>
-                                                <Typography className={classes.para}>@loremipsum</Typography>
+                                                <Typography variant="h6" className={classes.hding6}>{v?.metadata?.name}</Typography>
+                                                <Typography className={classes.para}>{v?.metadata?.description}</Typography>
                                             </Box>
                                         </Box>
                                         <Box sx={{ marginLeft: '10px' }}>
@@ -242,7 +259,7 @@ const NFTMsg = () => {
                                             />
                                         </Box>
                                     </Box>
-                                    <Typography component="img" src={Image} width="100%"></Typography>
+                                    <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} width="100%"></Typography>
                                     <Box
                                         sx={{
                                             display: "flex",
@@ -266,7 +283,7 @@ const NFTMsg = () => {
                                                             }
                                                         />
                                                     </Badge>
-                                                    <Typography style={{ color: '#606060' }}>1.2k</Typography>
+                                                    <Typography style={{ color: '#606060' }}>{v?.likes?.length}</Typography>
                                                 </Box>
 
                                                 <Box sx={{ display: 'flex', marginLeft: '10px' }}>
@@ -286,9 +303,18 @@ const NFTMsg = () => {
                                     </Box>
                                 </Box>
                             </Grid>
-                        )
-                    })}
 
+                        )
+                    })
+                        : <Typography className={classes.NoNftAdded}>
+                            <Loader />
+                        </Typography>
+
+                    }
+                    {dataByUserName?.responseResult?.length == 0 || dataByUserName == undefined &&
+                        <Typography className={classes.NoNftAdded}>
+                            No NFTs Added Yet
+                        </Typography>}
                 </Grid>
             </Box>
 

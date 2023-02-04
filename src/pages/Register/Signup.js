@@ -114,19 +114,23 @@ const useStyle = makeStyles((theme) => ({
 }));
 const Signup = () => {
   const classes = useStyle();
-  const [, dispatch] = useContext(UserContext);
+  const [ dispatch] = useContext(UserContext);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword2, setShowPassword2] = React.useState(false);
+  
   const navigate = useNavigate();
-  const { isError, error, isLoading, mutateAsync, isSuccess } = useMutation(
+
+  const { mutateAsync } = useMutation(
     "signup",
     signup,
     {
       onSuccess: (data) => {
         try {
           if (data.responseCode === 200) {
-            navigate("/");
+           // navigate("/");
             dispatch({ type: actionTypes.SET_TOKEN, value: data.token });
             localStorage.setItem("token", data.token);
-            toast.success(JSON.stringify("You are signup Successfully"));
+            toast.success(JSON.stringify(data.responseMessage));
             dispatch({ type: actionTypes.SET_USER, value: data.responseResult });
           } else {
             toast.error(JSON.stringify(data.responseMessage));
@@ -135,19 +139,34 @@ const Signup = () => {
           toast.error(JSON.stringify(error));
         }
       },
-      onError: (error, data) => {
+      onError: (error, data) => {Followers
+        console.log("error")
         toast.error(JSON.stringify(data.responseMessage));
       },
     }
   );
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+
+
+  const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
+  const handleMouseDownPassword2 = (event) => {
+    event.preventDefault();
+  };
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       userName: "",
       email: "",
-      newPassword: "",
-      reEnterPassword: "",
+      password: "",
+      conformPassword: "",
     },
     validationSchema: Yup.object({
 
@@ -174,60 +193,43 @@ const Signup = () => {
         .required("Enter valid email address"),
 
 
-      newPassword: Yup.string()
+      password: Yup.string()
         .required('Enter valid password')
         .min(8, 'Password should be 8 to 26 digit')
         .max(26, 'Password should be 8 to 26 digit'),
 
 
 
-      reEnterPassword: Yup
+      conformPassword: Yup
         .string()
-        .oneOf([Yup.ref("newPassword")], "Password not match")
+        .oneOf([Yup.ref("password")], "Password not match")
         .required("Enter same password")
 
 
     }),
 
-
-
-
-
     onSubmit: async (values) => {
+      // console.log("deepak")
       try {
+        // console.log(values)
         await mutateAsync({
           firstName: values.firstName,
           lastName: values.lastName,
           userName: values.userName,
           email: values.email,
-          newPassword: values.newPassword,
-          reEnterPassword: values.reEnterPassword
-
+          password: values.password,
+          conformPassword: values.conformPassword
         });
       } catch (error) {
         console.log(error);
       }
     },
+    
   });
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-
-  const [showPassword2, setShowPassword2] = React.useState(false);
-
-  const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
-
-  const handleMouseDownPassword2 = (event) => {
-    event.preventDefault();
-  };
-
-
+  const RedirectLogin = ()=>{
+    navigate("/login")
+ }
 
   return (
     <Box>
@@ -246,7 +248,7 @@ const Signup = () => {
             </Grid>
             <Grid item lg={7} md={7} sm={12} xs={12}>
               <Box className={classes.formbox}>
-                <FormControl fullWidth onSubmit={formik.handleSubmit}>
+                <form  onSubmit={formik.handleSubmit} fullWidth >
 
 
                   <Box className={classes.bothinput}>
@@ -264,7 +266,7 @@ const Signup = () => {
                           disableUnderline: true,
                         }}
                       />
-                      <Typography className={classes.error}> {formik.errors.firstName}</Typography>
+                      <Typography className={classes.error}> {formik.touched.firstName && formik.errors.firstName}</Typography>
                     </Box>
                     <Box className={classes.inpwidth}>
                       <TextField
@@ -280,11 +282,9 @@ const Signup = () => {
                           disableUnderline: true,
                         }}
                       />
-                      <Typography className={classes.error}> {formik.errors.lastName}</Typography>
+                      <Typography className={classes.error}> { formik.touched.lastName && formik.errors.lastName}</Typography>
                     </Box>
                   </Box>
-
-
 
                   <TextField
                     className={classes.input}
@@ -299,9 +299,7 @@ const Signup = () => {
                       disableUnderline: true,
                     }}
                   />
-                  <Typography className={classes.error}> {formik.errors.userName}</Typography>
-
-
+                  <Typography className={classes.error}> {  formik.touched.userName &&formik.errors.userName}</Typography>
                   <TextField
                     className={classes.input}
                     variant="standard"
@@ -315,22 +313,18 @@ const Signup = () => {
                       disableUnderline: true,
                     }}
                   />
-                  <Typography className={classes.error}> {formik.errors.email}</Typography>
-
-
-
-
+                  <Typography className={classes.error}> { formik.touched.email && formik.errors.email}</Typography>
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}>
                     <OutlinedInput
                       className={classes.input2}
                       sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
                       variant="standard"
-                      name="newPassword"
-                      value={formik.values.newPassword}
+                      name="password"
+                      value={formik.values.password}
                       onChange={formik.handleChange}
-                      placeholder="NewPassword"
-                      id="newPassword"
+                      placeholder="password"
+                      id="password"
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={
                         <InputAdornment position="end">
@@ -347,7 +341,7 @@ const Signup = () => {
                     // label="Password"
                     />
                   </FormControl>
-                  <Typography className={classes.error}> {formik.errors.newPassword}</Typography>
+                  <Typography className={classes.error}> {formik.touched.password &&  formik.errors.password}</Typography>
 
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}>
@@ -355,11 +349,11 @@ const Signup = () => {
                       className={classes.input2}
                       sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
                       variant="standard"
-                      name="reEnterPassword"
-                      value={formik.values.reEnterPassword}
+                      name="conformPassword"
+                      value={formik.values.conformPassword}
                       onChange={formik.handleChange}
-                      placeholder="Re-EnterPassword"
-                      id="reEnterPassword"
+                      placeholder="confirmPassword"
+                      id="conformPassword"
                       type={showPassword2 ? 'text' : 'password'}
                       endAdornment={
                         <InputAdornment position="end">
@@ -376,16 +370,14 @@ const Signup = () => {
                     // label="Password"
                     />
                   </FormControl>
-
-                  <Typography className={classes.error}> {formik.errors.reEnterPassword}</Typography>
+                  <Typography className={classes.error}> {formik.touched.conformPassword && formik.errors.conformPassword}</Typography>
 
                   <Box height={10} />
                   <Box className={classes.btnwrp}>
-                    <Button className={classes.signupbtn}>Register</Button>
-                    <Button className={classes.loginbtn} href="/login">Login</Button>
+                    <Button className={classes.signupbtn} type="submit">Register</Button>
+                    <Button className={classes.loginbtn} onClick={RedirectLogin}>Login</Button>
                   </Box>
-
-                </FormControl>
+                </form>
               </Box>
             </Grid>
           </Grid>

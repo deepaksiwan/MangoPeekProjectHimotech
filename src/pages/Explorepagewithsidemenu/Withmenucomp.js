@@ -2,7 +2,6 @@ import { Badge, Box, Divider, List, ListItem, Typography, } from "@mui/material"
 import React from "react";
 
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
 import message from '../../../src/pages/images/message.svg'
 import notification from '../../../src/pages/images/notification.svg'
 import add from '../../../src/pages/images/add.svg'
@@ -12,6 +11,8 @@ import logoutimg from '../../../src/pages/images/logoutimg.svg'
 import walletimg from '../../../src/pages/images/walletimg.svg'
 import macmango from '../../../src/pages/images/macmango.svg'
 import menuarrow from '../../../src/pages/images/menuarrow.svg'
+import { Link, useNavigate } from "react-router-dom";
+import { actionTypes } from "../../context/User/UserReducer";
 
 const useStyle = makeStyles({
     namewithadd: {
@@ -121,7 +122,7 @@ const useStyle = makeStyles({
     menuarrowbtn: {
         position: 'fixed',
         top: '20rem',
-        left: '25.3rem',
+        left: '37rem !important',
         '@media(max-width : 1200px)': {
             left: '15.3rem',
         }
@@ -129,16 +130,28 @@ const useStyle = makeStyles({
     ption: {
         position: 'relative'
     }
+    ,
+    username:{
+        textAlign: "center"
+    }
 
 })
 
 
-const Withmenucomp = () => {
-
+const Withmenucomp = ({userProfile,  Dispatch, NftDataByUserName}) => {
     const classes = useStyle();
+    const navigate = useNavigate();
 
+    const logout = (e) => {
+        e.preventDefault();
+        Dispatch({ type: actionTypes.SET_TOKEN, value: null });
+        localStorage.clear();
+        navigate("/login")
+        
+      };
+      console.log("userProfile", userProfile)
 
-
+    
     return (
         <>
             <Box className={classes.ption}>
@@ -147,9 +160,9 @@ const Withmenucomp = () => {
                         <ListItem className={classes.listpadding}>
                             <Box sx={{ marginLeft: '5rem' }}>
                                 <Box className={classes.macmango}>
-                                    <Typography component="img" src={macmango} width="100%"></Typography>
+                                    <Typography sx={{borderRadius: "50%"}} component="img" src={ userProfile?userProfile?.profilePic:macmango} width="100%"></Typography>
                                 </Box>
-                                <Typography color="#808080" fontWeight={700} >Mac iam</Typography>
+                                 <Typography className={classes.username} color="#808080" fontWeight={700} >@{userProfile?userProfile?.firstName:"Hello"}</Typography>
                             </Box>
                         </ListItem>
 
@@ -158,30 +171,27 @@ const Withmenucomp = () => {
                                 <Box sx={{ width: '20px' }}>
                                     <Typography component="img" src={walletimg} width="100%"></Typography>
                                 </Box>
-                                <Typography className={classes.address} ml={1} fontWeight={500} color="#808080">0xdsdgs5545545asfsdgg</Typography>
+                                <Typography className={classes.address} ml={1} fontWeight={500} color="#808080">{userProfile?userProfile?.userName:"dhshdsj124325342"}</Typography>
                             </Box>
                         </ListItem>
 
                         <ListItem className={classes.followers}>
 
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">237</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{NftDataByUserName?.responseResult?.length?NftDataByUserName?.responseResult?.length:"0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">NFTs</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">8.1K</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userProfile?userProfile?.followers?.length:"0"}K</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Followers</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">8.1K</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userProfile?.followings?.length?userProfile?.followings?.length:"0"}K</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Following</Typography>
                             </Box>
-
                         </ListItem>
 
                         <Divider sx={{ margin: '10px 0px' }} />
-
-
                         <ListItem className={classes.listpadding}>
                             <Badge className={classes.badge} badgeContent={8} sx={{
                                 "& .MuiBadge-badge": {
@@ -240,12 +250,13 @@ const Withmenucomp = () => {
                             </Link>
                         </ListItem>
 
-                        <ListItem className={classes.listpadding}>
-                            <Link className={classes.textbutn} to="#">
+                        <ListItem className={classes.listpadding} onClick={logout}>
+                            <Link className={classes.textbutn}>
                                 <Box className={classes.imgicon}>
                                     <Typography width={20} component="img" src={logoutimg}></Typography>
                                 </Box>
-                                Logout
+                                <Typography >Logout</Typography>
+                                
                             </Link>
                         </ListItem>
 

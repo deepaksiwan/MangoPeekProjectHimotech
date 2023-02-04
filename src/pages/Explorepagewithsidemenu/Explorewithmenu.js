@@ -1,15 +1,20 @@
 import { Box, Container, } from "@mui/material";
-import React from "react";
+import React,{useContext} from "react";
 import Header2 from "../../components/Header/Header2";
 import { makeStyles } from "@mui/styles";
-import ExploreNFT from "../../components/ExploreNFT/ExploreNFT";
+//import ExploreNFT from "../../components/ExploreNFT/ExploreNFT";
+import { UserContext } from "../../context/User/UserContext";
 import Withmenucomp from "./Withmenucomp";
+import UserTotalNftProfile from "./UserTotalNftProfile"
+import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftByUserName"
+import { useQuery } from "react-query";
 
 const useStyle = makeStyles({
 
     explorenft: {
-        marginLeft: '17rem',
-        marginTop: '1rem'
+         marginLeft: '20rem',
+        marginTop: '5rem',
+        
     },
 
     maindiv: {
@@ -23,17 +28,28 @@ const useStyle = makeStyles({
 
 const Explorepagewithsidemenu = () => {
     const classes = useStyle();
+    const [{ token, userData }, dispatch] = useContext(UserContext);
+    
+   
 
+   const { data: dataByUserName, isLoading: loadingData } = useQuery(
+      ["getAllNftByUserName", userData?.userName],
+      () => getAllNftByUserName(userData?.userName), {
+      onSuccess: (data) => {
 
+      }
+   },
+   )
 
     return (
         <>
             <Container>
                 <Header2 />
                 <Box className={classes.maindiv}>
-                    <Withmenucomp />
+                    <Withmenucomp  userProfile={userData} Dispatch={dispatch} NftDataByUserName={dataByUserName}/>
                     <Box className={classes.explorenft}>
-                        <ExploreNFT />
+                        {/* <ExploreNFT /> */}
+                        <UserTotalNftProfile  NftDataByUserName={dataByUserName} LoadingData={loadingData}/>
                     </Box>
                 </Box>
                 {/* <Footer2 /> */}

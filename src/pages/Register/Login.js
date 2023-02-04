@@ -19,7 +19,6 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Slider from "./Slider";
-import Footer from "../../components/Footer/Footer";
 import Footer2 from "../../components/Footer/Footer2";
 
 const useStyle = makeStyles((theme) => ({
@@ -107,24 +106,32 @@ const useStyle = makeStyles((theme) => ({
 const Login = () => {
   const classes = useStyle();
   const navigate = useNavigate();
-  const [, dispatch] = useContext(UserContext);
+  const [,dispatch] = useContext(UserContext);
+  
 
-  const { isError, error, isLoading, mutateAsync, isSuccess } = useMutation(
+
+  const {isError, error, isLoading, mutateAsync, isSuccess } = useMutation(
     "login",
     login,
     {
       onSuccess: (data) => {
+        
+        
+        
+      
         try {
           if (data.responseCode === 200) {
-            // console.log(data?.responseResult);
-            navigate(`/${data?.responseResult.userName}`);
-            dispatch({ type: actionTypes.SET_TOKEN, value: data.token });
-            localStorage.setItem("token", data.token);
-            dispatch({
-              type: actionTypes.SET_USER,
+            //  console.log(data?.responseResult);
+            //console.log(data?.token);
+             navigate("/not_link_wallet")
+            //navigate(`/${data?.responseResult.userName}`);
+             dispatch({ type: actionTypes?.SET_TOKEN, value: data?.token });
+              localStorage.setItem("token", data?.token);
+              dispatch({
+              type: actionTypes?.SET_USER,
               value: data.responseResult,
             });
-            toast.success(JSON.stringify("You are Login Successfully"));
+            toast.success(JSON.stringify(data.responseMessage));
           } else {
             toast.error(JSON.stringify(data.responseMessage));
           }
@@ -137,6 +144,8 @@ const Login = () => {
       },
     }
   );
+
+  
   // const {refetch}=useQuery(
   //   ["viewProfile",token],
   //   ()=>viewProfile(token),{
@@ -146,7 +155,9 @@ const Login = () => {
   //   }
   // )
   const formik = useFormik({
+    validateOnMount: true,
     initialValues: {
+    
       email: "",
       password: "",
     },
@@ -159,12 +170,11 @@ const Login = () => {
         otherwise: Yup.string()
           .required("Enter valid username / email")
           .min(4, 'Username must be at least 4 digit')
-          .max(20, 'Username must not exceed 20 digit'),
+          .max(30, 'Username must not exceed 20 digit'),
       }),
-      
+
       password: Yup.string()
         .required("Enter valid password"),
-
     }),
     onSubmit: async (values) => {
       try {
@@ -185,6 +195,12 @@ const Login = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+
+ const RedirectRegister = ()=>{
+    navigate("/register")
+ }
+
   return (
     <Box>
       <Header />
@@ -196,10 +212,12 @@ const Login = () => {
             </Grid>
             <Grid item lg={7} md={7} sm={12} xs={12}>
               <Box className={classes.formbox}>
-                <FormControl fullWidth onSubmit={formik.handleSubmit} >
+                <form onSubmit={formik.handleSubmit}>
+                  <FormControl fullWidth  >
                   <TextField
                     className={classes.input}
                     variant="standard"
+                    type="email"
                     id="email"
                     name="email"
                     placeholder="Username/Email"
@@ -211,7 +229,7 @@ const Login = () => {
                       disableUnderline: true,
                     }}
                   />
-                  <Typography className={classes.error}> {formik.errors.email}</Typography>
+                  <Typography className={classes.error}> { formik.errors.email}</Typography>
 
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}  >
@@ -251,11 +269,12 @@ const Login = () => {
                   <Typography className={classes.error}> {formik.errors.password}</Typography>
                   <Box height={10} />
                   <Box className={classes.btnwrp}>
-                    <Button className={classes.loginbtn}>Login</Button>
-                    <Button className={classes.signupbtn} href="/signup">Register</Button>
+                    <Button className={classes.loginbtn} type="submit">Login</Button>
+                    <Button className={classes.signupbtn} onClick={RedirectRegister}>Register</Button>
                   </Box>
 
                 </FormControl>
+                </form>
               </Box>
             </Grid>
           </Grid>

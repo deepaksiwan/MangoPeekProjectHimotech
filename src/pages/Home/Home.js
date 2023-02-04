@@ -5,22 +5,13 @@ import interactimg from '../../../src/pages/images/interact.gif'
 import tradeimg from '../../../src/pages/images/tradeimg.gif'
 import {
   Box,
-  Button,
   Container,
   Grid,
   Typography,
-  TextField,
-  TextareaAutosize,
+  
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import trade from '../../../src/pages/images/trade.svg'
-
-// import Button from 'react-bootstrap/Button';
-import Modal from "react-bootstrap/Modal";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import ExploreNFT from "../../components/ExploreNFT/ExploreNFT";
-import Footer from "../../components/Footer/Footer";
 import Footer2 from "../../components/Footer/Footer2";
 import ExploreNFTHeading from "../../components/ExploreNFT/ExploreNFTHeading";
 const useStyle = makeStyles((theme) => ({

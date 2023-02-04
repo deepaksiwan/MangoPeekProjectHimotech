@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@mui/styles";
-import { Box, IconButton, Input, InputAdornment, List, ListItem, Typography } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import SearchIcon from '@mui/icons-material/Search';
-import search from '../../../src/pages/images/search.svg'
-import { Link } from "react-router-dom";
-import sidemenuarrow from '../../../src/pages/images/sidemenuarrow.svg'
-import messageimg1 from '../../../src/pages/images/messageimg1.svg'
-import messageimg2 from '../../../src/pages/images/messageimg2.svg'
-import messageimg3 from '../../../src/pages/images/messageimg3.svg'
-import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
-import doublecheck1 from '../../../src/pages/images/doublecheck1.svg'
+import { Box, Typography } from "@mui/material";
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import SearchIcon from '@mui/icons-material/Search';
+// import search from '../../../src/pages/images/search.svg'
+import { Link, useRouteLoaderData } from "react-router-dom";
+// import sidemenuarrow from '../../../src/pages/images/sidemenuarrow.svg'
+// import messageimg1 from '../../../src/pages/images/messageimg1.svg'
+// import messageimg2 from '../../../src/pages/images/messageimg2.svg'
+// import messageimg3 from '../../../src/pages/images/messageimg3.svg'
+// import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
+// import doublecheck1 from '../../../src/pages/images/doublecheck1.svg'
+
 import doublecheck from '../../../src/pages/images/doublecheck.svg'
+import { UserContext } from "../../context/User/UserContext";
+import axios from "axios";
+//import { io } from "socket.io-client";
+import ApiConfigs from "../../api/ApiConfig";
+//import { getUser } from "../../../../../MongoPeekApi/mangoPeek-main/controllers/ChatController/Users";
 
 
 
@@ -61,6 +67,7 @@ const useStyle = makeStyles({
     listitem2: {
         display: 'flex !important',
         padding: '10px !important',
+        alignItems: "center",
 
         justifyContent: 'space-between !important',
         backgroundColor: '#F1F1F1',
@@ -94,6 +101,11 @@ const useStyle = makeStyles({
     msgscroll: {
         height: '63vh',
         overflowY: 'scroll'
+    },
+    imgs:{
+        borderRadius: "50%",
+        width: "3rem"
+        
     }
 
 })
@@ -174,89 +186,52 @@ const data = [
 
 
 
-const MessagingComp = () => {
+const MessagingComp = ({ Conversation, currentUser, Messages, CurrentChat }) => {
     const classes = useStyle();
+    const [user, setUser] = useState(null);
+    const [{ userData }] = useContext(UserContext);
+    
 
 
+    
+
+    const friendId = Conversation?.members?.find((m) => m !== currentUser?._id);
+    const getUser = async () => {
+        try {
+            const res = await axios(ApiConfigs?.getUser+`?userId=${friendId}`);
+            setUser(res.data);
+        } catch (err) {
+            console.log("err", err);
+        }
+    };
+
+    useEffect(() => {
+        getUser();
+    }, [Conversation, currentUser]);
+
+    //  console.log("userfriends", user)
+    //  console.log("CurrentChat", CurrentChat?.members?.find((m) => m !== currentUser?._id))
+    //  console.log("Messages", Messages?.slice(-1)[0]?.text)
 
     return (
         <>
-            <Box className={classes.messagemain}>
-                <List sx={{ p: 0 }}>
-                    <ListItem className={classes.listitem}>
-                        <Typography color="#949494" variant="h5" fontWeight={700}>Messages</Typography>
-                    </ListItem>
-
-                    <ListItem className={classes.listitem1}>
-                        <IconButton
-                            aria-label="more"
-                            id="long-button"
-                            aria-haspopup="true"
-                        >
-                            <MoreVertIcon />
-                        </IconButton>
-                        <Box className={classes.searchinpt}>
-                            <Box sx={{ alignSelf: 'center' }}>
-                                <Typography width={30} component="img" src={search}></Typography>
-                            </Box>
-                            <Box>
-                                <Input
-                                    width="120px"
-                                    type="search"
-                                    variant="contained"
-                                    margin="normal"
-
-                                    disableUnderline
-                                    InputProps={{
-                                        startAdornment: (
-
-                                            <InputAdornment position="start">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                />
-                            </Box>
+            <Link to="/messagingExpend" className={classes.listitem}>
+                <Box className={classes.listitem2}>
+                    <Box className={classes.widthleft}>
+                        <Typography className={classes.imgs} component="img" src={user?.profilePic}></Typography>
+                    </Box>
+                    <Box className={classes.widthright}>
+                        <Box>
+                            <Typography variant="h6" color="#949494">{user? user?.userName : ""}</Typography>
+                            {/* <Typography className={classes.para2} color="#949494">{CurrentChat?.members?.find((m) => m !== currentUser?._id)?Messages?.slice(-1)[0]?.text:"message"}</Typography> */}
                         </Box>
-                        <Box sx={{ marginLeft: "20px" }}>
-                            <Link to="/messaging">
-                                <Typography component="img" src={sidemenuarrow}></Typography>
-                            </Link>
-
+                        <Box textAlign="right">
+                            <Typography display="inline-block" component="img" src={doublecheck}></Typography>
+                            {/* <Typography className={classes.para}>time</Typography> */}
                         </Box>
-                    </ListItem>
-
-                    <ListItem className={classes.listitem}>
-                        <Box className={classes.msgscroll}>
-                            {data.map((v) => {
-                                return (
-                                    <Link to="/messagingExpend" className={classes.listitem}>
-                                        <Box className={classes.listitem2}>
-                                            <Box className={classes.widthleft}>
-                                                <Typography component="img" src={messageimg2}></Typography>
-                                            </Box>
-                                            <Box className={classes.widthright}>
-                                                <Box>
-                                                    <Typography variant="h6" color="#949494">{v.heading}</Typography>
-                                                    <Typography className={classes.para2} color="#949494">{v.message}</Typography>
-                                                </Box>
-                                                <Box textAlign="right">
-                                                    <Typography display="inline-block" component="img" src={doublecheck}></Typography>
-                                                    <Typography className={classes.para}>{v.time}</Typography>
-                                                </Box>
-                                            </Box>
-                                        </Box>
-                                    </Link>
-                                )
-                            })}
-                        </Box>
-                    </ListItem>
-
-
-
-
-                </List>
-            </Box>
+                    </Box>
+                </Box>
+            </Link>
         </>
     )
 }

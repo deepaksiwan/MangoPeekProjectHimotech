@@ -10,7 +10,10 @@ import Withoutmenucomp from "./Withoutmenucomp";
 const useStyle = makeStyles({
     maindiv: {
         padding: '30px 0px 80px 0px',
-        display: 'flex'
+        display: 'flex',
+        
+
+        
     },
     menuposition: {
         position: 'fixed',
@@ -29,7 +32,7 @@ const useStyle = makeStyles({
     explorenft: {
         marginLeft: '5rem',
         marginTop: '1rem',
-         
+       
     },
 
 

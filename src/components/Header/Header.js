@@ -1,14 +1,13 @@
 import React, { useState, useContext } from "react";
 import Box from "@mui/material/Box";
-import { Drawer, Avatar, InputAdornment, Input, IconButton, Dialog } from "@mui/material";
+import {  InputAdornment, Input, IconButton, Dialog } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link, useNavigate } from "react-router-dom";
-import { List, ListItem, ListItemButton, ListItemText, } from "@mui/material";
+import { List, ListItem, } from "@mui/material";
 import { UserContext } from "../../context/User/UserContext";
-import { actionTypes } from "../../context/User/UserReducer";
 import { makeStyles } from "@mui/styles";
 import logo from '../../../src/pages/images/logo.gif'
 import logocont from '../../../src/pages/images/logocont.svg'
@@ -21,14 +20,13 @@ import notification from '../../../src/pages/images/notification.svg'
 import message from '../../../src/pages/images/message.svg'
 import SearchIcon from '@mui/icons-material/Search';
 import search from '../../../src/pages/images/search.svg'
-import { Container } from "@mui/system";
 import MenuIcon from '@mui/icons-material/Menu';
 
 
 
 
 
-const drawerWidth = 300;
+
 
 const useStyle = makeStyles((theme) => ({
   ghjk: {
@@ -198,29 +196,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Header = () => {
   const [{ token, userData }, dispatch] = useContext(UserContext);
-  const sideBar = [
-    { sidebarName: "Explore", path: "/explore" },
-    { sidebarName: "My Settings", path: "/wallet" },
-    { sidebarName: "My Portfolio", path: `/${userData?.userName}` },
-    { sidebarName: "Hidden NFTs", path: "/hidden-nft" },
-  ];
+  
   const navigate = useNavigate();
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch({ type: actionTypes.SET_TOKEN, value: null });
-    localStorage.clear();
-    navigate("/explore");
-  };
-  const [isopen, setIsOpen] = useState(false);
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setIsOpen(!open);
-  };
+  
+  
+  
 
   const classes = useStyle();
   const [open, setOpen] = React.useState(false);
@@ -232,6 +212,8 @@ const Header = () => {
   const handleClose2 = () => {
     setOpen(false);
   };
+
+  
 
 
   return (
@@ -254,7 +236,7 @@ const Header = () => {
                 sx={{ color: "#fff", fontWeight: "bold" }}
               >
                 <Link
-                  to={token ? `/explore` : `/`}
+                  to={token && `/`}
                   style={{}}
                   className={classes.ghjk}
                 >
@@ -326,29 +308,16 @@ const Header = () => {
 
               </List>
             </Box>
-            {/* {token ? (
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={toggleDrawer(false)}
-              >
-                <MenuIcon fontSize="large" sx={{ color: "#111" }} />
-              </IconButton>
-            ) : (
-              
-
-            )} */}
             <List className={classes.navend}>
 
               <ListItem className={classes.listpadding}>
-                <Link className={classes.textbutn} to="/not_link_wallet">
+                <Link className={classes.textbutn} to="/explorepage_without_side_menu">
                   Explore
                 </Link>
               </ListItem>
 
               <ListItem className={classes.listpadding}>
-                <Link className={classes.roundbutn} to="#">
+                <Link className={classes.roundbutn}  to="/not_link_wallet">
                   <Typography width={20} component="img" src={setting}></Typography>
                 </Link>
               </ListItem>
@@ -510,57 +479,7 @@ const Header = () => {
 
 
       </Box>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        anchor="right"
-        open={isopen}
-        onClose={toggleDrawer(true)}
-      >
-
-
-
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "end",
-            marginTop: "17px",
-            padding: "0  10px 0",
-          }}
-        >
-          <Avatar onClick={toggleDrawer(true)} sx={{ bgcolor: "none", cursor: 'pointer' }}>
-            <CloseIcon />
-          </Avatar>
-        </Box>
-        <List>
-          {sideBar.map((data, index) => (
-            <Link to={data.path} key={index}>
-              <ListItem>
-                <ListItemButton>
-                  <Typography
-                    component="div"
-                    sx={{ color: "#111", padding: "0" }}
-                  >
-                    <ListItemText primary={data.sidebarName} />
-                  </Typography>
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          ))}
-          <ListItem>
-            <ListItemButton>
-              <ListItemText onClick={logout} primary={`Sign Out`} />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Drawer>
+     
     </>
   );
 };

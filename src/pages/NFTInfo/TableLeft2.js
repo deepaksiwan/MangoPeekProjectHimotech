@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@mui/styles';
 import { Box, Button } from '@mui/material';
+import { format } from "timeago.js";
 
 
 const useStyles = makeStyles({
@@ -47,7 +48,8 @@ const rows = [
 ];
 
 
-const TableLeft = () => {
+const TableLeft = ({Address}) => {
+    console.log("Address", Address)
     const classes = useStyles();
     return (
         <Box>
@@ -73,7 +75,7 @@ const TableLeft = () => {
                                 </TableCell>
                                 <TableCell className={classes.tablelist} align="left">{row.calories}</TableCell>
                                 <TableCell className={classes.tablelist} align="left">{row.fat}</TableCell>
-                                <TableCell className={classes.tablelist} align="left">{row.carbs}</TableCell>
+                                <TableCell className={classes.tablelist} align="left">{Address.substring(0, 6) + "..." + (Address.length - 6)}</TableCell>
                                 <TableCell className={classes.tablelist} align="right">{row.protein}</TableCell>
                             </TableRow>
                         ))}

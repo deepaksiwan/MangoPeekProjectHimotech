@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import profilebnrimg from '../../../src/pages/images/profilebnrimg.svg'
 import profileicon from '../../../src/pages/images/profileicon.svg'
@@ -7,6 +7,17 @@ import { makeStyles } from "@mui/styles";
 import walletimg from '../../../src/pages/images/walletimg.svg'
 import eth from '../../../src/pages/images/eth.svg'
 import ProfileTab from './ProfileTab'
+import { UserContext } from "../../context/User/UserContext";
+import { useQuery, useMutation } from "react-query";
+import { toast } from "react-toastify";
+import { format } from "timeago.js";
+import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftByUserName"
+import { getNftByNftCollectionId } from "../../api/ApiCall/nftCollection/getNftByNftCollectionId"
+import { addConversation } from "../../api/ApiCall/addConversation";
+import { follow } from "../../api/ApiCall/follow";
+import { unFollow } from "../../api/ApiCall/unFollow";
+import { useParams, useSearchParams } from "react-router-dom";
+
 
 const useStyle = makeStyles({
     profilebnr: {
@@ -14,6 +25,7 @@ const useStyle = makeStyles({
     },
     profile: {
         width: '80px',
+        borderRadius: "50%",
         margin: '-30px 0px 0px 40px !important',
         '@media(max-width : 600px)': {
             width: '50px',
@@ -95,18 +107,179 @@ const useStyle = makeStyles({
 })
 
 
-const Profile2 = () => {
+const Profile = () => {
     const classes = useStyle();
+    const [searchParams] = useSearchParams();
+    const { id: nftCollectionId } = useParams();
+    const [{ token, userData }, dispatch] = useContext(UserContext);
+    const [nftuserName, setNftuserName] = useState(null)
+    const [userProfilePic, setuserProfilePic] = useState(null)
+    const [nftuserId, setNftuserId] = useState(null)
+    const [followed, setfollowed] = useState(false)
+
+
+    const { data , refetch} = useQuery(["getNftByNftCollectionId", nftCollectionId],
+        () => getNftByNftCollectionId(nftCollectionId), {
+        onSuccess: (data) => {
+            if(data.success === true){
+                refetch();
+            
+ 
+            } 
+        }
+    })
+   
+    
+
+    useEffect(() => {
+        if (data) {
+            setNftuserName(data?.responseResult?.userId?.userName)
+            setuserProfilePic(data?.responseResult?.userId?.profilePic)
+            setNftuserId(data?.responseResult?.userId?._id);
+            setfollowed(data?.responseResult?.userId?.followers.includes(userData._id))
+
+        }
+    }, [data])
+    //let followed = data?.responseResult?.userId?.followers.includes(userData._id)
+
+    const { data: dataByUserName, isLoading: loadingData} = useQuery(
+        ["getAllNftByUserName", nftuserName],
+        () => getAllNftByUserName(nftuserName), {
+          onSuccess: (data) => {
+            if(data.success === true){
+                
+                
+                
+            
+                
+            }
+            //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
+        }
+    },
+    )
+
+   
+    
+
+
+
+    //add conversation api call
+    const { mutateAsync, isError, error } = useMutation("addConversation", addConversation, {
+        onSuccess: (data) => {
+            try {
+                if (data.success === true) {
+                    toast.success(JSON.stringify(data.responseMessage));
+
+
+                } else {
+                    toast.error(JSON.stringify(data.responseMessage));
+
+
+                }
+
+            } catch (err) {
+            }
+        },
+        onError: (error, data) => {
+            toast.error(JSON.stringify(error.message));
+
+        },
+    }
+    );
+
+    const Addfriends = async () => {
+        try {
+            await mutateAsync({
+                senderId: nftuserId,
+                receiverId: userData?._id
+            });
+        } catch (error) {
+            console.log("error", error);
+        }
+
+    };
+
+    let followerId = userData?._id
+    let userId = nftuserId
+    //Follow api call
+    const { mutateAsync: addfollow} = useMutation(["follow", userId],
+        (userId) => follow(userId), {
+        onSuccess: (data) => {
+          
+            try {
+                if (data.success === true) {
+                    refetch();
+                
+                } else {
+
+                }
+
+            } catch (err) {
+            }
+        },
+        onError: (error, data) => {
+        },
+    }
+    );
+
+    const Followers = async () => {
+        try {
+            await addfollow({
+                followerId: followerId,
+                userId: nftuserId,
+
+            });
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+  //Unfollowed api call
+    const { mutateAsync: removeFollow } = useMutation(["unFollow", userId],
+    (userId) => unFollow(userId), {
+    onSuccess: (data) => {
+      
+        try {
+            if (data.success === true) {
+                refetch();
+
+                
+                
+            } else {
+
+            }
+
+        } catch (err) {
+        }
+    },
+    onError: (error, data) => {
+    },
+}
+);
+
+const unfollowed = async () => {
+    try {
+        await removeFollow({
+            followerId: followerId,
+            userId: nftuserId,
+
+        });
+    } catch (error) {
+        console.log("error", error);
+    }
+};
+
+
+
     return (
         <>
             <Container>
                 <Header />
-
                 <Grid lg={12} container spacing={0}>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Box className={classes.bnrmain}>
                             <Typography className={classes.profilebnr} component="img" src={profilebnrimg}></Typography>
-                            <Typography className={classes.profile} component="img" src={profileicon}></Typography>
+                            <Typography className={classes.profile} component="img" src={userProfilePic ? userProfilePic : profileicon}></Typography>
                         </Box>
                     </Grid>
                 </Grid>
@@ -118,7 +291,7 @@ const Profile2 = () => {
                 }}>
                     <Grid item lg={7} md={7} sm={12} xs={12}>
                         <Box>
-                            <Typography className={classes.hding} variant="h1">Unnamed</Typography>
+                            <Typography className={classes.hding} variant="h1">{nftuserName ? nftuserName : "unNamed"}</Typography>
                             <Box sx={{
                                 display: 'flex', marginTop: '20px',
                                 '@media(max-width : 600px)': {
@@ -128,7 +301,7 @@ const Profile2 = () => {
                             }}>
                                 <Box className={classes.namewithadd}>
                                     <Typography component="img" src={walletimg}></Typography>
-                                    <Typography ml={2} fontWeight={700} color="#808080">0xdsdgs5545545asfsdgg</Typography>
+                                    <Typography ml={2} fontWeight={700} color="#808080">{nftuserName ? nftuserName : "NoUserName"}</Typography>
                                 </Box>
                                 <Box sx={{
                                     alignSelf: 'center', marginLeft: '20px', '@media(max-width : 600px)': {
@@ -136,7 +309,7 @@ const Profile2 = () => {
                                         marginTop: '15px',
                                     }
                                 }}>
-                                    <Typography fontWeight={700} color="#808080">Joined September 2022</Typography>
+                                    <Typography fontWeight={700} color="#808080">Joined {userData ? format(userData?.createdAt) : "No time"}</Typography>
                                 </Box>
                             </Box>
 
@@ -146,18 +319,20 @@ const Profile2 = () => {
                         <Box>
                             <Box className={classes.nftflowers} >
                                 <Typography>
-                                    <Typography className={classes.h4} variant="h4">237</Typography>
+                                    <Typography className={classes.h4} variant="h4">{dataByUserName?.responseResult?.length ? dataByUserName?.responseResult?.length : "0"}</Typography>
                                     <Typography color="rgb(112, 122, 131)">NFTs</Typography>
                                 </Typography>
 
-                                <Typography>
-                                    <Typography className={classes.h4} variant="h4">8.1K</Typography>
-                                    <Typography color="rgb(112, 122, 131)">Followers</Typography>
+                                <Typography sx={{ cursor: "pointer" }}>
+                                    <Typography className={classes.h4} variant="h4">{data?.responseResult?.userId?.followers?.length ? data?.responseResult?.userId?.followers?.length : "0"}</Typography>
+                                   {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
+                                    <Typography onClick={Followers} color="rgb(112, 122, 131)">Followers</Typography>}
                                 </Typography>
 
                                 <Typography>
-                                    <Typography className={classes.h4} variant="h4">8.1K</Typography>
+                                    <Typography className={classes.h4} variant="h4">{data?.responseResult?.userId?.followings?.length ? data?.responseResult?.userId?.followings?.length : "0"}</Typography>
                                     <Typography color="rgb(112, 122, 131)">Following</Typography>
+                                    
                                 </Typography>
                             </Box>
                         </Box>
@@ -198,13 +373,12 @@ const Profile2 = () => {
                         </Box>
                     </Grid>
                 </Grid>
-
                 <Box>
-                    <ProfileTab />
+                    <ProfileTab DataByUserName={dataByUserName} LoadingData={loadingData} addFriends={Addfriends} />
                 </Box>
             </Container>
         </>
     )
 }
 
-export default Profile2
+export default Profile

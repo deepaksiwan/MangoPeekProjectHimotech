@@ -1,18 +1,26 @@
-import { Badge, Box, Button, Checkbox, Grid, List, ListItem, Typography, } from "@mui/material";
-import React from "react";
+import { Badge, Box, Button, Checkbox, List, ListItem, Typography, } from "@mui/material";
+import React, { useEffect, useState, useContext } from "react";
 
 import { makeStyles } from "@mui/styles";
 
 import walletimg from '../../../src/pages/images/walletimg.svg'
-import messageimg1 from '../../../src/pages/images/messageimg1.svg'
-import arrowright from '../../../src/pages/images/arrowright.svg'
+// import messageimg1 from '../../../src/pages/images/messageimg1.svg'
+// import arrowright from '../../../src/pages/images/arrowright.svg'
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import messagestore from '../../../src/pages/images/messagestore.svg'
 import exp1 from '../../../src/pages/images/exp1.svg'
+import ApiConfigs from "../../api/ApiConfig";
 import exp2 from '../../../src/pages/images/exp2.svg'
 import exp3 from '../../../src/pages/images/exp3.svg'
 import exp4 from '../../../src/pages/images/exp4.svg'
 import msgmore from '../../../src/pages/images/msgmore.svg'
+import { UserContext } from "../../context/User/UserContext";
+import axios from "axios"
+import { format } from "timeago.js";
+import { useQuery } from "react-query";
+import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftByUserName"
+import Loader from "../Loader/Loader"
+
 
 const useStyle = makeStyles({
     namewithadd: {
@@ -32,8 +40,8 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96',
         padding: '10px 20px !important',
         display: 'inline-block',
-        '@media(max-width : 600px)':{
-            width : '100%',
+        '@media(max-width : 600px)': {
+            width: '100%',
         }
     },
     listpadding: {
@@ -120,8 +128,8 @@ const useStyle = makeStyles({
         width: '125px',
         marginTop: '5px !important',
         boxShadow: '0px 4px 22px -3px #00000036',
-        '@media(max-width : 1200px)':{
-            width : '100%'
+        '@media(max-width : 1200px)': {
+            width: '100%'
         }
     },
     fav: {
@@ -138,6 +146,16 @@ const useStyle = makeStyles({
             backgroundColor: 'transparent !important'
         }
     },
+    profileimg: {
+        borderRadius: "50%"
+    },
+    NoNftAdded: {
+        margin: "8rem  0rem  !important",
+        width: "250px !important",
+        fontSize: "1rem !important",
+        textAlign:"center !important"
+    
+    }
 })
 
 
@@ -168,11 +186,50 @@ const expnft = [
 
 
 
-const NFTMsgExp = () => {
-
+const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
+    // console.log("onLineUsers",onLineUsers)
     const classes = useStyle();
+    const [friends, setFriends] = useState([]);
+    const [onlineFriends, setOnlineFriends] = useState([]);
+    const [userChatfourNftData, setFourNftData] = useState([])
+    const [{  userData }, ] = useContext(UserContext);
 
 
+
+    //getfriends get api call
+    const getFriends = async () => {
+        const res = await axios.get(ApiConfigs?.Getfriends + `/${currentUser?._id}`);
+        setFriends(res.data);
+    };
+
+
+    useEffect(() => {
+        getFriends();
+    }, [currentUser?._id]);
+
+
+
+    useEffect(() => {
+        setOnlineFriends(friends.filter((f) => onLineUsers?.includes(f._id)));
+    }, [friends, onLineUsers]);
+
+    const { data: dataBychatUserName, isLoading: loadingData } = useQuery(
+        ["getAllNftByUserName", ChatUserId?.userName],
+        () => getAllNftByUserName(ChatUserId?.userName), {
+        onSuccess: (dataBychatUserName) => {
+            let randomfourNft = [];
+            if (dataBychatUserName?.responseResult?.length) {
+                for (let i = dataBychatUserName?.responseResult?.length; i >= 0; i--) {
+                    var randomnft = Math.floor(Math.random() * i);
+                    randomfourNft.push(dataBychatUserName?.responseResult[randomnft]);
+                    if (i == dataBychatUserName?.responseResult?.length - 3) break;
+                }
+            }
+            setFourNftData(randomfourNft)
+            //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
+        }
+    },
+    )
 
     return (
         <>
@@ -183,10 +240,10 @@ const NFTMsgExp = () => {
                         <ListItem className={classes.listpadding}>
                             <Box sx={{ textAlign: 'center' }}>
                                 <Box className={classes.macmango}>
-                                    <Typography display="inline-block" component="img" src={messageimg1} width="100%"></Typography>
+                                    <Typography className={classes.profileimg} display="inline-block" component="img" src={ChatUserId?ChatUserId?.profilePic:exp1} width="100%"></Typography>
                                 </Box>
-                                <Typography color="#808080" fontWeight={700} >Lorem Ipsum</Typography>
-                                <Typography color="#A9A9A9" fontSize="13px">Last seen 15 min ago</Typography>
+                                <Typography color="#808080" fontWeight={700} >{ChatUserId?ChatUserId?.userName: "unNamed"}</Typography>
+                                <Typography color="#A9A9A9" fontSize="13px">{format(currentUser?.createdAt)}</Typography>
                             </Box>
                         </ListItem>
 
@@ -195,37 +252,36 @@ const NFTMsgExp = () => {
                                 <Box sx={{ width: '20px' }}>
                                     <Typography component="img" src={walletimg} width="100%"></Typography>
                                 </Box>
-                                <Typography className={classes.address} ml={1} fontWeight={500} color="#808080">0xdsdgs5545545asfsdgg</Typography>
+                                <Typography className={classes.address} ml={1} fontWeight={500} color="#808080">{ChatUserId?.userName}</Typography>
                             </Box>
                         </ListItem>
 
                         <ListItem className={classes.followers}>
 
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">237</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{dataBychatUserName?.responseResult?.length?dataBychatUserName?.responseResult?.length:"0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">NFTs</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">8.1K</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userData?.followers?.length}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Followers</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">8.1K</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userData?.followings?.length}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Following</Typography>
                             </Box>
 
                         </ListItem>
 
                     </List>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between','@media(max-width : 1200px)':{display : 'inherit', width : '100%'} }}>
-                        {expnft.map((e, id) => {
-                            const { Image, } = e
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', '@media(max-width : 1200px)': { display: 'inherit', width: '100%' } }}>
+                        {loadingData == false ? userChatfourNftData?.map((v, id) => {
                             return (
                                 <>
 
                                     <Box className={classes.nftinfobx2} key={id}>
 
-                                        <Typography component="img" src={Image} width="100%"></Typography>
+                                        <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} width="100%"></Typography>
                                         <Box
                                             sx={{
                                                 display: "flex",
@@ -251,14 +307,14 @@ const NFTMsgExp = () => {
                                                                 }
                                                             />
                                                         </Badge>
-                                                        <Typography style={{ color: '#606060', fontSize: '8px' }}>1.2k</Typography>
+                                                        <Typography style={{ color: '#606060', fontSize: '8px' }}>{v?.userId?.followers?.length}</Typography>
                                                     </Box>
 
                                                     <Box sx={{ display: 'flex', marginLeft: '10px' }}>
                                                         <Box sx={{ alignSelf: 'center' }}>
                                                             <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
                                                         </Box>
-                                                        <Typography style={{ color: '#606060', fontSize: '10px' }}>3k</Typography>
+                                                        <Typography style={{ color: '#606060', fontSize: '10px' }}>{v.userId?.followings?.length}</Typography>
                                                     </Box>
 
                                                 </Box>
@@ -273,14 +329,17 @@ const NFTMsgExp = () => {
 
                                 </>
                             )
-                        })
+                        }) : <Typography className={classes.NoNftAdded}>
+                            <Loader />
+                        </Typography>
                         }
+                        {userChatfourNftData?.length == 0 && dataBychatUserName == undefined &&
+                        <Typography className={classes.NoNftAdded}>
+                            No NFTs Found
+                        </Typography>}
                     </Box>
 
                 </Box>
-
-
-
 
             </Box>
 

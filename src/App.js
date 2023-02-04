@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import Home from "./pages/Home/Home";
-import Profile from "./pages/Profile/Profile";
+// import Profile from "./pages/Profile/Profile";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import HiddenNFT from "./components/HiddenNFT/HiddenNFT";
 import Explore from "./pages/Explore/Explore";
-import NFTdetailpage from "./pages/NFTdetailpage/NFTdetailpage";
+import NFTpage from "./pages/NFTpage/NFTpage";
 import Wallet from "./pages/Wallet/Wallet";
 import Reset from "./pages/Register/Reset";
 import Signup from "./pages/Register/Signup";
@@ -23,9 +23,9 @@ import { useQuery } from "react-query";
 import AuthGuard from "./protectedRoutes/AuthGaurd";
 import UserGuard from "./protectedRoutes/UserGuard"
 import { toast } from "react-toastify";
-import Profile2 from './pages/profile2/Profile2'
+import Profile from './pages/profile/Profile'
 import Create from './pages/create/Create'
-import NFTInfo from './pages/NFTInfo/NFTInfo'
+import NFTDetails from './pages/NFTInfo/NFTDetails'
 import NotLinkWallet from './pages/NotLinkWallet/NotLinkWallet'
 import Explorewithoutmenu from './pages/Explorepagewithsidemenu/Explorewithoutmenu'
 import Explorewithmenu from './pages/Explorepagewithsidemenu/Explorewithmenu'
@@ -58,22 +58,23 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<UserGuard><Home /></UserGuard>} />
-          <Route exact path="/:userName" element={<Profile />} />
-          <Route exact path="/hidden-nft" element={<AuthGuard><HiddenNFT /></AuthGuard>} />
-          <Route exact path="/explore" element={<AuthGuard><Explore /></AuthGuard>} />
-          <Route exact path="/wallet" element={<AuthGuard><Wallet /></AuthGuard>} />
-          <Route exact path="/nftdetailpage/:id" element={<NFTdetailpage />} />
-          <Route exact path="/register" name="Signup Page" element={<UserGuard><Signup /></UserGuard>} />
-          <Route exact path="/login" name="Login Page" element={<UserGuard><Login /></UserGuard>} />
-          <Route exact path="/forget" name="Reset Page" element={<UserGuard><Forget /></UserGuard>} />
-          <Route exact path="/reset" element={<UserGuard><Reset /></UserGuard>} />
-          <Route exact path="/bizarro-world" element={<BizarroWorld />} />
-          <Route exact path="/rabit-hole" element={<Rabbithole />} />
+          {/* <Route exact path="/" element={<UserGuard><Home /></UserGuard>} /> */}
+          <Route exact path="/" element={<Home />} />
+          {/* <Route exact path="/:userName" element={<Profile />} /> */}
+          {/* <Route exact path="/hidden-nft" element={<AuthGuard><HiddenNFT /></AuthGuard>} /> */}
+          {/* <Route exact path="/explore" element={<AuthGuard><Explore /></AuthGuard>} /> */}
+          {/* <Route exact path="/wallet" element={<AuthGuard><Wallet /></AuthGuard>} /> */}
+          <Route exact path="/nftpage/:id" element={<NFTpage />} />
+          <Route exact path="/register" name="Signup Page" element={<Signup />}/>
+          <Route exact path="/login" name="Login Page" element={<Login />} />
+          {/* <Route exact path="/forget" name="Reset Page" element={<UserGuard><Forget /></UserGuard>} /> */}
+          {/* <Route exact path="/reset" element={<Reset />} /> */}
+          {/* <Route exact path="/bizarro-world" element={<BizarroWorld />} /> */}
+          {/* <Route exact path="/rabit-hole" element={<Rabbithole />} /> */}
 
-          <Route exact path="/profile2" element={<Profile2 />}></Route>
+          <Route exact path="/profile/:id" element={<Profile />}></Route>
           <Route exact path="/create" element={<Create />}></Route>
-          <Route exact path="/nftinfo" element={<NFTInfo />}></Route>
+          <Route exact path="/nftDetails/:id" element={<NFTDetails />}></Route>
           <Route exact path="/not_link_wallet" element={<NotLinkWallet />}></Route>
           <Route exact path="/explorepage_without_side_menu" element={<Explorewithoutmenu />}></Route>
           <Route exact path="/explorepage_with_side_menu" element={<Explorewithmenu />}></Route>
