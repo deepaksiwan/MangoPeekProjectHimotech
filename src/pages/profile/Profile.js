@@ -102,7 +102,7 @@ const useStyle = makeStyles({
     ethimg: {
         display: 'inline-block',
         marginRight: '6px !important'
-    }
+    },
 
 })
 
@@ -136,7 +136,7 @@ const Profile = () => {
             setNftuserName(data?.responseResult?.userId?.userName)
             setuserProfilePic(data?.responseResult?.userId?.profilePic)
             setNftuserId(data?.responseResult?.userId?._id);
-            setfollowed(data?.responseResult?.userId?.followers.includes(userData._id))
+            setfollowed(data?.responseResult?.userId?.followers.includes(userData?._id))
 
         }
     }, [data])
@@ -159,10 +159,6 @@ const Profile = () => {
     )
 
    
-    
-
-
-
     //add conversation api call
     const { mutateAsync, isError, error } = useMutation("addConversation", addConversation, {
         onSuccess: (data) => {
@@ -171,18 +167,15 @@ const Profile = () => {
                     toast.success(JSON.stringify(data.responseMessage));
 
 
-                } else {
+                } else if(data.success === false){
                     toast.error(JSON.stringify(data.responseMessage));
-
-
                 }
-
             } catch (err) {
+            
             }
         },
         onError: (error, data) => {
             toast.error(JSON.stringify(error.message));
-
         },
     }
     );
@@ -209,7 +202,6 @@ const Profile = () => {
             try {
                 if (data.success === true) {
                     refetch();
-                
                 } else {
 
                 }
@@ -325,7 +317,9 @@ const unfollowed = async () => {
 
                                 <Typography sx={{ cursor: "pointer" }}>
                                     <Typography className={classes.h4} variant="h4">{data?.responseResult?.userId?.followers?.length ? data?.responseResult?.userId?.followers?.length : "0"}</Typography>
-                                   {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
+                                   {/* {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
+                                    <Typography onClick={Followers} color="rgb(112, 122, 131)">Followers</Typography>} */}
+                                    {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
                                     <Typography onClick={Followers} color="rgb(112, 122, 131)">Followers</Typography>}
                                 </Typography>
 
@@ -374,7 +368,7 @@ const unfollowed = async () => {
                     </Grid>
                 </Grid>
                 <Box>
-                    <ProfileTab DataByUserName={dataByUserName} LoadingData={loadingData} addFriends={Addfriends} />
+                    <ProfileTab DataByUserName={dataByUserName} LoadingData={loadingData} addFriends={Addfriends} FollowerId={followerId} NftuserId={nftuserId}/>
                 </Box>
             </Container>
         </>

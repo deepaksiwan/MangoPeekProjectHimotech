@@ -292,6 +292,8 @@ const NftBox = (props) => {
   // }
   // )
 
+
+
   // console.log(userData._id);
   // const { mutateAsync: mutateAsyncEdit, isLoading: isLoadingupdateNftNameOrDescription } = useMutation("updateNftNameOrDescription",
   //   updateNftNameOrDescription, {
@@ -352,13 +354,6 @@ const NftBox = (props) => {
   }
   )
 
-
-
-
-
-
-  
- 
 
   useEffect(() => {
     if (props?.data) {

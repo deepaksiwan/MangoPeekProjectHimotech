@@ -122,7 +122,7 @@ const useStyle = makeStyles({
     menuarrowbtn: {
         position: 'fixed',
         top: '20rem',
-        left: '37rem !important',
+        left: '36rem !important',
         '@media(max-width : 1200px)': {
             left: '15.3rem',
         }

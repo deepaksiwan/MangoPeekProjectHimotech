@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 export default function AuthGuard({ children } ) {
   const [{userData} ]= useContext(UserContext);
   if (!userData) {
-    return <Navigate to='/'  />;
+    return <Navigate to='/login'  />;
   }
 
   return children;

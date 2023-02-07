@@ -129,10 +129,11 @@ const top100Films = [
 ];
 
 
-export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, addFriends}) {
+export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, addFriends, FollowerId, NftuserId}) {
     const classes = useStyle();
     let dataByUserName = DataByUserName;
     let LoadingDatafetch = LoadingData;
+
    
 
     return (
@@ -205,9 +206,9 @@ export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, ad
                     </ListItem>
 
                     <ListItem className={classes.listpadding}>
-                        <Link className={classes.roundbutn} to="#" onClick={addFriends}>
+                        {(FollowerId !== NftuserId )  &&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
                             <Typography component="img" src={userplus}></Typography>
-                        </Link>
+                        </Link>}
                     </ListItem>
 
                     <ListItem className={classes.listpadding}>

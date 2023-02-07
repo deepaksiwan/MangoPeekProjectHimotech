@@ -234,7 +234,6 @@ const MessagingExpend = () => {
 
     
 
-
     useEffect(() => {
         arrivalMessage &&
             currentChat?.members?.includes(arrivalMessage?.sender) &&
@@ -243,7 +242,7 @@ const MessagingExpend = () => {
 
 
     useEffect(() => {
-        socket.current.emit("addUser", userData._id);
+        socket.current.emit("addUser", userData?._id);
         socket.current.on("getUser", (users) => {
              //console.log("users", users)
             // console.log("followers", userData?.followers)
@@ -258,7 +257,7 @@ const MessagingExpend = () => {
     //getconversation
     const getConversations = async () => {
         try {
-            const res = await axios.get(ApiConfigs?.getConversation + `/${userData._id}`);
+            const res = await axios.get(ApiConfigs?.getConversation + `/${userData?._id}`);
             setConversations(res?.data);
         } catch (err) {
             console.log(err);
@@ -279,7 +278,7 @@ const MessagingExpend = () => {
     useEffect(() => {
         getConversations();
         getMessages();
-    }, [userData._id, currentChat]);
+    }, [userData?._id, currentChat]);
 
 
 
@@ -302,13 +301,13 @@ const MessagingExpend = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const message = {
-            sender: userData._id,
+            sender: userData?._id,
             text: newMessage,
-            conversationId: currentChat._id,
+            conversationId: currentChat?._id,
         };
 
         const receiverId = currentChat.members.find(
-            (member) => member !== userData._id
+            (member) => member !== userData?._id
         );
 
         socket.current.emit("sendMessage", {
@@ -346,10 +345,13 @@ const MessagingExpend = () => {
             console.log("err", err);
         }
     };
+    
 
     useEffect(() => {
         getUser();
     }, [currentChat, userData]);
+
+    
 
 
     //console.log("message", messages)

@@ -32,10 +32,13 @@ const Explorepagewithsidemenu = () => {
     
    
 
-   const { data: dataByUserName, isLoading: loadingData } = useQuery(
+   const { data: dataByUserName, isLoading: loadingData , refetch} = useQuery(
       ["getAllNftByUserName", userData?.userName],
       () => getAllNftByUserName(userData?.userName), {
       onSuccess: (data) => {
+        if(data.success === true){
+            refetch()
+        }
 
       }
    },

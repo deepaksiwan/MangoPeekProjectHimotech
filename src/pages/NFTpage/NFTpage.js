@@ -368,13 +368,12 @@ const NFTpage = () => {
   const { data } = useQuery(["getNftByNftCollectionId", nftCollectionId],
     () => getNftByNftCollectionId(nftCollectionId), {
     onSuccess: (data) => {
-      //console.log(data?.responseResult.likes)
-
+       if(data.success === true){
+        
+        
+       }
     }
   })
-
-  //console.log("ndsdasdnak", data)
-
 
 
   const { mutateAsync, error, isSuccess } = useMutation("AddComment", AddComment, {
@@ -396,28 +395,6 @@ const NFTpage = () => {
     },
   }
   );
-
-  // const { mutateAsync: AddConversationAsync} = useMutation("AddConversation", AddConversation, {
-  //   onSuccess: (data) => {
-  //     console.log("addconversation",data)
-  //     try {
-  //       if (data.success === true) {
-      
-
-  //       } else {
-
-  //       }
-
-  //     } catch (err) {
-  //     }
-  //   },
-  //   onError: (error, data) => {
-
-  //   },
-  // }
-  // );
-
-  
 
 
   const { data: allCommentdata, refetch } = useQuery("getComment",
@@ -465,18 +442,6 @@ const NFTpage = () => {
     }
   };
 
-
-  // const Addfriends = async () => {
-  //   try {
-  //     await AddConversationAsync({
-  //       senderId: nftUserId,
-  //       receiverId: userData?._id
-  //     });
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
-  
 
    const handleridirect=()=>{
     navigate(`/profile/${nftCollectionId}`)

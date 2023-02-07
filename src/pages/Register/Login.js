@@ -106,28 +106,29 @@ const useStyle = makeStyles((theme) => ({
 const Login = () => {
   const classes = useStyle();
   const navigate = useNavigate();
-  const [,dispatch] = useContext(UserContext);
-  
+  const [, dispatch] = useContext(UserContext);
 
 
-  const {isError, error, isLoading, mutateAsync, isSuccess } = useMutation(
+
+  const { isError, error, isLoading, mutateAsync, isSuccess } = useMutation(
     "login",
     login,
     {
       onSuccess: (data) => {
-        
-        
-        
-      
+        console.log("data", data)
+
+
+
+
         try {
           if (data.responseCode === 200) {
             //  console.log(data?.responseResult);
             //console.log(data?.token);
-             navigate("/not_link_wallet")
+            navigate("/not_link_wallet")
             //navigate(`/${data?.responseResult.userName}`);
-             dispatch({ type: actionTypes?.SET_TOKEN, value: data?.token });
-              localStorage.setItem("token", data?.token);
-              dispatch({
+            dispatch({ type: actionTypes?.SET_TOKEN, value: data?.token });
+            localStorage.setItem("token", data?.token);
+            dispatch({
               type: actionTypes?.SET_USER,
               value: data.responseResult,
             });
@@ -145,7 +146,7 @@ const Login = () => {
     }
   );
 
-  
+
   // const {refetch}=useQuery(
   //   ["viewProfile",token],
   //   ()=>viewProfile(token),{
@@ -157,30 +158,35 @@ const Login = () => {
   const formik = useFormik({
     validateOnMount: true,
     initialValues: {
-    
+      // userName: "",
       email: "",
       password: "",
+
     },
     validationSchema: Yup.object({
       email: Yup.string().when("isEmail", {
         is: '1',
         then: Yup.string()
-          .email("Enter valid username / email")
-          .required("Enter valid username / email"),
+          .email("Enter valid  email")
+          .required("Enter valid  email"),
         otherwise: Yup.string()
-          .required("Enter valid username / email")
+          .required("Enter valid  email")
           .min(4, 'Username must be at least 4 digit')
           .max(30, 'Username must not exceed 20 digit'),
       }),
+
 
       password: Yup.string()
         .required("Enter valid password"),
     }),
     onSubmit: async (values) => {
+      console.log("values", values)
       try {
         await mutateAsync({
+          // userName: values.userName,
           email: values.email,
           password: values.password,
+
         });
       } catch (error) {
         console.log(error);
@@ -197,9 +203,9 @@ const Login = () => {
   };
 
 
- const RedirectRegister = ()=>{
+  const RedirectRegister = () => {
     navigate("/register")
- }
+  }
 
   return (
     <Box>
@@ -214,66 +220,64 @@ const Login = () => {
               <Box className={classes.formbox}>
                 <form onSubmit={formik.handleSubmit}>
                   <FormControl fullWidth  >
-                  <TextField
-                    className={classes.input}
-                    variant="standard"
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Username/Email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-
-
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                  />
-                  <Typography className={classes.error}> { formik.errors.email}</Typography>
-
-
-                  <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}  >
-                    <OutlinedInput
-                      className={classes.input2}
-                      sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
+                    <TextField
+                      className={classes.input}
                       variant="standard"
-                      name="password"
-                      value={formik.values.password}
+                      name="email"
+
+                      placeholder="Email"
+                      value={formik.values.email || formik.values.userName}
                       onChange={formik.handleChange}
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="Password"
-                      disableUnderline={false}
 
                       InputProps={{
-                        disableUnderline: true
+                        disableUnderline: true,
                       }}
-                      endAdornment={
-
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-
-                      }
-                    // label="Password"
                     />
-                  </FormControl>
-                  <Typography className={classes.error}> {formik.errors.password}</Typography>
-                  <Box height={10} />
-                  <Box className={classes.btnwrp}>
-                    <Button className={classes.loginbtn} type="submit">Login</Button>
-                    <Button className={classes.signupbtn} onClick={RedirectRegister}>Register</Button>
-                  </Box>
+                    <Typography className={classes.error}> {formik.errors.email}</Typography>
 
-                </FormControl>
+
+                    <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}  >
+                      <OutlinedInput
+                        className={classes.input2}
+                        sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
+                        variant="standard"
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        disableUnderline={false}
+
+                        InputProps={{
+                          disableUnderline: true
+                        }}
+                        endAdornment={
+
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+
+                        }
+                      // label="Password"
+                      />
+                    </FormControl>
+                    <Typography className={classes.error}> {formik.errors.password}</Typography>
+                    <Box height={10} />
+                    <Box className={classes.btnwrp}>
+                      <Button className={classes.loginbtn} type="submit">Login</Button>
+                      <Button className={classes.signupbtn} onClick={RedirectRegister}>Register</Button>
+                    </Box>
+
+                  </FormControl>
                 </form>
               </Box>
             </Grid>

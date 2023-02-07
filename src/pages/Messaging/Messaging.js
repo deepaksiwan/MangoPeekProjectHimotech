@@ -102,24 +102,19 @@ const Messaging = () => {
 
 
 
-
-
-
     useEffect(() => {
         const getConversations = async () => {
             try {
-                const res = await axios.get(ApiConfigs?.getConversation+`/${userData._id}`);
+                const res = await axios.get(ApiConfigs?.getConversation+`/${userData?._id}`);
                 setConversations(res.data);
             } catch (err) {
                 console.log(err);
             }
         };
         getConversations();
-    }, [userData._id]);
+    }, [userData?._id]);
 
     
-
-
     return (
         <>
             <Container>

@@ -114,10 +114,10 @@ const useStyle = makeStyles((theme) => ({
 }));
 const Signup = () => {
   const classes = useStyle();
-  const [ dispatch] = useContext(UserContext);
+  const [, dispatch] = useContext(UserContext);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
-  
+
   const navigate = useNavigate();
 
   const { mutateAsync } = useMutation(
@@ -127,11 +127,15 @@ const Signup = () => {
       onSuccess: (data) => {
         try {
           if (data.responseCode === 200) {
-           // navigate("/");
+            // navigate("/");
             dispatch({ type: actionTypes.SET_TOKEN, value: data.token });
             localStorage.setItem("token", data.token);
+            dispatch({
+              type: actionTypes.SET_USER,
+              value: data.responseResult,
+            });
             toast.success(JSON.stringify(data.responseMessage));
-            dispatch({ type: actionTypes.SET_USER, value: data.responseResult });
+
           } else {
             toast.error(JSON.stringify(data.responseMessage));
           }
@@ -139,7 +143,7 @@ const Signup = () => {
           toast.error(JSON.stringify(error));
         }
       },
-      onError: (error, data) => {Followers
+      onError: (error, data) => {
         console.log("error")
         toast.error(JSON.stringify(data.responseMessage));
       },
@@ -224,12 +228,12 @@ const Signup = () => {
         console.log(error);
       }
     },
-    
+
   });
 
-  const RedirectLogin = ()=>{
+  const RedirectLogin = () => {
     navigate("/login")
- }
+  }
 
   return (
     <Box>
@@ -248,7 +252,7 @@ const Signup = () => {
             </Grid>
             <Grid item lg={7} md={7} sm={12} xs={12}>
               <Box className={classes.formbox}>
-                <form  onSubmit={formik.handleSubmit} fullWidth >
+                <form onSubmit={formik.handleSubmit} fullWidth >
 
 
                   <Box className={classes.bothinput}>
@@ -282,7 +286,7 @@ const Signup = () => {
                           disableUnderline: true,
                         }}
                       />
-                      <Typography className={classes.error}> { formik.touched.lastName && formik.errors.lastName}</Typography>
+                      <Typography className={classes.error}> {formik.touched.lastName && formik.errors.lastName}</Typography>
                     </Box>
                   </Box>
 
@@ -299,7 +303,7 @@ const Signup = () => {
                       disableUnderline: true,
                     }}
                   />
-                  <Typography className={classes.error}> {  formik.touched.userName &&formik.errors.userName}</Typography>
+                  <Typography className={classes.error}> {formik.touched.userName && formik.errors.userName}</Typography>
                   <TextField
                     className={classes.input}
                     variant="standard"
@@ -313,7 +317,7 @@ const Signup = () => {
                       disableUnderline: true,
                     }}
                   />
-                  <Typography className={classes.error}> { formik.touched.email && formik.errors.email}</Typography>
+                  <Typography className={classes.error}> {formik.touched.email && formik.errors.email}</Typography>
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}>
                     <OutlinedInput
@@ -341,7 +345,7 @@ const Signup = () => {
                     // label="Password"
                     />
                   </FormControl>
-                  <Typography className={classes.error}> {formik.touched.password &&  formik.errors.password}</Typography>
+                  <Typography className={classes.error}> {formik.touched.password && formik.errors.password}</Typography>
 
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}>

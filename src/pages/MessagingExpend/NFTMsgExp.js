@@ -263,11 +263,11 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">NFTs</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userData?.followers?.length}</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{ChatUserId?.followers?.length?ChatUserId?.followers?.length:"0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Followers</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userData?.followings?.length}</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{ChatUserId?.followings?.length?ChatUserId?.followings?.length:"0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Following</Typography>
                             </Box>
 
