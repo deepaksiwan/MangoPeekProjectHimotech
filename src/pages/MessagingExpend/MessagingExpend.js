@@ -210,7 +210,7 @@ const MessagingExpend = () => {
     const [conversations, setConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState("");
+   // const [newMessage, setNewMessage] = useState("");
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [{ userData }] = useContext(UserContext);
@@ -280,26 +280,9 @@ const MessagingExpend = () => {
         getMessages();
     }, [userData?._id, currentChat]);
 
-
-
-    // function getFormattedDate() {
-    //     const date = new Date();
-    //     const year = date.getFullYear();
-    //     let month = (1 + date.getMonth()).toString();
-
-    //     month = month.length > 1 ? month : "0" + month;
-    //     let day = date.getDate().toString();
-
-    //     day = day.length > 1 ? day : "0" + day;
-
-    //     return month + "/" + day + "/" + year;
-    // }
-
-    // const todayDate = getFormattedDate();
-    // console.log("todayDate", todayDate)
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+    
+        const newMessage = document.getElementById('chatInput').value;
         const message = {
             sender: userData?._id,
             text: newMessage,
@@ -333,13 +316,11 @@ const MessagingExpend = () => {
 
     const [user, setUser] = useState([]);
     const friendId = currentChat?.members?.find((m) => m !== userData?._id);
-    //console.log("frined", friendId)
 
 
     const getUser = async () => {
         try {
             const res = await axios(ApiConfigs?.getUser + `?userId=${friendId}`);
-
             setUser(res.data);
         } catch (err) {
             console.log("err", err);
@@ -354,7 +335,7 @@ const MessagingExpend = () => {
     
 
 
-    //console.log("message", messages)
+    
     
 
     
@@ -373,14 +354,7 @@ const MessagingExpend = () => {
     //     }
     // };
 
-    // useEffect(() => {
-    //     getUserList();
-    // }, [currentChat, userData]);
-
-    // console.log("chatUserList", chatUserList)
-
-
-    //console.log("conversations", conversations)
+    
 
     return (
         <>
@@ -507,14 +481,16 @@ const MessagingExpend = () => {
                                                         <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', width: "100% !important" }}>
                                                             <TextField
                                                                 className={classes.chatinpt}
-                                                                id="outlined-basic"
+                                                                // id="outlined-basic"
+                                                                type="text"
+                                                                id="chatInput"
                                                                 // placeholder="Nice one! considering this too"
                                                                 placeholder="Type a message"
-                                                                onChange={(e) => setNewMessage(e.target.value)}
-                                                                value={newMessage}
+                                                                // onChange={(e) => setNewMessage(e.target.value)}
+                                                                // value={newMessage}
                                                                 variant="standard"
-                                                                onKeyUp={(e) => e.key === 'Enter' ? handleSubmit() : null}
-                                                                multiline={true}
+                                                                onKeyDown={(e) => e.key === 'Enter' ? handleSubmit() : null}
+                                                                // multiline={true}
                                                                 // rows={2}
                                                                 // maxRows={4}
 
@@ -522,7 +498,7 @@ const MessagingExpend = () => {
                                                                     disableUnderline: true,
                                                                 }}
                                                             />
-                                                            {newMessage && <IconButton onClick={handleSubmit}
+                                                            { <IconButton onClick={handleSubmit}
                                                                 sx={{
                                                                     backgroundColor: '#90DD90',
                                                                     color: '#fff',

@@ -2,7 +2,7 @@ import axios from "axios";
 import ApiConfigs from "../ApiConfig";
 
 export const AddComment = async ({token,text, userId}) => {
-  //console.log("text",text)
+  console.log("text",text)
     try {
       const {data} = await axios({
         method:'POST',

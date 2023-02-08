@@ -76,10 +76,11 @@ function App() {
           <Route exact path="/nftDetails/:id" element={<NFTDetails />}></Route>
           <Route exact path="/not_link_wallet" element={<AuthGuard><NotLinkWallet /></AuthGuard>}></Route>
           <Route exact path="/explorepage_without_side_menu" element={<Explorewithoutmenu />}></Route>
-          <Route exact path="/explorepage_with_side_menu" element={<AuthGuard><Explorewithmenu /></AuthGuard>}></Route>
-          <Route exact path="/messaging" element={<Messaging />}></Route>
+          <Route exact path="/:userName" element={<AuthGuard><Explorewithmenu /></AuthGuard>}></Route>
+          {/* <Route exact path="/explorepage_with_side_menu" element={<AuthGuard><Explorewithmenu /></AuthGuard>}></Route> */}
+          <Route exact path="/messaging" element={<AuthGuard><Messaging /></AuthGuard>}></Route>
           <Route exact path="/messagingexpend" element={<MessagingExpend />}></Route>
-          <Route exact path="/notification" element={<Notification />}></Route>
+          <Route exact path="/notification" element={<AuthGuard><Notification /></AuthGuard>}></Route>
 
         </Routes>
       </BrowserRouter>

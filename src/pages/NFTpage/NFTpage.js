@@ -374,10 +374,12 @@ const NFTpage = () => {
        }
     }
   })
+  console.log("userName", data)
 
 
   const { mutateAsync, error, isSuccess } = useMutation("AddComment", AddComment, {
     onSuccess: (data) => {
+      console.log("data", data)
      
       try {
         if (data.success === true) {
@@ -404,6 +406,7 @@ const NFTpage = () => {
 
     }
   })
+  
 
   useEffect(() => {
     if (allCommentdata?.getAllComments) {
@@ -431,11 +434,16 @@ const NFTpage = () => {
 
   //Comment submit
   const CommentSubmit = async () => {
+  //  document.getElementById('chatInput').value = "";
+    const text = document.getElementById('chatInput').value;
+    
     try {
+     
       await mutateAsync({
         token: localStorage.getItem("token"),
         text: text,
         userId: userData
+        
       });
     } catch (error) {
       console.log("error", error);
@@ -453,6 +461,7 @@ const NFTpage = () => {
       <>
         <Box className={classes.nftdetail}>
           <Container>
+
             <Grid container spacing={2} >
               <Grid item lg={5} md={5} sm={12} xs={12}>
                 <Box className={classes.nftinfobx2}>
@@ -612,15 +621,18 @@ const NFTpage = () => {
                 <Box className={classes.chattype}>
                   <Input
                     className={classes.chatinpt}
-                    id="text"
+                    type="text"
+                    id="chatInput"
                     placeholder="Type comments"
-                    onChange={(e) => setNewComment(e.target.value)}
-                    value={text}
+                    
+                    // onChange={(e) => setNewComment(e.target.value)}
+                     
                     variant="contained"
-                    multiline={true}
+                    onKeyDown={(event) => event.key === "Enter"?CommentSubmit(): null}
+                    // multiline={true}
                     disableUnderline
                   />
-                  {text && <IconButton onClick={CommentSubmit}
+                  {<IconButton onClick={CommentSubmit}
                     sx={{
                       backgroundColor: '#90DD90',
                       color: '#fff',

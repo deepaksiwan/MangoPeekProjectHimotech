@@ -133,6 +133,7 @@ export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, ad
     const classes = useStyle();
     let dataByUserName = DataByUserName;
     let LoadingDatafetch = LoadingData;
+    console.log("nfsdjnfdsj", dataByUserName)
 
    
 
@@ -206,7 +207,7 @@ export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, ad
                     </ListItem>
 
                     <ListItem className={classes.listpadding}>
-                        {(FollowerId !== NftuserId )  &&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
+                        {(FollowerId !== NftuserId && DataByUserName !== undefined)&&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
                             <Typography component="img" src={userplus}></Typography>
                         </Link>}
                     </ListItem>

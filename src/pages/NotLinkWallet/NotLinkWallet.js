@@ -313,7 +313,10 @@ const NotLinkWallet = () => {
                         </Box>
                     </Grid>
                 )}
-                <Box sx={{textAlign:"center", marginTop:"10px"}}> <EditProfile  heading="My profile" userName={`@${userData?.userName}`} /></Box>
+                <Box sx={{textAlign:"center", marginTop:"10px"}}> 
+                {/* <EditProfile  heading="My profile" userName={`@${userData?.userName}`} /> */}
+                <EditProfile  heading="My profile" userName={`@${userData?.userName}`} />
+                </Box>
                 <Footer2 />
             </Container>
         </>

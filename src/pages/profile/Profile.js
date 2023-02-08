@@ -194,6 +194,7 @@ const Profile = () => {
 
     let followerId = userData?._id
     let userId = nftuserId
+    console.log("userId", userId)
     //Follow api call
     const { mutateAsync: addfollow} = useMutation(["follow", userId],
         (userId) => follow(userId), {
@@ -230,15 +231,10 @@ const Profile = () => {
     const { mutateAsync: removeFollow } = useMutation(["unFollow", userId],
     (userId) => unFollow(userId), {
     onSuccess: (data) => {
-      
         try {
             if (data.success === true) {
                 refetch();
-
-                
-                
             } else {
-
             }
 
         } catch (err) {
