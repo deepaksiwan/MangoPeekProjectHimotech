@@ -322,11 +322,11 @@ const Header = () => {
                 </Link>
               </ListItem>
 
-              <ListItem className={classes.listpadding}>
+              {!token &&<ListItem className={classes.listpadding}>
                 <Link className={classes.roundbutn} to="/register">
                   <Typography width={20} component="img" src={user}></Typography>
                 </Link>
-              </ListItem>
+              </ListItem>}
 
             </List>
           </Toolbar>

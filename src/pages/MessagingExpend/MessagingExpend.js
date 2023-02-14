@@ -19,8 +19,9 @@ import messageimg1 from '../../../src/pages/images/messageimg1.svg'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { io } from "socket.io-client";
+import { connect, io } from "socket.io-client";
 import { format } from "timeago.js";
+
 
 
 
@@ -263,6 +264,8 @@ const MessagingExpend = () => {
             console.log(err);
         }
     };
+    
+   
 
 
     //getMessage
@@ -282,7 +285,12 @@ const MessagingExpend = () => {
 
     const handleSubmit = async () => {
     
-        const newMessage = document.getElementById('chatInput').value;
+        const newMessage = document.getElementById('chatInput').value.trim();
+        if(!newMessage){
+            return false
+        }
+        document.getElementById("chatInput").value = "";
+
         const message = {
             sender: userData?._id,
             text: newMessage,
@@ -326,19 +334,25 @@ const MessagingExpend = () => {
             console.log("err", err);
         }
     };
+
+  
     
 
     useEffect(() => {
         getUser();
     }, [currentChat, userData]);
 
+
+
+    //console.log("conversations", conversations)
+
     
 
 
     
     
 
-    
+     
 
 
     //search filter
@@ -490,10 +504,7 @@ const MessagingExpend = () => {
                                                                 // value={newMessage}
                                                                 variant="standard"
                                                                 onKeyDown={(e) => e.key === 'Enter' ? handleSubmit() : null}
-                                                                // multiline={true}
-                                                                // rows={2}
-                                                                // maxRows={4}
-
+                                                                
                                                                 InputProps={{
                                                                     disableUnderline: true,
                                                                 }}

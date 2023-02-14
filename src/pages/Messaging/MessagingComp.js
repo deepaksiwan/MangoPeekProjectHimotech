@@ -209,6 +209,9 @@ const MessagingComp = ({ Conversation, currentUser, Messages, CurrentChat }) => 
         getUser();
     }, [Conversation, currentUser]);
 
+
+    //console.log("userdffdf", user)
+
     //  console.log("userfriends", user)
     //  console.log("CurrentChat", CurrentChat?.members?.find((m) => m !== currentUser?._id))
     //  console.log("Messages", Messages?.slice(-1)[0]?.text)

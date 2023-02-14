@@ -6,7 +6,7 @@ import { login } from "../../api/ApiCall/login";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { TextField, Button, Box, Typography, Grid, Container } from "@mui/material";
+import { TextField, Button, Box, Typography, Grid, Container, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { UserContext } from "../../context/User/UserContext";
 import { actionTypes } from "../../context/User/UserReducer";
@@ -101,12 +101,43 @@ const useStyle = makeStyles((theme) => ({
     boxShadow: 'inset 0px 7px 15px -4px #00000024 !important',
     borderRadius: '30px !important'
   },
+  logincont: {
+    padding: '0rem 1.5rem 1.5rem 1.5rem',
+    '@media(max-width : 900px)': {
+      padding: '0rem 0rem 1.5rem 0rem',
+      textAlign: 'center',
+    }
+  },
+  
+ 
 
 }));
 const Login = () => {
   const classes = useStyle();
   const navigate = useNavigate();
-  const [, dispatch] = useContext(UserContext);
+  const [{ token, userData }, dispatch] = useContext(UserContext);
+  //const [, dispatch] = useContext(UserContext);
+
+
+  //Tooltips
+  const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose1 = () => {
+    setOpen1(false);
+  };
+
+  const handleOpen1 = () => {
+    setOpen1(true);
+  };
 
 
 
@@ -115,11 +146,6 @@ const Login = () => {
     login,
     {
       onSuccess: (data) => {
-        console.log("data", data)
-
-
-
-
         try {
           if (data.responseCode === 200) {
             //  console.log(data?.responseResult);
@@ -155,6 +181,8 @@ const Login = () => {
   //     }
   //   }
   // )
+
+  
   const formik = useFormik({
     validateOnMount: true,
     initialValues: {
@@ -164,20 +192,23 @@ const Login = () => {
 
     },
     validationSchema: Yup.object({
-      email: Yup.string().when("isEmail", {
-        is: '1',
-        then: Yup.string()
-          .email("Enter valid  email")
-          .required("Enter valid  email"),
-        otherwise: Yup.string()
-          .required("Enter valid  email")
-          .min(4, 'Username must be at least 4 digit')
-          .max(30, 'Username must not exceed 20 digit'),
-      }),
+      // email: Yup.string().when("isEmail", {
+      //   is: '1',
+      //   then: Yup.string()
+      //     .email("Enter valid  email")
+      //      .required("Enter valid  email"),
+      //   otherwise: Yup.string()
+      //     .required("Enter valid  email")
+      //     .min(4, 'Username must be at least 4 digit')
+      //     .max(30, 'Username must not exceed 20 digit'),
+      // }),
+      email: Yup.string().trim()
+        .email("Invalid email format")
+        .required("Enter valid email address"),
 
-
-      password: Yup.string()
+      password: Yup.string().trim()
         .required("Enter valid password"),
+        
     }),
     onSubmit: async (values) => {
       console.log("values", values)
@@ -195,7 +226,6 @@ const Login = () => {
   });
 
   const [showPassword, setShowPassword] = React.useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -205,6 +235,8 @@ const Login = () => {
 
   const RedirectRegister = () => {
     navigate("/register")
+
+   
   }
 
   return (
@@ -218,25 +250,31 @@ const Login = () => {
             </Grid>
             <Grid item lg={7} md={7} sm={12} xs={12}>
               <Box className={classes.formbox}>
+                <Box className={classes.logincont}>
+                <Typography sx={{textAlign:"center"}} variant="h5" fontWeight={700} color="#999999">Login Now</Typography>
+                </Box>
+             
                 <form onSubmit={formik.handleSubmit}>
                   <FormControl fullWidth  >
+                  <Tooltip  className={classes.tooltps} open={open} onClose={handleClose} onOpen={handleOpen} title="Email"   placement="top-start">
                     <TextField
                       className={classes.input}
                       variant="standard"
                       name="email"
-
                       placeholder="Email"
-                      value={formik.values.email || formik.values.userName}
+                      value={formik.values.email}
                       onChange={formik.handleChange}
-
                       InputProps={{
                         disableUnderline: true,
                       }}
                     />
-                    <Typography className={classes.error}> {formik.errors.email}</Typography>
+                    </Tooltip>
+                    <Typography className={classes.error}> {formik.values.email?formik.errors.email:""}</Typography>
 
 
                     <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}  >
+                    <Tooltip  className={classes.tooltps} 
+                     open={open1} onClose={handleClose1} onOpen={handleOpen1} title="Password"  placement="top-start">
                       <OutlinedInput
                         className={classes.input2}
                         sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
@@ -269,8 +307,9 @@ const Login = () => {
                         }
                       // label="Password"
                       />
+                      </Tooltip>
                     </FormControl>
-                    <Typography className={classes.error}> {formik.errors.password}</Typography>
+                    <Typography className={classes.error}> {formik.values.password?formik.errors.password:""}</Typography>
                     <Box height={10} />
                     <Box className={classes.btnwrp}>
                       <Button className={classes.loginbtn} type="submit">Login</Button>

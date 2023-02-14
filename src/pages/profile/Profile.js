@@ -17,6 +17,8 @@ import { addConversation } from "../../api/ApiCall/addConversation";
 import { follow } from "../../api/ApiCall/follow";
 import { unFollow } from "../../api/ApiCall/unFollow";
 import { useParams, useSearchParams } from "react-router-dom";
+import ApiConfigs from "../../api/ApiConfig";
+import axios from "axios";
 
 
 const useStyle = makeStyles({
@@ -116,20 +118,21 @@ const Profile = () => {
     const [userProfilePic, setuserProfilePic] = useState(null)
     const [nftuserId, setNftuserId] = useState(null)
     const [followed, setfollowed] = useState(false)
+    const [conversation, setConversation] = useState([]);
 
 
-    const { data , refetch} = useQuery(["getNftByNftCollectionId", nftCollectionId],
+    const { data, refetch } = useQuery(["getNftByNftCollectionId", nftCollectionId],
         () => getNftByNftCollectionId(nftCollectionId), {
         onSuccess: (data) => {
-            if(data.success === true){
+            if (data.success === true) {
                 refetch();
-            
- 
-            } 
+
+
+            }
         }
     })
-   
-    
+
+
 
     useEffect(() => {
         if (data) {
@@ -142,23 +145,23 @@ const Profile = () => {
     }, [data])
     //let followed = data?.responseResult?.userId?.followers.includes(userData._id)
 
-    const { data: dataByUserName, isLoading: loadingData} = useQuery(
+    const { data: dataByUserName, isLoading: loadingData } = useQuery(
         ["getAllNftByUserName", nftuserName],
         () => getAllNftByUserName(nftuserName), {
-          onSuccess: (data) => {
-            if(data.success === true){
-                
-                
-                
-            
-                
+        onSuccess: (data) => {
+            if (data.success === true) {
+
+
+
+
+
             }
             //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
         }
     },
     )
 
-   
+
     //add conversation api call
     const { mutateAsync, isError, error } = useMutation("addConversation", addConversation, {
         onSuccess: (data) => {
@@ -167,11 +170,11 @@ const Profile = () => {
                     toast.success(JSON.stringify(data.responseMessage));
 
 
-                } else if(data.success === false){
+                } else if (data.success === false) {
                     toast.error(JSON.stringify(data.responseMessage));
                 }
             } catch (err) {
-            
+
             }
         },
         onError: (error, data) => {
@@ -196,10 +199,10 @@ const Profile = () => {
     let userId = nftuserId
     console.log("userId", userId)
     //Follow api call
-    const { mutateAsync: addfollow} = useMutation(["follow", userId],
+    const { mutateAsync: addfollow } = useMutation(["follow", userId],
         (userId) => follow(userId), {
         onSuccess: (data) => {
-          
+
             try {
                 if (data.success === true) {
                     refetch();
@@ -227,35 +230,65 @@ const Profile = () => {
         }
     };
 
-  //Unfollowed api call
+    //Unfollowed api call
     const { mutateAsync: removeFollow } = useMutation(["unFollow", userId],
-    (userId) => unFollow(userId), {
-    onSuccess: (data) => {
-        try {
-            if (data.success === true) {
-                refetch();
-            } else {
+        (userId) => unFollow(userId), {
+        onSuccess: (data) => {
+            try {
+                if (data.success === true) {
+                    refetch();
+                } else {
+                }
+
+            } catch (err) {
             }
-
-        } catch (err) {
-        }
-    },
-    onError: (error, data) => {
-    },
-}
-);
-
-const unfollowed = async () => {
-    try {
-        await removeFollow({
-            followerId: followerId,
-            userId: nftuserId,
-
-        });
-    } catch (error) {
-        console.log("error", error);
+        },
+        onError: (error, data) => {
+        },
     }
-};
+    );
+
+    const unfollowed = async () => {
+        try {
+            await removeFollow({
+                followerId: followerId,
+                userId: nftuserId,
+
+            });
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+
+
+    //getconversation
+    const getConversations = async() => {
+        try {
+            const res = await axios.get(ApiConfigs?.getConversation + `/${userData?._id}`);
+            //setConversation(res?.data);
+            let friend = []
+            if(res?.data){
+                await res?.data.map((v)=>{
+                    friend.push(v?.members.filter((members) =>members.includes(nftuserId)))
+                })
+            }
+            setConversation(friend)
+        } catch (err) {
+            console.log("err", err);
+        }
+    };
+    
+    useEffect(() => {
+        getConversations();
+    }, [nftuserId]);
+
+
+      let filter = conversation.filter((items)=> items.includes(nftuserId))
+      let checkuser = filter[0]?.[0] === nftuserId
+
+     // console.log("checkjdjs", checkuser)
+     
 
 
 
@@ -313,16 +346,16 @@ const unfollowed = async () => {
 
                                 <Typography sx={{ cursor: "pointer" }}>
                                     <Typography className={classes.h4} variant="h4">{data?.responseResult?.userId?.followers?.length ? data?.responseResult?.userId?.followers?.length : "0"}</Typography>
-                                   {/* {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
+                                    {/* {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
                                     <Typography onClick={Followers} color="rgb(112, 122, 131)">Followers</Typography>} */}
-                                    {followed == true ?<Typography  onClick={unfollowed}color="rgb(112, 122, 131)">Unfollowed</Typography>:
-                                    <Typography onClick={Followers} color="rgb(112, 122, 131)">Followers</Typography>}
+                                    {followed == true ? <Typography onClick={unfollowed} color="rgb(112, 122, 131)">Unfollowed</Typography> :
+                                        <Typography onClick={Followers} color="rgb(112, 122, 131)">Followers</Typography>}
                                 </Typography>
 
                                 <Typography>
                                     <Typography className={classes.h4} variant="h4">{data?.responseResult?.userId?.followings?.length ? data?.responseResult?.userId?.followings?.length : "0"}</Typography>
                                     <Typography color="rgb(112, 122, 131)">Following</Typography>
-                                    
+
                                 </Typography>
                             </Box>
                         </Box>
@@ -364,7 +397,7 @@ const unfollowed = async () => {
                     </Grid>
                 </Grid>
                 <Box>
-                    <ProfileTab DataByUserName={dataByUserName} LoadingData={loadingData} addFriends={Addfriends} FollowerId={followerId} NftuserId={nftuserId}/>
+                    <ProfileTab DataByUserName={dataByUserName} LoadingData={loadingData} addFriends={Addfriends} FollowerId={followerId} NftuserId={nftuserId} checkFriends={checkuser} />
                 </Box>
             </Container>
         </>

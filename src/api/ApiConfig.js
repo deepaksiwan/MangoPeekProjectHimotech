@@ -1,5 +1,5 @@
-  //const url = "http://localhost:8900";
- const url = "https://d38fct4fjh0hub.cloudfront.net"
+ const url = "http://localhost:8900";
+ //const url = "https://d38fct4fjh0hub.cloudfront.net"
 
 
 
@@ -10,8 +10,8 @@ const ApiConfigs = {
   AddMessage: `${url}/api/v1/chat/AddMessage`,
   Getfriends: `${url}/api/v1/chat/getFriends`,
   getUser: `${url}/api/v1/chat/getUser`,
-  AddComment: `${url}/api/v1/chat/Comments`,
-  getComment: `${url}/api/v1/chat/getcomments`,
+  AddNftComments: `${url}/api/v1/nftCollection/AddNftComments`,
+  getNftComments: `${url}/api/v1/nftCollection/getNftComments`,
   AddConversation: `${url}/api/v1/chat/AddConversation`,
   follow: `${url}/api/v1/chat/follow`,
   unFollow: `${url}/api/v1/chat/unFollow`,

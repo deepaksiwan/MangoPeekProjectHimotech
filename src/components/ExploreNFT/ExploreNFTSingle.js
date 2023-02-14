@@ -169,7 +169,7 @@ const ExploreNFTSingle = (props) => {
       }
     );
 
-    //console.log("datasmdfdnsm", data)
+    
 
   
 
@@ -193,16 +193,6 @@ const ExploreNFTSingle = (props) => {
       }
     );
 
-
-
-    
-
-    
-
-
-    //  console.log("dataEthereum", dataEthereum?.pages[0]?.responseResult[1]?.userId?.firstName
-     
- 
 
 
   const handleChange = (event) => {

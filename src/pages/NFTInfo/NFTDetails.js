@@ -396,11 +396,6 @@ const NFTDetails = () => {
         );
 
 
-
-
-
-
-
     return (
         <>
             <Container>
@@ -442,13 +437,13 @@ const NFTDetails = () => {
                                                 </Box>
                                                 <Typography style={{ color: '#606060' }}>3k</Typography>
                                             </Box>
-                                            <Box sx={{ display: 'flex', marginLeft: '10px' }}>
+                                            {/* <Box sx={{ display: 'flex', marginLeft: '10px' }}>
                                                 <Checkbox
                                                     {...label}
                                                     icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
                                                     checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
                                                 />
-                                            </Box>
+                                            </Box> */}
                                         </Box>
                                     </Box>
                                     <Box sx={{ textAlign: "center" }}>
@@ -762,13 +757,13 @@ const NFTDetails = () => {
                                                                             <Typography className={classes.para}>{v?.lazyDescription ? v?.lazyDescription : "@loremipsum"}</Typography>
                                                                         </Box>
                                                                     </Box>
-                                                                    <Box sx={{ marginLeft: '10px' }}>
+                                                                    {/* <Box sx={{ marginLeft: '10px' }}>
                                                                         <Checkbox
                                                                             {...label}
                                                                             icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
                                                                             checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
                                                                         />
-                                                                    </Box>
+                                                                    </Box> */}
                                                                 </Box>
                                                                 <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : <Loader />} width="100%"></Typography>
                                                                 <Box

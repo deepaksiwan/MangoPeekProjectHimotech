@@ -37,7 +37,9 @@ const useStyle = makeStyles({
         '@media(max-width : 900px)':{
             minHeight : '87vh', 
             '@media(max-width : 600px)':{
-                minHeight : '100vh',   
+                minHeight : '100vh',  
+                width: "326px",
+                
             }  
         }
     },
@@ -86,9 +88,15 @@ const useStyle = makeStyles({
     },
 
     menuposition: {
-        position: 'fixed',
+        //position: 'fixed',
         top: 0,
         marginTop: '5.8rem',
+        '@media(max-width : 600px)': {
+            width: '100% !important',
+            textAlign:"center",
+            marginTop: "1rem"
+        }
+        
     },
 
     explorenft: {
@@ -122,9 +130,9 @@ const useStyle = makeStyles({
     menuarrowbtn: {
         position: 'fixed',
         top: '20rem',
-        left: '32rem !important',
+        left: '36rem !important',
         '@media(max-width : 1200px)': {
-            left: '15.3rem',
+            left: '20rem !important',
         }
     },
     ption: {

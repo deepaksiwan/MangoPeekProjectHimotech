@@ -6,7 +6,7 @@ import { signup } from "../../api/ApiCall/signup";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { TextField, Box, Typography, Button, Grid, Container } from "@mui/material";
+import { TextField, Box, Typography, Button, Grid, Container, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { UserContext } from "../../context/User/UserContext";
 import { actionTypes } from "../../context/User/UserReducer"
@@ -110,15 +110,75 @@ const useStyle = makeStyles((theme) => ({
       padding: '0rem 0rem 1.5rem 0rem',
       textAlign: 'center',
     }
-  }
+  },
+  
 }));
 const Signup = () => {
   const classes = useStyle();
   const [, dispatch] = useContext(UserContext);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
-
   const navigate = useNavigate();
+
+
+  // Tooltips
+
+  const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const [open4, setOpen4] = React.useState(false);
+  const [open5, setOpen5] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose1 = () => {
+    setOpen1(false);
+  };
+
+  const handleOpen1 = () => {
+    setOpen1(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+
+  const handleOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const handleClose3 = () => {
+    setOpen3(false);
+  };
+
+  const handleOpen3 = () => {
+    setOpen3(true);
+  };
+
+  const handleClose4 = () => {
+    setOpen4(false);
+  };
+
+  const handleOpen4 = () => {
+    setOpen4(true);
+  };
+  const handleClose5 = () => {
+    setOpen5(false);
+  };
+
+  const handleOpen5 = () => {
+    setOpen5(true);
+  };
+
+
+
 
   const { mutateAsync } = useMutation(
     "signup",
@@ -162,6 +222,7 @@ const Signup = () => {
   const handleMouseDownPassword2 = (event) => {
     event.preventDefault();
   };
+  
 
   const formik = useFormik({
     initialValues: {
@@ -175,29 +236,32 @@ const Signup = () => {
     validationSchema: Yup.object({
 
       firstName: Yup
-        .string()
+        .string().trim()
         .min(4, 'Firstname should be minimum 4 digit')
         .max(12, 'Firstname should be maximum 12 digit')
         .required('Enter valid firstname'),
 
 
       lastName: Yup
-        .string()
+        .string().trim()
         .max(12, 'lastname should be maximum 12 digit')
         .required('Enter valid lastname'),
 
-      userName: Yup.string()
+      userName: Yup
+        .string().trim()
         .required('Enter valid username')
         .min(4, 'Username must be at least 4 digit')
         .max(20, 'Username must not exceed 20 digit'),
 
 
       email: Yup.string()
+        .trim()
         .email("Invalid email format")
         .required("Enter valid email address"),
 
 
       password: Yup.string()
+        .trim()
         .required('Enter valid password')
         .min(8, 'Password should be 8 to 26 digit')
         .max(26, 'Password should be 8 to 26 digit'),
@@ -205,7 +269,7 @@ const Signup = () => {
 
 
       conformPassword: Yup
-        .string()
+        .string().trim()
         .oneOf([Yup.ref("password")], "Password not match")
         .required("Enter same password")
 
@@ -257,122 +321,134 @@ const Signup = () => {
 
                   <Box className={classes.bothinput}>
                     <Box className={classes.inpwidth}>
-                      <TextField
-                        className={classes.input}
-                        variant="standard"
-                        id="firstName"
-                        name="firstName"
-                        placeholder="FirstName"
-                        value={formik.values.firstName}
-                        onChange={formik.handleChange}
-                        sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
-                        InputProps={{
-                          disableUnderline: true,
-                        }}
-                      />
+                      <Tooltip classes={{ tooltps: classes.tooltps }} open={open} onClose={handleClose} onOpen={handleOpen} title="Firstname" placement="top-start">
+                        <TextField
+                          className={classes.input}
+                          variant="standard"
+                          id="firstName"
+                          name="firstName"
+                          placeholder="FirstName"
+                          value={formik.values.firstName}
+                          onChange={formik.handleChange}
+                          sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
+                          InputProps={{
+                            disableUnderline: true,
+                          }}
+                        />
+                      </Tooltip>
                       <Typography className={classes.error}> {formik.touched.firstName && formik.errors.firstName}</Typography>
                     </Box>
                     <Box className={classes.inpwidth}>
-                      <TextField
-                        className={classes.input}
-                        variant="standard"
-                        id="lastName"
-                        name="lastName"
-                        placeholder="LastName"
-                        value={formik.values.lastName}
-                        onChange={formik.handleChange}
-                        sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
-                        InputProps={{
-                          disableUnderline: true,
-                        }}
-                      />
+                      <Tooltip className={classes.tooltps} open={open1} onClose={handleClose1} onOpen={handleOpen1} title="Lastname" placement="top-start">
+                        <TextField
+                          className={classes.input}
+                          variant="standard"
+                          id="lastName"
+                          name="lastName"
+                          placeholder="LastName"
+                          value={formik.values.lastName}
+                          onChange={formik.handleChange}
+                          sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
+                          InputProps={{
+                            disableUnderline: true,
+                          }}
+                        />
+                      </Tooltip>
                       <Typography className={classes.error}> {formik.touched.lastName && formik.errors.lastName}</Typography>
                     </Box>
                   </Box>
-
-                  <TextField
-                    className={classes.input}
-                    variant="standard"
-                    id="userName"
-                    name="userName"
-                    placeholder="Username"
-                    value={formik.values.userName}
-                    onChange={formik.handleChange}
-                    sx={{ display: "flex", marginTop: '10px', boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                  />
+                  <Tooltip className={classes.tooltps} open={open2} onClose={handleClose2} onOpen={handleOpen2} title="Username" placement="top-start">
+                    <TextField
+                      className={classes.input}
+                      variant="standard"
+                      id="userName"
+                      name="userName"
+                      placeholder="Username"
+                      value={formik.values.userName}
+                      onChange={formik.handleChange}
+                      sx={{ display: "flex", marginTop: '10px', boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                    />
+                  </Tooltip>
                   <Typography className={classes.error}> {formik.touched.userName && formik.errors.userName}</Typography>
-                  <TextField
-                    className={classes.input}
-                    variant="standard"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                  />
+                  <Tooltip className={classes.tooltps} open={open3} onClose={handleClose3} onOpen={handleOpen3} title="Email" placement="top-start">
+                    <TextField
+                      className={classes.input}
+                      variant="standard"
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                    />
+                  </Tooltip>
+
                   <Typography className={classes.error}> {formik.touched.email && formik.errors.email}</Typography>
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}>
-                    <OutlinedInput
-                      className={classes.input2}
-                      sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
-                      variant="standard"
-                      name="password"
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      placeholder="password"
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    // label="Password"
-                    />
+                    <Tooltip className={classes.tooltps} open={open4} onClose={handleClose4} onOpen={handleOpen4} title="Password" placement="top-start">
+                      <OutlinedInput
+                        className={classes.input2}
+                        sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
+                        variant="standard"
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        placeholder="password"
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                      // label="Password"
+                      />
+                    </Tooltip>
                   </FormControl>
                   <Typography className={classes.error}> {formik.touched.password && formik.errors.password}</Typography>
 
 
                   <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}>
-                    <OutlinedInput
-                      className={classes.input2}
-                      sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
-                      variant="standard"
-                      name="conformPassword"
-                      value={formik.values.conformPassword}
-                      onChange={formik.handleChange}
-                      placeholder="confirmPassword"
-                      id="conformPassword"
-                      type={showPassword2 ? 'text' : 'password'}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword2}
-                            onMouseDown={handleMouseDownPassword2}
-                            edge="end"
-                          >
-                            {showPassword2 ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    // label="Password"
-                    />
+                    <Tooltip className={classes.tooltps} open={open5} onClose={handleClose5} onOpen={handleOpen5} title="ConformPassword" placement="top-start">
+                      <OutlinedInput
+                        className={classes.input2}
+                        sx={{ border: 'none', "& fieldset": { border: 'none' }, }}
+                        variant="standard"
+                        name="conformPassword"
+                        value={formik.values.conformPassword}
+                        onChange={formik.handleChange}
+                        placeholder="confirmPassword"
+                        id="conformPassword"
+                        type={showPassword2 ? 'text' : 'password'}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword2}
+                              onMouseDown={handleMouseDownPassword2}
+                              edge="end"
+                            >
+                              {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                      // label="Password"
+                      />
+                    </Tooltip>
                   </FormControl>
                   <Typography className={classes.error}> {formik.touched.conformPassword && formik.errors.conformPassword}</Typography>
 

@@ -82,13 +82,13 @@ const NftByUserName = ({ AllNftDataByUserName, Datafetch }) => {
                                     <Typography className={classes.para}>{v?.metadata?.description}</Typography>
                                  </Box>
                               </Box>
-                              <Box sx={{ marginLeft: '10px' }}>
+                              {/* <Box sx={{ marginLeft: '10px' }}>
                                  <Checkbox
                                     {...label}
                                     icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
                                     checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
                                  />
-                              </Box>
+                              </Box> */}
                            </Box>
                            <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} width="100%"></Typography>
                            <Box

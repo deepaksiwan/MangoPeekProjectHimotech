@@ -23,8 +23,6 @@ const useStyle = makeStyles({
 const Explorepagewithsidemenu = () => {
     const classes = useStyle();
 
-
-
     return (
         <>
             <Container>

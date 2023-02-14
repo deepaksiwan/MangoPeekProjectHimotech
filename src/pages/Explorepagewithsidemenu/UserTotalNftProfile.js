@@ -45,7 +45,16 @@ const useStyle = makeStyles({
       padding: '10px',
       borderRadius: '30px',
       boxShadow: '0px 4px 22px -3px #00000036',
+      '@media(min-width : 900px)': {
+         width: "100%"
+     }
    },
+   // grid:{
+   //    '@media(min-width : 900px)': {
+   //       marginTop: "-5px !important"
+   //   }
+
+   // },
 
    owned: {
       display: 'flex',
@@ -72,10 +81,10 @@ const UserTotalNftProfile = ({NftDataByUserName,LoadingData}) => {
    return (
       <>
          <Box>
-            <Grid container spacing={2} justifyContent="center">
+            <Grid className={classes.grid} container spacing={2} justifyContent="center">
                {LoadingData == false ? NftDataByUserName?.responseResult?.map((v, id) => {
                   return (
-                     <Grid item lg={4} md={4} xs={12} key={id}>
+                     <Grid item lg={4} md={4} xs={12} key={id} >
                         <Box className={classes.nftinfobx2}>
                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                               <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>
@@ -85,13 +94,13 @@ const UserTotalNftProfile = ({NftDataByUserName,LoadingData}) => {
                                     <Typography className={classes.para}>{v?.metadata?.description}</Typography>
                                  </Box>
                               </Box>
-                              <Box sx={{ marginLeft: '10px' }}>
+                              {/* <Box sx={{ marginLeft: '10px' }}>
                                  <Checkbox
                                     {...label}
                                     icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
                                     checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
                                  />
-                              </Box>
+                              </Box> */}
                            </Box>
                            <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} width="100%"></Typography>
                            <Box

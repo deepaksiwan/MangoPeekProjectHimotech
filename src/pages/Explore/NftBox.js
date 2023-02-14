@@ -303,7 +303,7 @@ const NftBox = (props) => {
   //     queryClient.invalidateQueries("getAllNftByChainName")
   //     queryClient.invalidateQueries("getAllPinnedNftByUserName");
   //     queryClient.invalidateQueries("getAllNftByChainName");
-      
+
   //   }
   // }
   // )
@@ -341,10 +341,14 @@ const NftBox = (props) => {
   // }
   // )
 
+  // console.log("likescount", props?.data?.likes?.length)
+
+
   const { mutateAsync: mutateAsyncToggleLike, data, isLoading: isLoadingtoggleLike } = useMutation(
     "toggleLike",
     toggleLike, {
     onSuccess: (data) => {
+      console.log("togglelike", data)
       // console.log(data?.responseResult);
       // queryClient.invalidateQueries("getAllHideNft");
       // queryClient.invalidateQueries("getNftCollectionByChainNameAndUserName")
@@ -371,13 +375,15 @@ const NftBox = (props) => {
 
   useOnClick(ref, () => setShow(false));
 
-  
+
 
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   const label2 = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-  //console.log("like", props?.data.likesCount)
+  
+
+
 
   return (
     <>
@@ -394,18 +400,18 @@ const NftBox = (props) => {
                     {/* <Typography className={classes.para}>{props?.data?.lazyDescription?props?.data?.lazyDescription:"@loremipsum"}</Typography> */}
                   </Box>
                 </Box>
-                <Box sx={{ alignSelf: 'center' }}>
+                {/* <Box sx={{ alignSelf: 'center' }}>
                   <Checkbox
                     {...label}
                     icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
                     checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
                   />
-                </Box>
+                </Box> */}
               </Box>
 
-              
+
               <img src={props?.data.metadata.image ? props?.data.metadata.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} alt="" onClick={clickable} />
-            
+
               <Box
                 sx={{
                   display: "flex",
@@ -417,11 +423,11 @@ const NftBox = (props) => {
                 <Box>
                   <Box sx={{ display: 'flex' }} >
                     <Box sx={{ display: 'flex' }}>
-                      <Badge badgeContent={`${(data?.responseResult?.likes?.length || props?.data.likesCount || props?.data.likes.length)}`} color="primary">
+                      <Badge badgeContent={`${(data?.responseResult?.likes?.length || props?.data?.likesCount || props?.data?.likes?.length)}`} color="primary">
                         <Checkbox className={classes.fav}
                           onClick={async () => {
                             try {
-                              await mutateAsyncToggleLike({ token: localStorage.getItem("token"), nftCollectionId: props?.data._id })
+                              await mutateAsyncToggleLike({ token: localStorage.getItem("token"), nftCollectionId: props?.data?._id })
                             } catch (error) {
                             }
                           }}
@@ -436,13 +442,13 @@ const NftBox = (props) => {
                               }}
                             />
                           }
-                          checked={data?.responseResult?.likes.includes(userData?._id) || props?.data?.likes.includes(userData?._id)}
+                          checked={data?.responseResult?.likes.includes(userData?._id) || props?.data?.likes?.includes(userData?._id)}
                         />
                       </Badge>
-                      <Typography style={{ color: '#606060' }}>1.2k</Typography>
+                      <Typography style={{ color: '#606060' }}>{props?.data?.likes?.length}</Typography>
                     </Box>
 
-                    <Box sx={{ display: 'flex', marginLeft: '10px' }}>
+                    <Box sx={{ display: 'flex', marginLeft: '10px' }} onClick={clickable}>
                       <Box sx={{ alignSelf: 'center' }}>
                         <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
                       </Box>
@@ -455,7 +461,7 @@ const NftBox = (props) => {
                     <RemoveRedEyeIcon />
                   </Badge></Typography> */}
                   {/* <Typography variant="body2"><RemoveRedEyeIcon/>{" "}{props?.data.viewsCount}</Typography> */}
-                  <Button className={classes.viewbtn} endIcon={<Box sx={{ ml: '10px' }} component="img" src={crossarrow} />}>
+                  <Button className={classes.viewbtn} endIcon={<Box sx={{ ml: '10px' }} component="img" src={crossarrow} />} onClick={clickable}>
                     More
                   </Button>
                 </Box>

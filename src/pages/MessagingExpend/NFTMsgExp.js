@@ -163,25 +163,7 @@ const label2 = { inputProps: { "aria-label": "Checkbox demo" } };
 
 
 
-const expnft = [
-    {
-        id: 1,
-        Image: exp1,
-    },
 
-    {
-        id: 2,
-        Image: exp2,
-    },
-    {
-        id: 3,
-        Image: exp3,
-    },
-    {
-        id: 4,
-        Image: exp4,
-    }
-]
 
 
 
@@ -193,6 +175,7 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
     const [onlineFriends, setOnlineFriends] = useState([]);
     const [userChatfourNftData, setFourNftData] = useState([])
     const [{  userData }, ] = useContext(UserContext);
+    const [allreadyfriends, setallreadyfriends] = useState([])
 
 
 
@@ -206,6 +189,11 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
     useEffect(() => {
         getFriends();
     }, [currentUser?._id]);
+
+
+   // console.log("friends", friends)
+   //console.log("onlineFriendssdfs", onlineFriends)
+    
 
 
 

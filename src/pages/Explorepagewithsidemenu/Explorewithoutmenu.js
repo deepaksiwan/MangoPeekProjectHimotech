@@ -12,6 +12,7 @@ const useStyle = makeStyles({
         padding: '30px 0px 80px 0px',
         display: 'flex',
         
+        
 
         
     },

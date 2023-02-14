@@ -220,9 +220,7 @@ const EditProfile = ({ heading, userName }) => {
     }
   );
   const [bio, setBio] = useState(null)
-  const [twitterName, setTwitterName] = useState(null);
-  const [facebookName, setFacebookName] = useState(null);
-  const [personalURL, setPersonalURL] = useState(null);
+  
   const [email, setEmail] = useState(null);
   const [username, setUsername] = useState(null);
   const [firstName, setfirstName] = useState(null)
@@ -235,9 +233,7 @@ const EditProfile = ({ heading, userName }) => {
       setlastName(userData?.lastName);
       setEmail(userData?.email);
       setUsername(userData?.userName);
-      setTwitterName(userData?.twitterName);
-      setFacebookName(userData?.facebookName);
-      setPersonalURL(userData?.personalURL);
+      
     }
   }, [userData])
 
@@ -253,17 +249,15 @@ const EditProfile = ({ heading, userName }) => {
       email: "",
       username: "",
       bio: "",
-      twitterName: "",
-      facebookName: "",
-      personalURL: "",
+      
     },
     validationSchema: Yup.object({
       bio: Yup.string()
         .min(0, "Too Short!")
         .max(160, "Too Long!"),
-      twitterName: Yup.string(),
-      facebookName: Yup.string(),
-      personalURL: Yup.string()
+      // twitterName: Yup.string(),
+      // facebookName: Yup.string(),
+      // personalURL: Yup.string()
     }),
     validateOnChange: (values) => {
       setWords(values.bio)
@@ -278,9 +272,9 @@ const EditProfile = ({ heading, userName }) => {
             email: email,
             userName: username,
             bio: bio,
-            twitterName: twitterName,
-            facebookName: facebookName,
-            personalURL: personalURL,
+            // twitterName: twitterName,
+            // facebookName: facebookName,
+            // personalURL: personalURL,
           },
         });
         handleClose();
@@ -350,7 +344,7 @@ const EditProfile = ({ heading, userName }) => {
           <Box className={classes.bag8}>
             <form onSubmit={formik.handleSubmit}>
 
-              <label htmlFor="bio">firstName:</label>
+              <label htmlFor="bio">Firstname:</label>
 
               <TextField
                 fullWidth
@@ -360,18 +354,18 @@ const EditProfile = ({ heading, userName }) => {
                 placeholder="Enter Your firstName"
                 className={classes.bag10}
                 value={firstName}
-                onChange={(e) => setfirstName(e.target.value)}
+                onChange={(e) => setfirstName(e.target.value.trim())}
                 error={
-                  formik.touched.email &&
-                  Boolean(formik.errors.email)
+                  formik.touched.firstName &&
+                  Boolean(formik.errors.firstName)
                 }
                 helperText={
-                  formik.touched.email && formik.errors.email
+                  formik.touched.firstName && formik.errors.firstName
                 }
 
               />
 
-              <label htmlFor="bio">lastName:</label>
+              <label htmlFor="bio">Lastname:</label>
 
               <TextField
                 fullWidth
@@ -381,13 +375,13 @@ const EditProfile = ({ heading, userName }) => {
                 placeholder="Enter Your lastName"
                 className={classes.bag10}
                 value={lastName}
-                onChange={(e) => setlastName(e.target.value)}
+                onChange={(e) => setlastName(e.target.value.trim())}
                 error={
-                  formik.touched.email &&
-                  Boolean(formik.errors.email)
+                  formik.touched.lastName &&
+                  Boolean(formik.errors.lastName)
                 }
                 helperText={
-                  formik.touched.email && formik.errors.email
+                  formik.touched.lastName && formik.errors.lastName
                 }
 
               />
@@ -403,7 +397,7 @@ const EditProfile = ({ heading, userName }) => {
                 placeholder="Enter Your Email"
                 className={classes.bag10}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.trim())}
                 error={
                   formik.touched.email &&
                   Boolean(formik.errors.email)
@@ -462,7 +456,6 @@ const EditProfile = ({ heading, userName }) => {
               <h2>Links</h2>
 
               {/* <label htmlFor="bio">Twitter Name:</label>
-
               <TextField
                 fullWidth
                 name="twitterName"
@@ -513,7 +506,6 @@ const EditProfile = ({ heading, userName }) => {
                   ),
                 }}
               />
-
               <label htmlFor="">Personal URL:</label>
               <TextField
                 fullWidth

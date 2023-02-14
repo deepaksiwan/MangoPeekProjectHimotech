@@ -18,6 +18,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import NftByUserName from "./NftByUserName";
 
+
 const useStyle = makeStyles({
     listpadding: {
         padding: '0px 10px !important',
@@ -129,11 +130,11 @@ const top100Films = [
 ];
 
 
-export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, addFriends, FollowerId, NftuserId}) {
+export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, addFriends, FollowerId, NftuserId, checkFriends}) {
     const classes = useStyle();
     let dataByUserName = DataByUserName;
     let LoadingDatafetch = LoadingData;
-    console.log("nfsdjnfdsj", dataByUserName)
+   // console.log("dataByUserName", dataByUserName?.responseResult?.userId === NftuserId)
 
    
 
@@ -207,11 +208,16 @@ export default function UnstyledTabsIntroduction({DataByUserName,LoadingData, ad
                     </ListItem>
 
                     <ListItem className={classes.listpadding}>
-                        {(FollowerId !== NftuserId && DataByUserName !== undefined)&&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
+                        {(FollowerId !== NftuserId && DataByUserName !== undefined)  && checkFriends === false &&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
                             <Typography component="img" src={userplus}></Typography>
                         </Link>}
+                          {/* {(FollowerId !== NftuserId && DataByUserName !== undefined)  &&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
+                            <Typography component="img" src={userplus}></Typography>
+                        </Link>} */}
+                         {/* {checkFriends[0] === "" &&<Link className={classes.roundbutn} to="#" onClick={addFriends}>
+                            <Typography component="img" src={userplus}></Typography>
+                        </Link>}   */}
                     </ListItem>
-
                     <ListItem className={classes.listpadding}>
                         <Link className={classes.roundbutn} to="#">
                             <Typography component="img" src={notification2}></Typography>

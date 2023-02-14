@@ -156,6 +156,7 @@ const NotLinkWallet = () => {
         },
         // refetchOnWindowFocus: false,
     });
+    console.log("viewWallet", data)
 
     const { isError, error, mutateAsync } = useMutation("addWallet", addWallet, {
         onSuccess: (data) => {
@@ -195,15 +196,9 @@ const NotLinkWallet = () => {
             onSuccess: (data) => {
                 try {
                     if (data.success === true) {
-                        // navigate("/wallet");
-                        // dispatch({ type: actionTypes.SET_TOKEN, value: data.token });
-                        // localStorage.setItem("data", data);
-                        // console.log(data);
                         refetch();
-                        // toast.success(JSON.stringify("You are signup Successfully"));
-                        // dispatch({ type: actionTypes.SET_USER, value: data.responseResult });
                     } else {
-                        // toast.error(JSON.stringify(data));
+                        
                     }
                 } catch (error) {
                     toast.error(JSON.stringify(error));

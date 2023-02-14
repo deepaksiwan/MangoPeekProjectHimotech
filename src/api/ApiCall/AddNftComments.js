@@ -1,20 +1,21 @@
 import axios from "axios";
 import ApiConfigs from "../ApiConfig";
 
-export const AddComment = async ({token,text, userId}) => {
-  console.log("text",text)
+export const AddNftComments = async ({nftId,text, userId}) => {
+  console.log("sdjnsjnds",text,userId)
+  
     try {
       const {data} = await axios({
-        method:'POST',
-        url:ApiConfigs.AddComment, 
-        headers:{
-          'authorization':`Bearer ${token}`,
+        method:'PUT',
+        url:ApiConfigs.AddNftComments, 
+        params:{
+          nftId:nftId
         },
         data:{
-          comment:{
+          comment:[{
             text: text,
             userId:userId
-          }
+          }]
         }
     });
   
