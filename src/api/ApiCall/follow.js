@@ -16,7 +16,7 @@ export const follow = async ({followerId, userId }) => {
 
       }
     });
-    console.log("dbsfnsdjm", data)
+    
     return data;
   } catch (error) {
     console.error(error, "hksdfdsfs");

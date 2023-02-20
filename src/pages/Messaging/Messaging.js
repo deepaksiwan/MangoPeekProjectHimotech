@@ -95,17 +95,17 @@ const useStyle = makeStyles({
 const Messaging = () => {
     const classes = useStyle();
     const [conversations, setConversations] = useState([]);
-   
+    const [userSearch, setUserSearch] = useState('')
+
 
     const [{ token, userData }, dispatch] = useContext(UserContext);
-    // console.log("userData", userData?._id)
 
 
 
     useEffect(() => {
         const getConversations = async () => {
             try {
-                const res = await axios.get(ApiConfigs?.getConversation+`/${userData?._id}`);
+                const res = await axios.get(ApiConfigs?.getConversation + `/${userData?._id}`);
                 setConversations(res.data);
             } catch (err) {
                 console.log(err);
@@ -114,7 +114,11 @@ const Messaging = () => {
         getConversations();
     }, [userData?._id]);
 
-    
+   
+
+
+
+
     return (
         <>
             <Container>
@@ -151,6 +155,10 @@ const Messaging = () => {
                                                     type="search"
                                                     variant="contained"
                                                     margin="normal"
+                                                    value={userSearch}
+                                                    onChange={(e) => {
+                                                        setUserSearch(e.target.value)
+                                                    }}
 
                                                     disableUnderline
                                                     InputProps={{
@@ -174,11 +182,30 @@ const Messaging = () => {
 
                                     <ListItem className={classes.listitem}>
                                         <Box className={classes.msgscroll}>
-                                            {conversations.map((c) => {
-                                                return (
-                                                    <MessagingComp Conversation={c} currentUser={userData} />
-                                                )
-                                            })}
+                                            {
+                                                conversations?.map((c) => {
+                                                    return (
+                                                        <Box >
+                                                            <MessagingComp Conversation={c} currentUser={userData} query={userSearch} />
+                                                        </Box>
+                                                    )
+                                                })
+                                            }
+                                            {/* {
+                                                conversations.filter((c) => {
+                                                    if (userSearch == "") {
+                                                        return c.members[0]?.senderId?.userName
+                                                    } else if (c?.members[0]?.senderId?.userName.toLowerCase().includes(userSearch?.toLowerCase())) {
+                                                        return c.userName
+                                                    }
+                                                }).map((c) => {
+                                                    return (
+                                                        <Box onClick={() => setCurrentChat(c)}>
+                                                            <MessagingComp Conversation={c} currentUser={userData} />
+                                                        </Box>
+                                                    )
+                                                })
+                                            } */}
                                         </Box>
                                     </ListItem>
                                 </List>
@@ -187,7 +214,7 @@ const Messaging = () => {
                         </Grid>
                         <Grid item lg={7} md={7} sm={5} xs={12}>
                             <Box className={classes.explorenft}>
-                                <NFTMsg  />
+                                <NFTMsg />
                             </Box>
                         </Grid>
                     </Grid>
@@ -199,3 +226,5 @@ const Messaging = () => {
 }
 
 export default Messaging
+
+

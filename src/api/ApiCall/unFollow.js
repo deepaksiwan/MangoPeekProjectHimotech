@@ -15,7 +15,7 @@ export const unFollow = async ({followerId, userId }) => {
 
       }
     });
-    console.log(data)
+    //console.log(data)
     return data;
   } catch (error) {
     

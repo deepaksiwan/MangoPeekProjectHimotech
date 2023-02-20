@@ -175,6 +175,8 @@ const useStyle = makeStyles({
 
 const MessageChat = ({ message, own }) => {
     const classes = useStyle();
+    //console.log("message", message)
+    //console.log("own", own)
     return (
       
 

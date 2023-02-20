@@ -157,7 +157,7 @@ const Withmenucomp = ({userProfile,  Dispatch, NftDataByUserName}) => {
         navigate("/login")
         
       };
-      console.log("userProfile", userProfile)
+      //console.log("userProfile", userProfile)
 
     
     return (

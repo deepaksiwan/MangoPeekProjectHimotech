@@ -2,7 +2,7 @@ import axios from "axios";
 import ApiConfigs from "../ApiConfig";
 
 export const AddNftComments = async ({nftId,text, userId}) => {
-  console.log("sdjnsjnds",text,userId)
+  //console.log("sdjnsjnds",text,userId)
   
     try {
       const {data} = await axios({

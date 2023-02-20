@@ -3,7 +3,7 @@ import ApiConfigs from "../ApiConfig";
 
 export const signup = async ({ firstName,lastName,userName,email,password, conformPassword }) => {
     try {
-      console.log(firstName);
+      //console.log(firstName);
       const { data } = await axios({
         method:'POST',
         url:ApiConfigs.signup, 

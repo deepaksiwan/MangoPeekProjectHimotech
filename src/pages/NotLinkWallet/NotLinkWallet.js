@@ -156,7 +156,7 @@ const NotLinkWallet = () => {
         },
         // refetchOnWindowFocus: false,
     });
-    console.log("viewWallet", data)
+    
 
     const { isError, error, mutateAsync } = useMutation("addWallet", addWallet, {
         onSuccess: (data) => {

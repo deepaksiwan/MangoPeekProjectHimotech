@@ -181,9 +181,11 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
 
     //getfriends get api call
     const getFriends = async () => {
-        const res = await axios.get(ApiConfigs?.Getfriends + `/${currentUser?._id}`);
+        const res = await axios.get(ApiConfigs?.Getfriends + `/${userData?._id}`);
         setFriends(res.data);
     };
+
+   
 
 
     useEffect(() => {
@@ -193,7 +195,7 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
 
    // console.log("friends", friends)
    //console.log("onlineFriendssdfs", onlineFriends)
-    
+    //  console.log("ChatUserId", ChatUserId)
 
 
 
