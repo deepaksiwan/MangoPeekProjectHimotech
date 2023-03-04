@@ -179,7 +179,7 @@ const MessageChat = ({ message, own }) => {
     //console.log("own", own)
     return (
       
-
+        
         <>  
         <ListItem className={classes.listitemright} >
             <Box className={own?classes.msgmainboxright: classes.msgmainboxleft}>
@@ -189,7 +189,6 @@ const MessageChat = ({ message, own }) => {
                 <Typography className={own?classes.chatimgright: classes.listitemleft}>
                     {message?message?.text: ""}
                 </Typography>
-
             </Box>
         </ListItem>
 

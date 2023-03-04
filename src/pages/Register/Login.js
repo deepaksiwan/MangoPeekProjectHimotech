@@ -117,6 +117,9 @@ const Login = () => {
   const navigate = useNavigate();
   const [{ token, userData }, dispatch] = useContext(UserContext);
   //const [, dispatch] = useContext(UserContext);
+  const [isValidate, setIsValidate] = useState(false)
+
+  console.log("isValidate", isValidate)
 
 
   //Tooltips
@@ -160,7 +163,8 @@ const Login = () => {
             });
             toast.success(JSON.stringify(data.responseMessage));
           } else {
-            toast.error(JSON.stringify(data.responseMessage));
+            setIsValidate(data?.responseCode == 401)
+            // toast.error(JSON.stringify(data.responseMessage));
           }
         } catch (error) {
           toast.error(JSON.stringify(error.message));
@@ -182,7 +186,7 @@ const Login = () => {
   //   }
   // )
 
-  
+   
   const formik = useFormik({
     validateOnMount: true,
     initialValues: {
@@ -270,8 +274,6 @@ const Login = () => {
                     />
                     </Tooltip>
                     <Typography className={classes.error}> {formik.values.email?formik.errors.email:""}</Typography>
-
-
                     <FormControl sx={{ marginTop: '10px', width: '100%', borderRadius: "30px", }}  >
                     <Tooltip  className={classes.tooltps} 
                      open={open1} onClose={handleClose1} onOpen={handleOpen1} title="Password"  placement="top-start">
@@ -309,10 +311,12 @@ const Login = () => {
                       />
                       </Tooltip>
                     </FormControl>
-                    <Typography className={classes.error}> {formik.values.password?formik.errors.password:""}</Typography>
+                    {/* <Typography className={classes.error}>{ formik.errors.password}</Typography> */}
+                   {isValidate === true && <Typography className={classes.error}>Password is Wrong</Typography>}
+                   
                     <Box height={10} />
                     <Box className={classes.btnwrp}>
-                      <Button className={classes.loginbtn} type="submit">Login</Button>
+                       <Button className={classes.loginbtn} type="submit">Login</Button>
                       <Button className={classes.signupbtn} onClick={RedirectRegister}>Register</Button>
                     </Box>
 

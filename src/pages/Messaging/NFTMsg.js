@@ -1,5 +1,6 @@
 import { Badge, Box, Button, Checkbox, Grid, Typography } from "@mui/material";
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import arrowright from '../../../src/pages/images/arrowright.svg'
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
@@ -12,40 +13,9 @@ import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftBy
 import { useQuery } from "react-query";
 import Loader from "../Loader/Loader"
 import { UserContext } from "../../context/User/UserContext";
+import { toggleLike } from "../../api/ApiCall/nftCollection/toggleLike";
+import { useMutation, useQueryClient } from "react-query";
 
-
-// const Nftdat = [
-//     {
-//         id: 1,
-//         Image: nftimg,
-//         title: "Lorem Ipsum"
-//     },
-//     {
-//         id: 2,
-//         Image: nftimg,
-//         title: "Lorem Ipsum"
-//     },
-//     {
-//         id: 3,
-//         Image: nftimg,
-//         title: "Lorem Ipsum"
-//     },
-//     {
-//         id: 4,
-//         Image: nftimg,
-//         title: "Lorem Ipsum"
-//     },
-//     {
-//         id: 5,
-//         Image: nftimg,
-//         title: "Lorem Ipsum"
-//     },
-//     {
-//         id: 6,
-//         Image: nftimg,
-//         title: "Lorem Ipsum"
-//     },
-// ]
 
 
 const useStyle = makeStyles({
@@ -219,103 +189,102 @@ const label2 = { inputProps: { "aria-label": "Checkbox demo" } };
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
-
-const NFTMsg = () => {
+const NFTMsg = (props) => {
     const classes = useStyle();
-   
-
-    const [{userData},] = useContext(UserContext);
-
-    const { data: dataByUserName, isLoading: loadingData } = useQuery(
-        ["getAllNftByUserName", userData?.userName],
-        () => getAllNftByUserName(userData?.userName), {
+    const navigate = useNavigate()
+    const [words, setWords] = useState(0)
+    const [{ userData },] = useContext(UserContext);
+    const { mutateAsync: mutateAsyncToggleLike, data, isLoading: isLoadingtoggleLike } = useMutation(
+        "toggleLike",
+        toggleLike, {
         onSuccess: (data) => {
-            //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
         }
-    },
+    }
     )
+    const count = (e) => {
+        setWords(0 + e.target.value.length)
+        setLazyDescription(e.target.value);
+    }
+
+
+    const clickable = (() => {
+        navigate(`/nftpage/${props?.data?._id}`)
+    })
 
     return (
         <>
             <Box>
-                <Grid container spacing={2} justifyContent="center">
-                    {loadingData == false ? dataByUserName?.responseResult?.map((v, id) => {
-                        return (
-                            <Grid item lg={6} md={6} xs={12} key={id}>
-                                <Box className={classes.nftinfobx2}>
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>
-                                            <Box><Typography component="img" className={classes.ellipsenft} src={ellipsenft}></Typography></Box>
-                                            <Box sx={{ alignSelf: 'center', ml: '10px' }}>
-                                                <Typography variant="h6" className={classes.hding6}>{v?.metadata?.name}</Typography>
-                                                <Typography className={classes.para}>{v?.metadata?.description}</Typography>
-                                            </Box>
-                                        </Box>
-                                        {/* <Box sx={{ marginLeft: '10px' }}>
-                                            <Checkbox
-                                                {...label}
-                                                icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
-                                                checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
-                                            />
-                                        </Box> */}
-                                    </Box>
-                                    <Typography component="img" src={v.metadata.image ? v?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} width="100%"></Typography>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                            padding: "10px"
-                                        }}
-                                    >
-                                        <Box>
-                                            <Box sx={{ display: 'flex', alignItems: 'center' }} >
-                                                <Box sx={{ display: 'flex' }}>
-                                                    <Badge color="primary">
-                                                        <Checkbox className={classes.fav}
-                                                            {...label2}
-                                                            icon={<FavoriteBorder sx={{ color: "#FF5F29" }} />}
-                                                            checkedIcon={
-                                                                <Favorite
-                                                                    indeterminateIcon
-                                                                    sx={{ color: "#FF5F29" }}
-                                                                />
-                                                            }
-                                                        />
-                                                    </Badge>
-                                                    <Typography style={{ color: '#606060' }}>{v?.likes?.length}</Typography>
-                                                </Box>
-
-                                                <Box sx={{ display: 'flex', marginLeft: '10px' }}>
-                                                    <Box sx={{ alignSelf: 'center' }}>
-                                                        <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
-                                                    </Box>
-                                                    <Typography style={{ color: '#606060' }}>3k</Typography>
-                                                </Box>
-
-                                            </Box>
-                                        </Box>
-                                        <Box sx={{ textAlign: "center" }}>
-                                            <Button className={classes.viewbtn} endIcon={<Box sx={{ ml: '10px' }} component="img" src={arrowright} />}>
-                                                More
-                                            </Button>
-                                        </Box>
-                                    </Box>
+                <Box className={classes.nftinfobx2}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', margin: '5px 0px 15px 0px' }}>
+                            <Box><Typography component="img" className={classes.ellipsenft} src={ellipsenft}></Typography></Box>
+                            <Box sx={{ alignSelf: 'center', ml: '10px' }}>
+                                <Typography variant="h6" className={classes.hding6}>{props?.data?.metadata?.name}</Typography>
+                                <Typography className={classes.para}>{props?.data?.metadata?.description}</Typography>
+                            </Box>
+                        </Box>
+                        {/* <Box sx={{ marginLeft: '10px' }}>
+                            <Checkbox
+                                {...label}
+                                icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
+                                checkedIcon={<BookmarkIcon sx={{ color: '#33CC33' }} />}
+                            />
+                        </Box> */}
+                    </Box>
+                    <Typography component="img" src={props?.data?.metadata?.image ? props?.data?.metadata?.image.replace("ipfs://", "https://wizard.mypinata.cloud/ipfs/") : ""} width="100%"></Typography>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "10px"
+                        }}
+                    >
+                        <Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }} >
+                                <Box sx={{ display: 'flex' }}>
+                                    <Badge badgeContent={`${(data?.responseResult?.likes?.length || props?.data?.likesCount || props?.data?.likes?.length)}`} color="primary">
+                                        <Checkbox className={classes.fav}
+                                            onClick={async () => {
+                                                try {
+                                                    await mutateAsyncToggleLike({ token: localStorage.getItem("token"), nftCollectionId: props?.data?._id })
+                                                } catch (error) {
+                                                }
+                                            }}
+                                            {...label2}
+                                            icon={<FavoriteBorder sx={{ color: "#FF5F29" }} />}
+                                            checkedIcon={
+                                                <Favorite
+                                                    indeterminateIcon
+                                                    sx={{ color: "#FF5F29" }}
+                                                    onClick={() => {
+                                                        setCount(count + 1);
+                                                    }}
+                                                />
+                                            }
+                                            checked={data?.responseResult?.likes.includes(userData?._id) || props?.data?.data?.likes?.includes(userData?._id)}
+                                        />
+                                    </Badge>
+                                    {/* <Typography style={{ color: '#606060' }}>{props?.data?.likes?.length}</Typography> */}
                                 </Box>
-                            </Grid>
 
-                        )
-                    })
-                        : <Typography className={classes.NoNftAdded}>
-                            <Loader />
-                        </Typography>
+                                <Box sx={{ display: 'flex', marginLeft: '10px' }}>
+                                    <Box sx={{ alignSelf: 'center' }}>
+                                        <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
+                                    </Box>
+                                    <Typography style={{ color: '#606060' }}>{props?.data?.comment?.length}</Typography>
+                                </Box>
 
-                    }
-                    {dataByUserName?.responseResult?.length == 0 || dataByUserName == undefined &&
-                        <Typography className={classes.NoNftAdded}>
-                            No NFTs Added Yet
-                        </Typography>}
-                </Grid>
+                            </Box>
+                        </Box>
+                        <Box sx={{ textAlign: "center" }} onClick={clickable}>
+                            <Button className={classes.viewbtn} endIcon={<Box sx={{ ml: '10px' }} component="img" src={arrowright} />}>
+                                More
+                            </Button>
+                        </Box>
+                    </Box>
+                </Box>
+
             </Box>
 
         </>

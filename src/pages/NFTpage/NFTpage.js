@@ -53,7 +53,8 @@ import {
 import { LIVE_DOMAIN } from "../../config";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-// import { toggleLike } from "../../api/ApiCall/nftCollection/toggleLike";
+import { toggleLike } from "../../api/ApiCall/nftCollection/toggleLike";
+import Comment from "./Comment";
 
 
 const useStyle = makeStyles((theme) => ({
@@ -356,17 +357,17 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const NFTpage = () => {
   const navigate = useNavigate();
-  //const queryClient = useQueryClient();
+
   const classes = useStyle();
   const { id: nftCollectionId } = useParams();
- // const [nftUserId, setNftUserId] = useState(null)
   const [nftuserName, setNftUserName] = useState(null)
-  //const [nftUserPic, setNftuserPic] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
- // const [text, setNewComment] = useState("");
   const [allComment, setAllComment] = useState([])
   const [{ userData }] = useContext(UserContext);
   const scrollRef = useRef();
+  const [likes, setlikes] = useState(0)
+  const [comment, setComment] = useState(0)
+  const [replyInput, setReplyInput] = useState(false)
 
   const { data } = useQuery(["getNftByNftCollectionId", nftCollectionId],
     () => getNftByNftCollectionId(nftCollectionId), {
@@ -379,16 +380,19 @@ const NFTpage = () => {
     }
   })
 
+
+
+
   let nftId = nftCollectionId;
   let getNftId = nftCollectionId
 
-  const { mutateAsync, error, isSuccess} = useMutation(["AddNftComments", nftId],
+  const { mutateAsync, error, isSuccess } = useMutation(["AddNftComments", nftId],
     (nftId) => AddNftComments(nftId), {
     onSuccess: (data) => {
       try {
         if (data.success == true) {
           refetch()
-          
+
         }
 
 
@@ -401,13 +405,17 @@ const NFTpage = () => {
   }
   );
 
+  
 
-  const { data: getNftcomment, isLoading: loadingData , refetch} = useQuery(["getNftComments", getNftId],
+
+
+
+  const { data: getNftcomment, isLoading: loadingData, refetch } = useQuery(["getNftComments", getNftId],
     () => getNftComments(getNftId), {
     onSuccess: (data) => {
       refetch()
-      if (data.success === true) {
-        
+      if (data?.success === true) {
+
       }
 
     }
@@ -420,7 +428,7 @@ const NFTpage = () => {
 
   }, [getNftcomment?.result?.comment])
 
-  
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [allComment]);
@@ -428,10 +436,11 @@ const NFTpage = () => {
 
 
   useEffect(() => {
-    if (data?.responseResult) {
+    if (data?.responseResult || data?.responseResult?.comment?.length) {
       //setNftUserId(data?.responseResult?.userId?._id)
       setNftUserName(data?.responseResult?.userId?.userName)
       //setNftuserPic(data?.responseResult?.userId?.profilePic)
+      setComment(data?.responseResult?.comment?.length)
     }
   }, [data?.responseResult])
 
@@ -464,11 +473,29 @@ const NFTpage = () => {
     navigate(`/profile/${nftCollectionId}`)
   }
 
-  const handleRedirectHomePage = ()=>{
+  const handleRedirectHomePage = () => {
     navigate("/")
   }
 
- 
+
+  const { mutateAsync: mutateAsyncToggleLike, data: Data, isLoading: isLoadingtoggleLike } = useMutation(
+    "toggleLike",
+    toggleLike, {
+    onSuccess: (Data) => {
+
+
+    }
+  }
+  )
+
+  useEffect(() => {
+    if (Data?.responseResult?.likes?.length) {
+      setlikes(Data?.responseResult?.likes?.length);
+    }
+  }, [Data])
+
+
+  
 
 
   return (
@@ -507,26 +534,36 @@ const NFTpage = () => {
                     <Box>
                       <Box sx={{ display: 'flex', alignItems: 'center' }} >
                         <Box sx={{ display: 'flex' }}>
-                          <Badge color="primary">
+                          <Badge badgeContent={`${(likes || data?.responseResult?.likes?.length)}`} color="primary">
                             <Checkbox className={classes.fav}
+                              onClick={async () => {
+                                try {
+                                  await mutateAsyncToggleLike({ token: localStorage.getItem("token"), nftCollectionId: nftCollectionId })
+                                } catch (error) {
+                                }
+                              }}
                               {...label2}
                               icon={<FavoriteBorder sx={{ color: "#FF5F29" }} />}
                               checkedIcon={
                                 <Favorite
                                   indeterminateIcon
                                   sx={{ color: "#FF5F29" }}
+                                  onClick={() => {
+                                    setCount(count + 1);
+                                  }}
                                 />
                               }
+                              checked={Data?.responseResult?.likes.includes(userData?._id)}
                             />
                           </Badge>
-                          <Typography style={{ color: '#606060' }}>{data?.responseResult?.likes?.length ? data?.responseResult?.likes?.length : "0"}</Typography>
+                          {/* <Typography style={{ color: '#606060' }}>{Data?.responseResult?.likes?.length ? Data?.responseResult?.likes?.length : "0"}</Typography> */}
                         </Box>
 
                         <Box sx={{ display: 'flex', marginLeft: '10px' }}>
                           <Box sx={{ alignSelf: 'center' }}>
                             <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
                           </Box>
-                          <Typography style={{ color: '#606060' }}>3k</Typography>
+                          <Typography style={{ color: '#606060' }}>{comment}</Typography>
                         </Box>
 
                       </Box>
@@ -577,57 +614,21 @@ const NFTpage = () => {
                       <Typography variant="h5" color="#929292">Comments</Typography>
                     </ListItem>
                     <Box className={classes.maplistbox}>
-                      {allComment && allComment.slice(-10)?.map((v, id) => {
+                      {allComment?.length > 0 && allComment?.map((rootComment) => {
                         return (
-                          <ListItem className={classes.nftcommentlist} ref={scrollRef} >
-                            <Box className={classes.mainlistdiv}>
-                              <Box className={classes.nftlistleft}>
-                                {/* <Box><Typography component="img" src={ellipsenft}></Typography></Box> */}
-                                <Box ml={2}>
-                                  <Box>
-                                    <Typography fontWeight={700} color="#FB9A7A">{v.userId?.firstName}</Typography>
-                                    <Typography fontWeight={700} color="#80DC80">@{v.userId?.userName}
-                                      <Typography component="span" color="#626161" ml={1}>{v?.text}</Typography>
-                                    </Typography>
-                                  </Box>
-                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <Box sx={{ display: 'flex' }}>
-                                      <Badge color="primary">
-                                        <Checkbox className={classes.fav}
-                                          {...label3}
-                                          icon={<FavoriteBorder sx={{ color: "#FF5F29" }} />}
-                                          checkedIcon={
-                                            <Favorite
-                                              indeterminateIcon
-                                              sx={{ color: "#FF5F29" }}
-                                            />
-                                          }
-                                        />
-                                      </Badge>
-                                      <Typography style={{ color: '#606060' }}>{data?.responseResult?.likes?.length}</Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', marginLeft: '10px' }}>
-                                      <Box sx={{ alignSelf: 'center' }}>
-                                        <img style={{ margin: '0px', borderRadius: '0px', width: '20px' }} src={messagestore} alt=""></img>
-                                      </Box>
-                                      <Typography style={{ color: '#606060' }}>{allComment?.length}</Typography>
-                                    </Box>
+                          <Comment
+                            key={rootComment?._id}
+                            comment={rootComment}
+                            replies={rootComment.id}
+                            nftId={nftId}
 
-                                  </Box>
-                                </Box>
-                              </Box>
-                              <Box mr={1}>
-                                <Typography color="#AFAFAF">{moment(v?.time).format('DD/MM/YYYY')}</Typography>
-                                {/* moment(time, "HH:mm").format("hh:mm A") */}
-                                <Typography component="img" src={nftdwrrow}></Typography>
-                              </Box>
-                            </Box>
-                          </ListItem>
+
+                          />
                         )
                       }
-                      ) 
+                      )
                       }
-                      {allComment?.length === 0 &&<Box sx={{textAlign: "center", color:"#929292"}}>No Any comment add</Box>}
+                      {allComment?.length === 0 && <Box sx={{ textAlign: "center", color: "#929292" }}>No Any comment add</Box>}
                     </Box>
 
                   </List>

@@ -317,8 +317,6 @@ const Signup = () => {
             <Grid item lg={7} md={7} sm={12} xs={12}>
               <Box className={classes.formbox}>
                 <form onSubmit={formik.handleSubmit} fullWidth >
-
-
                   <Box className={classes.bothinput}>
                     <Box className={classes.inpwidth}>
                       <Tooltip classes={{ tooltps: classes.tooltps }} open={open} onClose={handleClose} onOpen={handleOpen} title="Firstname" placement="top-start">
@@ -327,7 +325,7 @@ const Signup = () => {
                           variant="standard"
                           id="firstName"
                           name="firstName"
-                          placeholder="FirstName"
+                          placeholder="First Name"
                           value={formik.values.firstName}
                           onChange={formik.handleChange}
                           sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
@@ -345,7 +343,7 @@ const Signup = () => {
                           variant="standard"
                           id="lastName"
                           name="lastName"
-                          placeholder="LastName"
+                          placeholder="Last Name"
                           value={formik.values.lastName}
                           onChange={formik.handleChange}
                           sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
@@ -379,7 +377,7 @@ const Signup = () => {
                       variant="standard"
                       id="email"
                       name="email"
-                      placeholder="Email"
+                      placeholder="email@gmail.com"
                       value={formik.values.email}
                       onChange={formik.handleChange}
                       sx={{ display: "flex", boxShadow: "rgb(0 0 0 / 5%) 0px 2px 16px 0px", borderRadius: "8px", }}
@@ -400,7 +398,7 @@ const Signup = () => {
                         name="password"
                         value={formik.values.password}
                         onChange={formik.handleChange}
-                        placeholder="password"
+                        placeholder=" New Password"
                         id="password"
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
@@ -431,10 +429,10 @@ const Signup = () => {
                         name="conformPassword"
                         value={formik.values.conformPassword}
                         onChange={formik.handleChange}
-                        placeholder="confirmPassword"
+                        placeholder="Re-enter Password"
                         id="conformPassword"
                         type={showPassword2 ? 'text' : 'password'}
-                        endAdornment={
+                        endAdornment={  
                           <InputAdornment position="end">
                             <IconButton
                               aria-label="toggle password visibility"

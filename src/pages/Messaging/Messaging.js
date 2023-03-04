@@ -15,7 +15,10 @@ import ApiConfigs from "../../api/ApiConfig";
 import { Link } from "react-router-dom";
 // import { io } from "socket.io-client";
 import { UserContext } from "../../context/User/UserContext";
+import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftByUserName"
+import { useQuery, useInfiniteQuery } from "react-query";
 // import ApiConfigs from "../../api/ApiConfig";
+import Loader from "../Loader/Loader"
 
 
 
@@ -71,7 +74,7 @@ const useStyle = makeStyles({
         backgroundImage: 'linear-gradient(180deg, #ebeaea, #efefef3b) !important',
         borderRadius: '30px',
         padding: '10px',
-        width: '180px !important',
+        width: '280px !important',
         borderColor: 'transparent',
         display: 'flex'
 
@@ -114,8 +117,16 @@ const Messaging = () => {
         getConversations();
     }, [userData?._id]);
 
-   
 
+
+    const { data: dataByUserName, isLoading: loadingData } = useQuery(
+        ["getAllNftByUserName", userData?.userName],
+        () => getAllNftByUserName(userData?.userName), {
+        onSuccess: (data) => {
+            //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
+        }
+    },
+    )
 
 
 
@@ -138,13 +149,13 @@ const Messaging = () => {
                                     </ListItem>
 
                                     <ListItem className={classes.listitem1}>
-                                        <IconButton
+                                        {/* <IconButton
                                             aria-label="more"
                                             id="long-button"
                                             aria-haspopup="true"
                                         >
                                             <MoreVertIcon />
-                                        </IconButton>
+                                        </IconButton> */}
                                         <Box className={classes.searchinpt}>
                                             <Box sx={{ alignSelf: 'center' }}>
                                                 <Typography width={30} component="img" src={search}></Typography>
@@ -173,7 +184,7 @@ const Messaging = () => {
                                             </Box>
                                         </Box>
                                         <Box sx={{ marginLeft: "20px" }}>
-                                            <Link to="/messaging">
+                                            <Link to="/messagingExpend">
                                                 <Typography component="img" src={sidemenuarrow}></Typography>
                                             </Link>
 
@@ -182,30 +193,17 @@ const Messaging = () => {
 
                                     <ListItem className={classes.listitem}>
                                         <Box className={classes.msgscroll}>
-                                            {
+                                            {conversations?.length > 0 ?
                                                 conversations?.map((c) => {
                                                     return (
                                                         <Box >
                                                             <MessagingComp Conversation={c} currentUser={userData} query={userSearch} />
                                                         </Box>
                                                     )
-                                                })
+                                                }) : <Typography sx={{ textAlign: "center" }}>No Any Friend to chatList</Typography>
                                             }
-                                            {/* {
-                                                conversations.filter((c) => {
-                                                    if (userSearch == "") {
-                                                        return c.members[0]?.senderId?.userName
-                                                    } else if (c?.members[0]?.senderId?.userName.toLowerCase().includes(userSearch?.toLowerCase())) {
-                                                        return c.userName
-                                                    }
-                                                }).map((c) => {
-                                                    return (
-                                                        <Box onClick={() => setCurrentChat(c)}>
-                                                            <MessagingComp Conversation={c} currentUser={userData} />
-                                                        </Box>
-                                                    )
-                                                })
-                                            } */}
+                                           
+
                                         </Box>
                                     </ListItem>
                                 </List>
@@ -214,7 +212,23 @@ const Messaging = () => {
                         </Grid>
                         <Grid item lg={7} md={7} sm={5} xs={12}>
                             <Box className={classes.explorenft}>
-                                <NFTMsg />
+                                <Grid container spacing={2} justifyContent="center">
+                                    {loadingData == false ? dataByUserName?.responseResult.map((nfts, index) => {
+                                        return (
+                                            <Grid item lg={6} md={6} xs={12} key={index}>
+                                                <NFTMsg data={nfts} />
+                                            </Grid>
+
+                                        )
+                                    }) : <Typography className={classes.NoNftAdded}>
+                                        <Loader />
+                                    </Typography>
+                                    }
+                                    {dataByUserName?.responseResult?.length == 0 || dataByUserName == undefined &&
+                                        <Typography className={classes.NoNftAdded}>
+                                            No NFTs Added Yet
+                                        </Typography>}
+                                </Grid>
                             </Box>
                         </Grid>
                     </Grid>

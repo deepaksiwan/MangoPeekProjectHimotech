@@ -18,8 +18,12 @@ const useStyle = makeStyles({
     },
     menuposition: {
         position: 'fixed',
+
         top: 0,
         marginTop: '9.10rem',
+        '@media(max-width : 600px)': {
+          zIndex:"1 !important"
+        },
         '@media(max-width : 1200px)': {
             marginTop: '12.1rem',
             '@media(max-width : 900px)': {
@@ -33,6 +37,10 @@ const useStyle = makeStyles({
     explorenft: {
         marginLeft: '5rem',
         marginTop: '1rem',
+        '@media(max-width : 600px)': {
+            margin: "0px !important",
+ 
+         }
        
     },
 

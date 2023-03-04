@@ -164,6 +164,7 @@ const ExploreNFTSingle = (props) => {
       {
         onSuccess: (data) => {
           setTotalNftPages(Math.ceil(data?.responseResult.length));
+
         }
 
       }
@@ -193,12 +194,14 @@ const ExploreNFTSingle = (props) => {
       }
     );
 
-
-
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
   const classes = useStyle();
+
+ 
+
+  
 
 
   return (
@@ -215,6 +218,7 @@ const ExploreNFTSingle = (props) => {
               {dataEthereum?.pages[0] &&
                 dataEthereum?.pages.map((page, i) =>
                   page?.responseResult?.map((nfts, index) => {
+                 
                     return (
                       <>
                         <Grid item key={index} lg={4} md={4} sm={6}>

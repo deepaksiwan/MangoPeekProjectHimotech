@@ -183,7 +183,9 @@ const EditProfile = ({ heading, userName }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate()
   const bodyRef = useRef()
+  
   // const [words, setWords] = useState("")
+
 
   // const count = () => {
   //  return  words.count();
@@ -198,7 +200,7 @@ const EditProfile = ({ heading, userName }) => {
     {
       onSuccess: (data, value) => {
         try {
-          if (data?.success) {
+          if (data?.responseCodes == 200) {
             queryClient?.invalidateQueries("getProfileByUserName")
             queryClient?.invalidateQueries("viewProfile")
             dispatch({ type: actionTypes.UPDATE_USER, value: data?.data });
@@ -206,13 +208,14 @@ const EditProfile = ({ heading, userName }) => {
             //navigate(`/${data?.data.userName}`)
           }
           if (data.success == false) {
-            toast.error(data?.message);
-            //navigate(`/${userName}`)
+            toast.error(data?.messagefirstname);
+            
+            //navigate(`/${userName}`)  
 
           }
         } catch (error) {
           if (value) {
-            toast.error("Email Or Username already exist");
+            toast.error("Somethings went Wrong");
           }
         }
       },
@@ -255,9 +258,7 @@ const EditProfile = ({ heading, userName }) => {
       bio: Yup.string()
         .min(0, "Too Short!")
         .max(160, "Too Long!"),
-      // twitterName: Yup.string(),
-      // facebookName: Yup.string(),
-      // personalURL: Yup.string()
+      
     }),
     validateOnChange: (values) => {
       setWords(values.bio)
@@ -272,9 +273,7 @@ const EditProfile = ({ heading, userName }) => {
             email: email,
             userName: username,
             bio: bio,
-            // twitterName: twitterName,
-            // facebookName: facebookName,
-            // personalURL: personalURL,
+            
           },
         });
         handleClose();
@@ -364,7 +363,7 @@ const EditProfile = ({ heading, userName }) => {
                 }
 
               />
-
+               
               <label htmlFor="bio">Lastname:</label>
 
               <TextField
@@ -385,6 +384,7 @@ const EditProfile = ({ heading, userName }) => {
                 }
 
               />
+              
 
 
               <label htmlFor="bio">Email:</label>

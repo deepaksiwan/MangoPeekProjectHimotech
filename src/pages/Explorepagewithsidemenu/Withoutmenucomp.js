@@ -1,5 +1,5 @@
-import { Badge, Box, Button, Container, List, ListItem, Typography, } from "@mui/material";
-import React from "react";
+import { Badge, Box, Button, Container, List, ListItem, Typography, Tooltip } from "@mui/material";
+import React,{useContext} from "react";
 import Footer2 from "../../components/Footer/Footer2";
 import Header2 from "../../components/Header/Header2";
 import { makeStyles } from "@mui/styles";
@@ -12,6 +12,8 @@ import collectionimgs from '../../../src/pages/images/collectionimgs.svg'
 import saveimg from '../../../src/pages/images/saveimg.svg'
 import logoutimg from '../../../src/pages/images/logoutimg.svg'
 import sidemenuarrow from '../../../src/pages/images/sidemenuarrow.svg'
+import { UserContext } from "../../context/User/UserContext";
+import { actionTypes } from "../../context/User/UserReducer";
 
 
 
@@ -26,7 +28,7 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef',
         padding: '10px 10px 7px 10px !important',
         display: 'inline-block',
-        
+
     },
     listpadding: {
         padding: '10px 0px !important'
@@ -64,26 +66,82 @@ const useStyle = makeStyles({
         position: 'fixed',
         top: 0,
         marginTop: '9.10rem',
-        
+
     },
 
     explorenft: {
         marginLeft: '5rem',
-        marginTop: '1rem'
+        marginTop: '1rem',
+        '@media(max-width : 600px)': {
+            margin: "0px !important",
+ 
+         }
+        
+        
+
     }
 })
 
 
-const Withoutmenucomp = ({messagecount}) => {
+const Withoutmenucomp = ({ messagecount }) => {
     const classes = useStyle();
+    const [{ token, userData }, dispatch] = useContext(UserContext);
+    const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+    const [open3, setOpen3] = React.useState(false);
+    const [open4, setOpen4] = React.useState(false);
+    const [open5, setOpen5] = React.useState(false);
+    const handleClose1 = () => {
+        setOpen1(false);
+    };
+
+    const handleOpen1 = () => {
+        setOpen1(true);
+    };
+
+    const handleClose2 = () => {
+        setOpen2(false);
+    };
+
+    const handleOpen2 = () => {
+        setOpen2(true);
+    };
+
+    const handleClose3 = () => {
+        setOpen3(false);
+    };
+
+    const handleOpen3 = () => {
+        setOpen3(true);
+    };
+    const handleClose4 = () => {
+        setOpen4(false);
+    };
+
+    const handleOpen4 = () => {
+        setOpen4(true);
+    };
+
+    const handleClose5 = () => {
+        setOpen5(false);
+    };
+
+    const handleOpen5 = () => {
+        setOpen5(true);
+    };
+
+    const logout = (e) => {
+        e.preventDefault();
+        dispatch({ type: actionTypes.SET_TOKEN, value: null });
+        localStorage.clear();
+        
+    };
 
 
 
     return (
         <>
-
             <List className={classes.sidemenu}>
-
                 <ListItem className={classes.listpadding}>
                     <Link className={classes.roundbutn} to="/explorepage_with_side_menu">
                         <Typography width={20} component="img" src={sidemenuarrow}></Typography>
@@ -91,7 +149,9 @@ const Withoutmenucomp = ({messagecount}) => {
                 </ListItem>
 
                 <ListItem className={classes.listpadding}>
-                    <Badge className={classes.badge} badgeContent={messagecount} sx={{
+                    <Tooltip className={classes.tooltps}
+                        open={open1} onClose={handleClose1} onOpen={handleOpen1} title="Messaging" placement="top-start">
+                        {/* <Badge className={classes.badge} badgeContent={messagecount} sx={{
                         "& .MuiBadge-badge": {
                             backgroundColor: '#FFCC00', color: '#fff',
                             marginRight: '7px',
@@ -101,45 +161,53 @@ const Withoutmenucomp = ({messagecount}) => {
                         <Link className={classes.roundbutn2} to="/messaging">
                             <Typography width={20} component="img" src={message}></Typography>
                         </Link>
-                    </Badge>
+                    </Badge> */}
+                        <Link className={classes.roundbutn2} to="/messaging">
+                            <Typography width={20} component="img" src={message}></Typography>
+                        </Link>
+                    </Tooltip>
                 </ListItem>
 
-                <ListItem className={classes.listpadding}>
-                    <Badge className={classes.badge} badgeContent={3} sx={{
-                        "& .MuiBadge-badge": {
-                            backgroundColor: '#ff5f29', color: '#fff',
-                            marginRight: '7px',
-                            marginTop: '-5px',
-                        },
-                    }}>
-                        <Link className={classes.roundbutn2} to="/notification">
+                {/* <ListItem className={classes.listpadding}>
+                    <Link className={classes.roundbutn2} to="/notification">
                             <Typography width={20} component="img" src={notification}></Typography>
                         </Link>
-                    </Badge>
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem className={classes.listpadding}>
-                    <Link className={classes.roundbutn} to="/create">
+                <Tooltip className={classes.tooltps}
+                        open={open4} onClose={handleClose4} onOpen={handleOpen4} title="Create Post" placement="top-start">
+                    <Link className={classes.roundbutn} to="">
                         <Typography width={20} component="img" src={add}></Typography>
                     </Link>
+                    </Tooltip>
                 </ListItem>
 
                 <ListItem className={classes.listpadding}>
+                <Tooltip className={classes.tooltps}
+                        open={open5} onClose={handleClose5} onOpen={handleOpen5} title="My Collection" placement="top-start">
                     <Link className={classes.roundbutn} to="#">
                         <Typography width={20} component="img" src={collectionimgs}></Typography>
                     </Link>
+                    </Tooltip>
                 </ListItem>
 
                 <ListItem className={classes.listpadding}>
+                <Tooltip className={classes.tooltps}
+                        open={open3} onClose={handleClose3} onOpen={handleOpen3} title="Save" placement="top-start">
                     <Link className={classes.roundbutn} to="#">
                         <Typography width={20} component="img" src={saveimg}></Typography>
                     </Link>
+                    </Tooltip>
                 </ListItem>
 
-                <ListItem className={classes.listpadding}>
-                    <Link className={classes.roundbutn} to="#">
+                <ListItem className={classes.listpadding} onClick={logout}>
+                    <Tooltip className={classes.tooltps}
+                        open={open2} onClose={handleClose2} onOpen={handleOpen2} title="Logout" placement="top-start">
+                    <Link className={classes.roundbutn} >
                         <Typography width={20} component="img" src={logoutimg}></Typography>
                     </Link>
+                    </Tooltip>
                 </ListItem>
 
             </List>

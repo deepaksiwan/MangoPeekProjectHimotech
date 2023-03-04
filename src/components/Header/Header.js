@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Box from "@mui/material/Box";
-import {  InputAdornment, Input, IconButton, Dialog } from "@mui/material";
+import { InputAdornment, Input, IconButton, Dialog, Tooltip, Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -20,7 +20,10 @@ import notification from '../../../src/pages/images/notification.svg'
 import message from '../../../src/pages/images/message.svg'
 import SearchIcon from '@mui/icons-material/Search';
 import search from '../../../src/pages/images/search.svg'
+import { actionTypes } from "../../context/User/UserReducer";
 import MenuIcon from '@mui/icons-material/Menu';
+import { Menu, MenuItem } from '@material-ui/core';
+import { display } from "@mui/system";
 
 
 
@@ -56,14 +59,14 @@ const useStyle = makeStyles((theme) => ({
 
   logomob: {
     width: '70px',
-    '@media(max-width : 900px)':{
+    '@media(max-width : 900px)': {
       width: '40px',
     }
   },
 
   logocontmob: {
     width: '90px',
-    '@media(max-width : 900px)':{
+    '@media(max-width : 900px)': {
       width: '60px',
     }
   },
@@ -109,6 +112,40 @@ const useStyle = makeStyles((theme) => ({
     }
     // boxShadow: 'inset 0 0 10px #00000029',
   },
+
+  getStarted: {
+    color: '#9B9B9B !important',
+    padding: '14px 30px !important',
+    transition: '0.5s !important',
+    fontWeight: '500 !important',
+    borderRadius: '30px !important',
+    background: 'linear-gradient(180deg, #ebeaea, #efefef3b)',
+    backgroundColor: 'transparent !important',
+    boxShadow: 'none !important',
+    '&:hover': {
+        boxShadow: '0px 2px 17px -4px #00000078 !important'
+    },
+    '@media(max-width : 600px)': {
+        width: '100% !important'
+    }
+},
+
+  
+
+  sidemenubtn: {
+    color: "#9B9B9B !important",
+    padding: "14px 30px !important",
+    background: "linear-gradient(180deg, #ebeaea, #efefef3b)",
+    boxShadow: "none !important",
+    transition: "0.5s !important",
+    fontWeight: "500 !important",
+    borderRadius: "30px !important",
+    backgroundColor: "transparent !important",
+    '&:hover': {
+      boxShadow: '0px 2px 17px -4px #00000078 !important'
+    },
+
+  },
   navend: {
     display: 'flex',
   },
@@ -120,21 +157,22 @@ const useStyle = makeStyles((theme) => ({
     display: 'flex !important',
     justifyContent: 'space-between',
     padding: ' 0.5rem 11rem 0rem 11rem !important',
-    '@media(max-width : 1200px)':{
-      padding : '0.5rem 4rem 0rem 4rem !important'
+    '@media(max-width : 1200px)': {
+      padding: '0.5rem 4rem 0rem 4rem !important'
     }
   },
   listpadding: {
     padding: '0px 10px !important'
   },
-  listpaddingmob : {
-    justifyContent : 'center !important'
+  listpaddingmob: {
+    justifyContent: 'center !important',
+    display:"flex"
   },
   badge: {
     marginTop: '10px',
   },
   desktopwrp: {
-    backgroundColor : '#fff !important',
+    backgroundColor: '#fff !important',
     position: 'fixed !important',
     right: 0,
     left: 0,
@@ -180,13 +218,35 @@ const useStyle = makeStyles((theme) => ({
   mobappbar: {
     boxShadow: '0px 2px 4px -1px rgb(0 0 0 / 4%), 0px 4px 5px 0px rgb(0 0 0 / 2%), 0px 1px 10px 0px rgb(0 0 0 / 2%) !important'
   },
-  hdrlistbox2 : {
-    backgroundColor : '#fff',
-    minHeight : '100vh'
+  hdrlistbox2: {
+    backgroundColor: '#fff',
+    minHeight: '100vh'
   },
-  navendmob : {
-    textAlign : 'center'
-  }
+  navendmob: {
+    textAlign: 'center'
+  },
+  menuItem: {
+    backgroundColor: 'transparent !important',
+    '&:hover': {
+      backgroundColor: 'transparent !important'
+    }
+  },
+  menustyle: {
+    "& .MuiPaper-root": {
+      borderRadius: "1rem",
+      marginTop: "64px",
+      marginLeft: "-8rem !important",
+      borderRadius: "10px !important",
+      backgroundColor: "#f1f1f1"
+    },
+    '@media(max-width : 600px)': {
+      "& .MuiPaper-root": {
+        marginLeft: "-1rem !important",
+
+      }
+    }
+
+  },
 
 }));
 
@@ -196,11 +256,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Header = () => {
   const [{ token, userData }, dispatch] = useContext(UserContext);
-  
   const navigate = useNavigate();
-  
-  
-  
+  const [open1, setOpen1] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open5 = Boolean(anchorEl);
+
+
+
 
   const classes = useStyle();
   const [open, setOpen] = React.useState(false);
@@ -213,7 +276,42 @@ const Header = () => {
     setOpen(false);
   };
 
-  
+  const handleClose1 = () => {
+    setOpen1(false);
+  };
+
+  const handleOpen1 = () => {
+    setOpen1(true);
+  };
+
+
+  const handleClose3 = () => {
+    setOpen3(false);
+  };
+
+  const handleOpen3 = () => {
+    setOpen3(true);
+  };
+
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch({ type: actionTypes.SET_TOKEN, value: null });
+    localStorage.clear();
+    // navigate("/login")
+
+  };
+
+
 
 
   return (
@@ -240,9 +338,9 @@ const Header = () => {
                   style={{}}
                   className={classes.ghjk}
                 >
-                  <Box sx={{display : 'flex'}}>
-                  <Typography className={classes.logo} component="img" src={logo}></Typography>
-                  <Typography className={classes.logocont} component="img" src={logocont}></Typography>
+                  <Box sx={{ display: 'flex' }}>
+                    <Typography className={classes.logo} component="img" src={logo}></Typography>
+                    <Typography className={classes.logocont} component="img" src={logocont}></Typography>
                   </Box>
                 </Link>
               </Typography>
@@ -274,65 +372,84 @@ const Header = () => {
                   </Box>
 
                 </ListItem>
+                <Tooltip className={classes.tooltps}
+                  open={open1} onClose={handleClose1} onOpen={handleOpen1} title="Messaging" placement="top-start">
+                  <ListItem className={classes.listpadding}>
 
-                <ListItem className={classes.listpadding}>
-                  <Badge className={classes.badge} badgeContent={8} sx={{
-                    "& .MuiBadge-badge": {
-                      backgroundColor: '#FFCC00', color: '#fff'
-                    },
-                  }}>
                     <Link className={classes.roundbutn2} to="/messaging">
                       <Typography width={20} component="img" src={message}></Typography>
                     </Link>
-                  </Badge>
-                </ListItem>
-
-                <ListItem className={classes.listpadding}>
-                  <Badge className={classes.badge} badgeContent={3} sx={{
-                    "& .MuiBadge-badge": {
-                      backgroundColor: '#ff5f29', color: '#fff'
-                    },
-                  }}>
-                    <Link className={classes.roundbutn2} to="/notification">
-                      <Typography width={20} component="img" src={notification}></Typography>
-                    </Link>
-                  </Badge>
-                </ListItem>
-
-
-                <ListItem className={classes.listpadding}>
+                  </ListItem>
+                </Tooltip>
+                {/* <Tooltip className={classes.tooltps}
+                  open={open3} onClose={handleClose3} onOpen={handleOpen3} title="Notification" placement="top-start">
+                  <ListItem className={classes.listpadding}>
+                    <Badge className={classes.badge} badgeContent={3} sx={{
+                      "& .MuiBadge-badge": {
+                        backgroundColor: '#ff5f29', color: '#fff'
+                      },
+                    }}>
+                      <Link className={classes.roundbutn2} to="/notification">
+                        <Typography width={20} component="img" src={notification}></Typography>
+                      </Link>
+                    </Badge>
+                  </ListItem>
+                </Tooltip> */}
+                {/* <ListItem className={classes.listpadding}>
                   <Link className={classes.roundbutn} to="/create">
                     <Typography width={20} component="img" src={add}></Typography>
                   </Link>
-                </ListItem>
+                </ListItem> */}
 
               </List>
             </Box>
             <List className={classes.navend}>
-
               <ListItem className={classes.listpadding}>
-                <Link className={classes.textbutn} to="/explorepage_without_side_menu">
-                  Explore
-                </Link>
+                {!token ? <Link className={classes.getStarted} to="/login">
+                  Get Started
+                </Link> :
+                  <MenuIcon sx={{ cursor: "pointer", fontSize: "2rem" }} onClick={handleClick} />
+                }
               </ListItem>
+              <Menu
+                className={classes.menustyle}
+                id="long-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={open5}
+                onClose={handleClose}
 
-              <ListItem className={classes.listpadding}>
-                <Link className={classes.roundbutn}  to="/not_link_wallet">
+              >
+                <MenuItem className={classes.menuItem} onClick={handleClose} >
+                  <Link className={classes.sidemenubtn} to="/explorepage_without_side_menu">
+                    Explore
+                  </Link>
+
+                </MenuItem>
+                <MenuItem className={classes.menuItem} onClick={handleClose}>
+                  <Typography className={classes.sidemenubtn} onClick={logout}>
+                    Logout
+                  </Typography>
+                </MenuItem>
+
+              </Menu>
+
+              {/* <ListItem className={classes.listpadding}>
+                <Link className={classes.roundbutn} to="/not_link_wallet">
                   <Typography width={20} component="img" src={setting}></Typography>
                 </Link>
               </ListItem>
 
-              {!token &&<ListItem className={classes.listpadding}>
+              {!token && <ListItem className={classes.listpadding}>
                 <Link className={classes.roundbutn} to="/register">
                   <Typography width={20} component="img" src={user}></Typography>
                 </Link>
-              </ListItem>}
+              </ListItem>} */}
 
             </List>
           </Toolbar>
 
         </AppBar>
-
 
         <Box className={classes.mobile}>
           <Box className={classes.mobhdrbox}>
@@ -343,9 +460,9 @@ const Header = () => {
                   style={{}}
                   className={classes.ghjk}
                 >
-                  <Box sx={{display : 'flex'}}>
-                  <Typography className={classes.logomob} component="img" src={logo}></Typography>
-                  <Typography className={classes.logocontmob} component="img" src={logocont}></Typography>
+                  <Box sx={{ display: 'flex' }}>
+                    <Typography className={classes.logomob} component="img" src={logo}></Typography>
+                    <Typography className={classes.logocontmob} component="img" src={logocont}></Typography>
                   </Box>
                 </Link>
               </Box>
@@ -368,7 +485,7 @@ const Header = () => {
               onClose={handleClose2}
               TransitionComponent={Transition}
             >
-              <AppBar sx={{ position: 'relative', padding : 0 }}
+              <AppBar sx={{ position: 'relative', padding: 0 }}
                 className={classes.mobappbar}
               >
                 <Toolbar className={classes.mobtoolbar}>
@@ -415,7 +532,7 @@ const Header = () => {
                     </ListItem>
 
                     <ListItem className={classes.listpaddingmob}>
-                      <Badge className={classes.badge} badgeContent={8} sx={{
+                      {/* <Badge className={classes.badge} badgeContent={8} sx={{
                         "& .MuiBadge-badge": {
                           backgroundColor: '#FFCC00', color: '#fff'
                         },
@@ -423,10 +540,13 @@ const Header = () => {
                         <Link className={classes.roundbutn2} to="/messaging">
                           <Typography width={20} component="img" src={message}></Typography>
                         </Link>
-                      </Badge>
+                      </Badge> */}
+                      <Link className={classes.roundbutn2} to="/messaging">
+                        <Typography width={20} component="img" src={message}></Typography>
+                      </Link>
                     </ListItem>
 
-                    <ListItem className={classes.listpaddingmob}>
+                    {/* <ListItem className={classes.listpaddingmob}>
                       <Badge className={classes.badge} badgeContent={3} sx={{
                         "& .MuiBadge-badge": {
                           backgroundColor: '#ff5f29', color: '#fff'
@@ -436,36 +556,35 @@ const Header = () => {
                           <Typography width={20} component="img" src={notification}></Typography>
                         </Link>
                       </Badge>
-                    </ListItem>
+                    </ListItem> */}
 
 
-                    <ListItem className={classes.listpaddingmob}>
+                    {/* <ListItem className={classes.listpaddingmob}>
                       <Link className={classes.roundbutn} to="/create">
                         <Typography width={20} component="img" src={add}></Typography>
                       </Link>
-                    </ListItem>
+                    </ListItem> */}
+                   <ListItem className={classes.listpaddingmob}>
+                   {!token ? <Link className={classes.textbutn} to="/login">
+                      Get Started
+                    </Link> :
+                      <>
+                     
+                       <ListItem className={classes.listpaddingmob} onClick={handleClose} >
+                          <Link className={classes.sidemenubtn} to="/explorepage_without_side_menu">
+                            Explore
+                          </Link>
 
-                  </List>
-
-                  <List className={classes.navendmob}>
-
-                    <ListItem className={classes.listpaddingmob}>
-                      <Link className={classes.textbutn} to="/not_link_wallet">
-                        Explore
-                      </Link>
-                    </ListItem>
-
-                    <ListItem className={classes.listpaddingmob}>
-                      <Link className={classes.roundbutn} to="#">
-                        <Typography width={20} component="img" src={setting}></Typography>
-                      </Link>
-                    </ListItem>
-
-                    <ListItem className={classes.listpaddingmob}>
-                      <Link className={classes.roundbutn} to="/register">
-                        <Typography width={20} component="img" src={user}></Typography>
-                      </Link>
-                    </ListItem>
+                        </ListItem>
+                        <ListItem className={classes.listpaddingmob} onClick={handleClose}>
+                          <Typography className={classes.sidemenubtn} onClick={logout}>
+                            Logout
+                          </Typography>
+                        </ListItem>
+                       
+                      </>
+                    }
+                   </ListItem>
 
                   </List>
                 </Box>
@@ -474,12 +593,8 @@ const Header = () => {
             </Dialog>
           </Box>
         </Box>
-
-
-
-
       </Box>
-     
+
     </>
   );
 };

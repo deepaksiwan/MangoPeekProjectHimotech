@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Checkbox, List, ListItem, Typography, } from "@mui/material";
+import { Badge, Box, Button, Checkbox, List, ListItem, Typography, Grid } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 
 import { makeStyles } from "@mui/styles";
@@ -20,6 +20,8 @@ import { format } from "timeago.js";
 import { useQuery } from "react-query";
 import { getAllNftByUserName } from "../../api/ApiCall/nftCollection/getAllNftByUserName"
 import Loader from "../Loader/Loader"
+import arrowright from '../../../src/pages/images/arrowright.svg'
+import NftByUserName from "./NftByUserName";
 
 
 const useStyle = makeStyles({
@@ -123,12 +125,12 @@ const useStyle = makeStyles({
     },
     nftinfobx2: {
         backgroundColor: '#efefef96 ',
-        padding: '2px',
+        padding: '10px',
         borderRadius: '12px',
-        width: '125px',
-        marginTop: '5px !important',
+        width: '100%',
+        marginTop: '16px !important',
         boxShadow: '0px 4px 22px -3px #00000036',
-        '@media(max-width : 1200px)': {
+        '@media(min-width : 900px)': {
             width: '100%'
         }
     },
@@ -136,15 +138,10 @@ const useStyle = makeStyles({
         padding: "0 !important",
     },
     viewbtn: {
-        color: '#9B9B9B !important',
-        textTransform: 'none !important',
-        fontWeight: '700 !important',
-        fontSize: '8px !important',
-        padding: '0px !important',
-        justifyContent: 'center !important',
-        '&:hover': {
-            backgroundColor: 'transparent !important'
-        }
+        color: "#9B9B9B !important",
+        fontSize: "16px !important",
+        fontWeight: "500 !important",
+        textTransform: "none !important"
     },
     profileimg: {
         borderRadius: "50%"
@@ -153,8 +150,8 @@ const useStyle = makeStyles({
         margin: "8rem  0rem  !important",
         width: "250px !important",
         fontSize: "1rem !important",
-        textAlign:"center !important"
-    
+        textAlign: "center !important"
+
     }
 })
 
@@ -174,7 +171,7 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
     const [friends, setFriends] = useState([]);
     const [onlineFriends, setOnlineFriends] = useState([]);
     const [userChatfourNftData, setFourNftData] = useState([])
-    const [{  userData }, ] = useContext(UserContext);
+    const [{ userData },] = useContext(UserContext);
     const [allreadyfriends, setallreadyfriends] = useState([])
 
 
@@ -185,7 +182,7 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
         setFriends(res.data);
     };
 
-   
+
 
 
     useEffect(() => {
@@ -193,8 +190,8 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
     }, [currentUser?._id]);
 
 
-   // console.log("friends", friends)
-   //console.log("onlineFriendssdfs", onlineFriends)
+    // console.log("friends", friends)
+    //console.log("onlineFriendssdfs", onlineFriends)
     //  console.log("ChatUserId", ChatUserId)
 
 
@@ -216,7 +213,6 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
                 }
             }
             setFourNftData(randomfourNft)
-            //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
         }
     },
     )
@@ -230,9 +226,9 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
                         <ListItem className={classes.listpadding}>
                             <Box sx={{ textAlign: 'center' }}>
                                 <Box className={classes.macmango}>
-                                    <Typography className={classes.profileimg} display="inline-block" component="img" src={ChatUserId?ChatUserId?.profilePic:exp1} width="100%"></Typography>
+                                    <Typography className={classes.profileimg} display="inline-block" component="img" src={ChatUserId ? ChatUserId?.profilePic : exp1} width="100%"></Typography>
                                 </Box>
-                                <Typography color="#808080" fontWeight={700} >{ChatUserId?ChatUserId?.userName: "unNamed"}</Typography>
+                                <Typography color="#808080" fontWeight={700} >{ChatUserId ? ChatUserId?.userName : "unNamed"}</Typography>
                                 <Typography color="#A9A9A9" fontSize="13px">{format(currentUser?.createdAt)}</Typography>
                             </Box>
                         </ListItem>
@@ -249,22 +245,22 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
                         <ListItem className={classes.followers}>
 
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{dataBychatUserName?.responseResult?.length?dataBychatUserName?.responseResult?.length:"0"}</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{dataBychatUserName?.responseResult?.length ? dataBychatUserName?.responseResult?.length : "0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">NFTs</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{ChatUserId?.followers?.length?ChatUserId?.followers?.length:"0"}</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{ChatUserId?.followers?.length ? ChatUserId?.followers?.length : "0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Followers</Typography>
                             </Box>
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{ChatUserId?.followings?.length?ChatUserId?.followings?.length:"0"}</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{ChatUserId?.followings?.length ? ChatUserId?.followings?.length : "0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Following</Typography>
                             </Box>
 
                         </ListItem>
 
                     </List>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', '@media(max-width : 1200px)': { display: 'inherit', width: '100%' } }}>
+                    {/* <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', '@media(max-width : 1200px)': { display: 'inherit', width: '100%' } }}>
                         {loadingData == false ? userChatfourNftData?.map((v, id) => {
                             return (
                                 <>
@@ -277,45 +273,46 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
                                                 display: "flex",
                                                 alignItems: "center",
                                                 justifyContent: "space-between",
-
+                                                marginTop: "16px"
                                             }}
                                         >
                                             <Box>
-                                                <Box sx={{ display: 'flex', alignItems: 'center' }} >
-                                                    <Box sx={{ display: 'flex' }}>
-                                                        <Badge color="primary">
-                                                            <Checkbox className={classes.fav}
-
-                                                                size="small"
-                                                                {...label2}
-                                                                icon={<FavoriteBorder sx={{ color: "#FF5F29" }} />}
-                                                                checkedIcon={
-                                                                    <Favorite
-                                                                        indeterminateIcon
-                                                                        sx={{ color: "#FF5F29", }}
-                                                                    />
-                                                                }
-                                                            />
-                                                        </Badge>
-                                                        <Typography style={{ color: '#606060', fontSize: '8px' }}>{v?.userId?.followers?.length}</Typography>
-                                                    </Box>
-
-                                                    <Box sx={{ display: 'flex', marginLeft: '10px' }}>
-                                                        <Box sx={{ alignSelf: 'center' }}>
-                                                            <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
+                                                <Box>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center' }} >
+                                                        <Box sx={{ display: 'flex' }}>
+                                                            <Badge color="primary">
+                                                                <Checkbox className={classes.fav}
+                                                                    {...label2}
+                                                                    icon={<FavoriteBorder sx={{ color: "#FF5F29" }} />}
+                                                                    checkedIcon={
+                                                                        <Favorite
+                                                                            indeterminateIcon
+                                                                            sx={{ color: "#FF5F29" }}
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </Badge>
+                                                            <Typography style={{ color: '#606060' }}>{v?.likes?.length}</Typography>
                                                         </Box>
-                                                        <Typography style={{ color: '#606060', fontSize: '10px' }}>{v.userId?.followings?.length}</Typography>
-                                                    </Box>
 
+                                                        <Box sx={{ display: 'flex', marginLeft: '10px' }}>
+                                                            <Box sx={{ alignSelf: 'center' }}>
+                                                                <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
+                                                            </Box>
+                                                            <Typography style={{ color: '#606060' }}>{v?.comment?.length}</Typography>
+                                                        </Box>
+
+                                                    </Box>
                                                 </Box>
                                             </Box>
                                             <Box sx={{ textAlign: "center" }}>
-                                                <Button className={classes.viewbtn} endIcon={<Box component="img" src={msgmore} />}>
+                                                <Button className={classes.viewbtn} endIcon={<Box sx={{ ml: '0px' }} component="img" src={arrowright} />}>
                                                     More
                                                 </Button>
                                             </Box>
                                         </Box>
                                     </Box>
+
 
                                 </>
                             )
@@ -324,9 +321,25 @@ const NFTMsgExp = ({ currentUser, onLineUsers, ChatUserId }) => {
                         </Typography>
                         }
                         {userChatfourNftData?.length == 0 && dataBychatUserName == undefined &&
-                        <Typography className={classes.NoNftAdded}>
-                            No NFTs Found
-                        </Typography>}
+                            <Typography className={classes.NoNftAdded}>
+                                No NFTs Found
+                            </Typography>}
+                    </Box> */}
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', '@media(max-width : 1200px)': { display: 'inherit', width: '100%' } }}>
+                        {loadingData == false ? userChatfourNftData?.map((nft, index) => {
+                            return (
+                                <Box className={classes.nftinfobx2} key={index}>
+                                    <NftByUserName  data={nft}/>
+                                </Box>
+                            )
+                        }) : <Typography className={classes.NoNftAdded}>
+                            <Loader />
+                        </Typography>
+                        }
+                        {userChatfourNftData?.length == 0 && dataBychatUserName == undefined &&
+                            <Typography className={classes.NoNftAdded}>
+                                No NFTs Found
+                            </Typography>}
                     </Box>
 
                 </Box>

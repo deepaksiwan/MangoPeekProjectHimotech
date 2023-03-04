@@ -151,10 +151,6 @@ const Profile = () => {
         onSuccess: (data) => {
             if (data.success === true) {
 
-
-
-
-
             }
             //setTotalNftPages(Math.ceil(data?.responseResult.length/6))
         }

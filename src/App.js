@@ -21,7 +21,7 @@ import { actionTypes } from "./context/User/UserReducer";
 import { viewProfile } from "./api/ApiCall/viewProfile";
 import { useQuery } from "react-query";
  import AuthGuard from "./protectedRoutes/AuthGaurd";
- //import UserGuard from "./protectedRoutes/UserGuard"
+ import UserGuard from "./protectedRoutes/UserGuard"
 // import { toast } from "react-toastify";
 import Profile from './pages/profile/Profile'
 import Create from './pages/create/Create'
@@ -57,30 +57,20 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* <Route exact path="/" element={<UserGuard><Home /></UserGuard>} /> */}
-          {/* <Route exact path="/:userName" element={<Profile />} /> */}
-          {/* <Route exact path="/hidden-nft" element={<AuthGuard><HiddenNFT /></AuthGuard>} /> */}
-          {/* <Route exact path="/explore" element={<AuthGuard><Explore /></AuthGuard>} /> */}
-          {/* <Route exact path="/wallet" element={<AuthGuard><Wallet /></AuthGuard>} /> */}
-          {/* <Route exact path="/forget" name="Reset Page" element={<UserGuard><Forget /></UserGuard>} /> */}
-          {/* <Route exact path="/reset" element={<Reset />} /> */}
-          {/* <Route exact path="/bizarro-world" element={<BizarroWorld />} /> */}
-          {/* <Route exact path="/rabit-hole" element={<Rabbithole />} /> */}
-
           <Route exact path="/" element={<Home />} />
           <Route exact path="/nftpage/:id" element={<NFTpage />} />
           <Route exact path="/register" name="Signup Page" element={<Signup />}/>
-          <Route exact path="/login" name="Login Page" element={<Login />} />
+          <Route exact path="/login" name="Login Page" element={<UserGuard><Login /></UserGuard>} />
           <Route exact path="/profile/:id" element={<Profile />}></Route>
-          <Route exact path="/create" element={<Create />}></Route>
-          <Route exact path="/nftDetails/:id" element={<NFTDetails />}></Route>
+          {/* <Route exact path="/create" element={<Create />}></Route> */}
+          <Route exact path="/nftDetails/:id" element={<AuthGuard><NFTDetails /></AuthGuard>}></Route>
           <Route exact path="/not_link_wallet" element={<AuthGuard><NotLinkWallet /></AuthGuard>}></Route>
-          <Route exact path="/explorepage_without_side_menu" element={<Explorewithoutmenu />}></Route>
+          <Route exact path="/explorepage_without_side_menu" element={<AuthGuard><Explorewithoutmenu /></AuthGuard>}></Route>
           <Route exact path="/:userName" element={<AuthGuard><Explorewithmenu /></AuthGuard>}></Route>
           {/* <Route exact path="/explorepage_with_side_menu" element={<AuthGuard><Explorewithmenu /></AuthGuard>}></Route> */}
           <Route exact path="/messaging" element={<AuthGuard><Messaging /></AuthGuard>}></Route>
           <Route exact path="/messagingexpend" element={<MessagingExpend />}></Route>
-          <Route exact path="/notification" element={<AuthGuard><Notification /></AuthGuard>}></Route>
+          {/* <Route exact path="/notification" element={<AuthGuard><Notification /></AuthGuard>}></Route> */}
 
         </Routes>
       </BrowserRouter>

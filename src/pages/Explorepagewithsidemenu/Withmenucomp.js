@@ -1,5 +1,5 @@
 import { Badge, Box, Divider, List, ListItem, Typography, } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import { makeStyles } from "@mui/styles";
 import message from '../../../src/pages/images/message.svg'
@@ -11,8 +11,17 @@ import logoutimg from '../../../src/pages/images/logoutimg.svg'
 import walletimg from '../../../src/pages/images/walletimg.svg'
 import macmango from '../../../src/pages/images/macmango.svg'
 import menuarrow from '../../../src/pages/images/menuarrow.svg'
+import { Menu, MenuItem } from '@material-ui/core';
 import { Link, useNavigate } from "react-router-dom";
 import { actionTypes } from "../../context/User/UserReducer";
+import { UserContext } from "../../context/User/UserContext";
+import { useQuery } from "react-query";
+import { getFriends, } from "../../api/ApiCall/getFriends";
+import { getFollowigUsers } from "../../api/ApiCall/getFollowigUsers";
+import { display, spacing, textTransform } from "@mui/system";
+import { Button } from "bootstrap";
+
+
 
 const useStyle = makeStyles({
     namewithadd: {
@@ -33,18 +42,21 @@ const useStyle = makeStyles({
         padding: '10px 20px !important',
         display: 'inline-block',
         width: '260px',
-        minHeight : '84vh',
-        '@media(max-width : 900px)':{
-            minHeight : '87vh', 
-            '@media(max-width : 600px)':{
-                minHeight : '100vh',  
-                width: "326px",
-                
-            }  
+        minHeight: '84vh',
+        '@media(max-width : 900px)': {
+            minHeight: '84vh',
+            '@media(max-width : 600px)': {
+                minHeight: '100vh', 
+                width: "370px !important",
+              
+                width: "100%"
+
+            }
         }
     },
-    listpadding: {
-        padding: '5px 0px !important'
+    listpadding1: {
+        padding: '5px 0px !important',
+        justifyContent: "center !important"
     },
     badge: {
         marginTop: '10px',
@@ -93,10 +105,10 @@ const useStyle = makeStyles({
         marginTop: '5.8rem',
         '@media(max-width : 600px)': {
             width: '100% !important',
-            textAlign:"center",
+            textAlign: "center",
             marginTop: "1rem"
         }
-        
+
     },
 
     explorenft: {
@@ -128,80 +140,244 @@ const useStyle = makeStyles({
         textAlign: 'center'
     },
     menuarrowbtn: {
-        position: 'fixed',
-        top: '20rem',
-        left: '36rem !important',
-        '@media(max-width : 1200px)': {
-            left: '20rem !important',
+        cursor: "pointer !important",
+          //marginLeft: "-4rem",
+        marginTop: "20rem",
+        color: "red",
+        // position: "fixed",
+        // left: "240px",
+        position: "absolute",
+    right: "0",
+        '@media(max-width : 600px)': {
+            // marginLeft: "-4rem",
+            // position: "relative !important",
+            cursor: "pointer",
+            marginTop: "15rem",
+            // left:"285px"
+            
         }
     },
     ption: {
-        position: 'relative'
+        display: "flex",
+        position:"relative"
     }
     ,
-    username:{
-        textAlign: "center"
-    }
+    username: {
+        justifyContent:"center"
+    },
+    followgmenustyle: {
+        "& .MuiPaper-root": {
+            borderRadius: "1rem",
+            marginTop: "50px",
+            marginLeft: "-5.5rem !important",
+            borderRadius: "10px !important",
+            backgroundColor: "#f1f1f1",
+            width: "12rem"
+        },
+        '@media(max-width : 600px)': {
+            "& .MuiPaper-root": {
+                marginLeft: "-4rem !important",
+                justifyContent: "center",
+            }
+        }
+    },
+    followingmenustyle: {
+        "& .MuiPaper-root": {
+            borderRadius: "1rem",
+            marginTop: "50px",
+            marginLeft: "-7.5rem !important",
+            borderRadius: "10px !important",
+            backgroundColor: "#f1f1f1",
+            width: "12rem"
+        },
+        '@media(max-width : 600px)': {
+            "& .MuiPaper-root": {
+                marginLeft: "-4rem !important",
+                justifyContent: "center",
+            }
+        }
+    },
+    imgs: {
+        borderRadius: "50%",
+        width: "1.9rem"
 
+    },
+    followmaindiv:{
+        height: "2rem",
+        display: "flex",
+        textAlign: "center",
+        gap: "8px"
+    
+    },
+    styleUsername:{
+        marginTop: "3px",
+    
+    }
 })
 
-
-const Withmenucomp = ({userProfile,  Dispatch, NftDataByUserName}) => {
+const Withmenucomp = ({ userProfile, Dispatch, NftDataByUserName }) => {
     const classes = useStyle();
     const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [following, setFolllowing] = React.useState(null);
+    const [{ userData, token }] = useContext(UserContext);
+    const open1 = Boolean(following);
+    const open = Boolean(anchorEl);
+    let userId = userData?._id
+
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleClickFollowing = (event) => {
+        setFolllowing(event.currentTarget);
+    };
+
+    const handleCloseFollowing = () => {
+        setFolllowing(null);
+    };
+
 
     const logout = (e) => {
         e.preventDefault();
         Dispatch({ type: actionTypes.SET_TOKEN, value: null });
         localStorage.clear();
-        navigate("/login")
         
-      };
-      //console.log("userProfile", userProfile)
+    };
+
+
 
     
+
+
+    const { data: getFriend } = useQuery(["getFriends", userId],
+        () => getFriends(userId), {
+        onSuccess: (data) => {
+            if (data.responseCodes == 200) {
+
+
+            }
+        }
+    })
+
+    const { data: getFollowig } = useQuery(["getFollowigUsers", userId],
+        () => getFollowigUsers(userId), {
+        onSuccess: (data) => {
+            if (data.responseCodes == 200) {
+
+
+            }
+        }
+    })
+      
+
+      console.log("getFollowigUser",getFollowig)
+    // console.log("getFriend", getFriend?.friendList)
+
+    // const redirectPage = (()=>{
+    //     navigate("//explorepage_without_side_menu")
+    // })
+
+
+
     return (
         <>
             <Box className={classes.ption}>
                 <Box className={classes.menuposition}>
                     <List className={classes.sidemenu}>
-                        <ListItem className={classes.listpadding}>
-                            <Box sx={{ marginLeft: '5rem' }}>
+                        <ListItem className={classes.listpadding1}>
+                            <Box >
                                 <Box className={classes.macmango}>
-                                    <Typography sx={{borderRadius: "50%"}} component="img" src={ userProfile?userProfile?.profilePic:macmango} width="100%"></Typography>
+                                    <Typography sx={{ borderRadius: "50%" }} component="img" src={userProfile ? userProfile?.profilePic : macmango} width="100%"></Typography>
                                 </Box>
-                                 <Typography className={classes.username} color="#808080" fontWeight={700} >@{userProfile?userProfile?.firstName:"Hello"}</Typography>
+                                <Typography className={classes.username} color="#808080" fontWeight={700} >@{userProfile ? userProfile?.firstName : "Hello"}</Typography>
                             </Box>
                         </ListItem>
 
-                        <ListItem className={classes.listpadding}>
+                        <ListItem className={classes.listpadding1}>
                             <Box className={classes.namewithadd}>
                                 <Box sx={{ width: '20px' }}>
                                     <Typography component="img" src={walletimg} width="100%"></Typography>
                                 </Box>
-                                <Typography className={classes.address} ml={1} fontWeight={500} color="#808080">{userProfile?userProfile?.userName:"dhshdsj124325342"}</Typography>
+                                <Typography className={classes.address} ml={1} fontWeight={500} color="#808080">{userProfile ? userProfile?.userName : "dhshdsj124325342"}</Typography>
                             </Box>
                         </ListItem>
 
                         <ListItem className={classes.followers}>
 
                             <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{NftDataByUserName?.responseResult?.length?NftDataByUserName?.responseResult?.length:"0"}</Typography>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{NftDataByUserName?.responseResult?.length ? NftDataByUserName?.responseResult?.length : "0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">NFTs</Typography>
                             </Box>
-                            <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userProfile?userProfile?.followers?.length:"0"}K</Typography>
+                            <Box className={classes.follower_align} onClick={handleClick} sx={{ cursor: "pointer" }}>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userProfile ? userProfile?.followers?.length : "0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Followers</Typography>
                             </Box>
-                            <Box className={classes.follower_align}>
-                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userProfile?.followings?.length?userProfile?.followings?.length:"0"}K</Typography>
+                            <Box className={classes.follower_align} onClick={handleClickFollowing}  sx={{ cursor: "pointer" }}>
+                                <Typography className={classes.rank} ml={1} fontWeight={700} color="#808080">{userProfile?.followings?.length ? userProfile?.followings?.length : "0"}</Typography>
                                 <Typography className={classes.rank2} ml={1} fontWeight={500} color="#808080">Following</Typography>
                             </Box>
                         </ListItem>
+                        <Menu
+                            className={classes.followgmenustyle}
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={open}
+                            onClose={handleClose}
 
+                        >
+                            {getFriend?.friendList?.map((followUser) => {
+                                console.log("ndsmds", followUser?.profilePic)
+                                return (
+                                    <MenuItem className={classes.menuItem} onClick={handleClose}>
+                                        <Box className={classes.followmaindiv}>
+                                         <Box >
+                                            <Typography className={classes.imgs} component="img" src={followUser?.profilePic}></Typography>
+                                        </Box>
+                                        <Box className={classes.styleUsername}>
+                                            <Typography textTransform={'capitalize'}> {followUser.userName}</Typography>
+                                        </Box>
+                                        </Box>
+                                    </MenuItem>
+                                )
+
+                            })}
+                        </Menu>
+                        <Menu
+                            className={classes.followingmenustyle}
+                            id="long-menu"
+                            anchorEl={following}
+                            keepMounted
+                            open={open1}
+                            onClose={handleCloseFollowing}
+
+                        >
+                            {getFollowig?.followingList?.map((followUser) => {
+                            
+                                return (
+                                    <MenuItem className={classes.menuItem} onClick={handleCloseFollowing}>
+                                        <Box className={classes.followmaindiv}>
+                                         <Box >
+                                            <Typography className={classes.imgs} component="img" src={followUser?.profilePic}></Typography>
+                                        </Box>
+                                        <Box className={classes.styleUsername}>
+                                            <Typography textTransform={'capitalize'}> {followUser.userName}</Typography>
+                                        </Box>
+                                        </Box>
+                                    </MenuItem>
+                                )
+
+                            })}
+                        </Menu>
                         <Divider sx={{ margin: '10px 0px' }} />
                         <ListItem className={classes.listpadding}>
-                            <Badge className={classes.badge} badgeContent={8} sx={{
+                            {/* <Badge className={classes.badge} badgeContent={8} sx={{
                                 "& .MuiBadge-badge": {
                                     backgroundColor: '#FFCC00', color: '#fff',
                                     marginRight: '7px',
@@ -212,24 +388,21 @@ const Withmenucomp = ({userProfile,  Dispatch, NftDataByUserName}) => {
                                     <Typography width={20} component="img" src={message}></Typography>
                                     <Typography className={classes.mrleft}>Messages</Typography>
                                 </Link>
-                            </Badge>
+                            </Badge> */}
+                            <Link className={classes.roundbutn2} to="/messaging">
+                                    <Typography width={20} component="img" src={message}></Typography>
+                                    <Typography className={classes.mrleft}>Messages</Typography>
+                                </Link>
                         </ListItem>
 
 
-                        <ListItem className={classes.listpadding}>
-                            <Badge className={classes.badge} badgeContent={3} sx={{
-                                "& .MuiBadge-badge": {
-                                    backgroundColor: '#ff5f29', color: '#fff',
-                                    marginRight: '7px',
-                                    marginTop: '-5px',
-                                },
-                            }}>
-                                <Link className={classes.roundbutn2} to="/notification">
+                        {/* <ListItem className={classes.listpadding}>
+                          
+                            <Link className={classes.roundbutn2} to="/notification">
                                     <Typography width={20} component="img" src={notification}></Typography>
                                     <Typography className={classes.mrleft}>Notifications</Typography>
                                 </Link>
-                            </Badge>
-                        </ListItem>
+                        </ListItem> */}
 
                         <ListItem className={classes.listpadding}>
                             <Link className={classes.textbutn} to="/create">
@@ -258,13 +431,13 @@ const Withmenucomp = ({userProfile,  Dispatch, NftDataByUserName}) => {
                             </Link>
                         </ListItem>
 
-                        <ListItem className={classes.listpadding} onClick={logout}>
-                            <Link className={classes.textbutn}>
+                        <ListItem className={classes.listpadding} >
+                            <Link className={classes.textbutn} onClick={logout}>
                                 <Box className={classes.imgicon}>
                                     <Typography width={20} component="img" src={logoutimg}></Typography>
                                 </Box>
                                 <Typography >Logout</Typography>
-                                
+
                             </Link>
                         </ListItem>
 

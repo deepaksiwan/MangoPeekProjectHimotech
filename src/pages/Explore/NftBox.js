@@ -23,6 +23,7 @@ import Favorite from "@mui/icons-material/Favorite";
 // import * as yup from "yup";
 // import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import useOnClick from "../../components/useOnclick";
+import useCollapse from 'react-collapsed'
 
 import {
   Box,
@@ -244,10 +245,12 @@ const useStyle = makeStyles((theme) => ({
     margin: '0px !important',
   },
   para: {
+    width: "15rem",
     padding: '0px !important',
     color: '#606060 !important'
   },
   hding6: {
+    
     color: '#606060 !important',
     fontSize: '18px !important'
   },
@@ -280,84 +283,27 @@ const NftBox = (props) => {
   const handleShow = () => setShows(true);
   const [lazyName, setLazyName] = useState(null);
   const [lazyDescription, setLazyDescription] = useState(null)
+  const [isExpanded, setExpanded] = useState(false)
+  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
+
   const clickable = (() => {
-    navigate(`/nftpage/${props?.data?._id}`)
+    if(token){
+      navigate(`/nftpage/${props?.data?._id}`)
+
+    }else{
+      navigate("/login")
+    }
+    
   })
-  // const { mutateAsync, isLoading: isLoadingUpdateProfilePic } = useMutation(
-  //   "updateProfilePic",
-  //   updateProfilePic, {
-  //   onSuccess: (data) => {
-  //     dispatch({ type: actionTypes.UPDATE_PROFILE_PIC, value: data?.responseResult })
-  //   }
-  // }
-  // )
-
-
-
-  // console.log(userData._id);
-  // const { mutateAsync: mutateAsyncEdit, isLoading: isLoadingupdateNftNameOrDescription } = useMutation("updateNftNameOrDescription",
-  //   updateNftNameOrDescription, {
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries("getAllHideNft");
-  //     queryClient.invalidateQueries("getNftCollectionByChainNameAndUserName")
-  //     queryClient.invalidateQueries("getAllNftByChainName")
-  //     queryClient.invalidateQueries("getAllPinnedNftByUserName");
-  //     queryClient.invalidateQueries("getAllNftByChainName");
-
-  //   }
-  // }
-  // )
-
-  // const { mutateAsync: mutateAsyncPinnedToggleNft, isLoading: isLoadingpinnedToggleNft } = useMutation(
-  //   "pinnedToggleNft",
-  //   pinnedToggleNft, {
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries("getAllHideNft");
-  //     queryClient.invalidateQueries("getNftCollectionByChainNameAndUserName")
-  //     queryClient.invalidateQueries("getAllNftByChainName")
-  //     queryClient.invalidateQueries("getAllPinnedNftByUserName");
-  //     // queryClient.invalidateQueries("getAllNftCollection");
-  //     // queryClient.invalidateQueries("recentlyListedNft");
-  //     // queryClient.invalidateQueries("mostViewNft");
-  //     // queryClient.invalidateQueries("mostLikeNft")
-
-
-  //   }
-  // }
-  // )
-
-
-  // const { mutateAsync: mutateAsyncHideToggleNft, isLoading: isLoadinghideToggleNft } = useMutation(
-  //   "hideToggleNft",
-  //   hideToggleNft, {
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries("getAllHideNft");
-  //     queryClient.invalidateQueries("getNftCollectionByChainNameAndUserName")
-  //     queryClient.invalidateQueries("getAllNftByChainName")
-  //     queryClient.invalidateQueries("getAllPinnedNftByUserName");
-
-
-  //   }
-  // }
-  // )
-
-  // console.log("likescount", props?.data?.likes?.length)
 
 
   const { mutateAsync: mutateAsyncToggleLike, data, isLoading: isLoadingtoggleLike } = useMutation(
     "toggleLike",
     toggleLike, {
     onSuccess: (data) => {
-      console.log("togglelike", data)
-      // console.log(data?.responseResult);
-      // queryClient.invalidateQueries("getAllHideNft");
-      // queryClient.invalidateQueries("getNftCollectionByChainNameAndUserName")
-      // queryClient.invalidateQueries("getAllNftByChainName")
-      // queryClient.invalidateQueries("getAllPinnedNftByUserName");
     }
   }
   )
-
 
   useEffect(() => {
     if (props?.data) {
@@ -381,8 +327,9 @@ const NftBox = (props) => {
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   const label2 = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-  
+  //console.log("props", props?.data?.comment?.length)
 
+  console.log("dataprops", props?.data)
 
 
   return (
@@ -393,14 +340,26 @@ const NftBox = (props) => {
             <Box className={classes.bag8}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex' }}>
-                  <Box><Typography component="img" className={classes.ellipsenft} src={ellipsenft}></Typography></Box>
+                  <Box><Typography component="img" className={classes.ellipsenft} src={ellipsenft}></Typography></Box>  
                   <Box sx={{ alignSelf: 'center', ml: '10px' }}>
-                    <Typography variant="h6" className={classes.hding6}>{props?.data?.lazyName ? props?.data?.lazyName : "Lorem Ipsum"}</Typography>
-                    <Typography className={classes.para}>{lazyDescription ? lazyDescription : "@loremipsum"}</Typography>
+                    <Typography variant="h6" className={classes.hding6}>{props?.data?.metadata?.name ? props?.data?.metadata?.name : "No Any Nftname"}</Typography>
+                    <Box>
+                      <Typography sx={{cursor:"pointer", fontSize:"45px"}}
+                        {...getToggleProps({
+                          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+                        })}
+                      >
+                        {isExpanded ? 'See Less' : lazyDescription?lazyDescription?.slice(0, 20) + ' Show More...':""}
+                      </Typography>
+                      {<Typography {...getCollapseProps()}><Typography className={classes.para}>{lazyDescription ? lazyDescription : "@loremipsum"}</Typography></Typography>}
+                    </Box>
+
                     {/* <Typography className={classes.para}>{props?.data?.lazyDescription?props?.data?.lazyDescription:"@loremipsum"}</Typography> */}
                   </Box>
+                  
                 </Box>
                 {/* <Box sx={{ alignSelf: 'center' }}>
+                
                   <Checkbox
                     {...label}
                     icon={<BookmarkBorderIcon sx={{ color: '#33CC33' }} />}
@@ -445,14 +404,14 @@ const NftBox = (props) => {
                           checked={data?.responseResult?.likes.includes(userData?._id) || props?.data?.likes?.includes(userData?._id)}
                         />
                       </Badge>
-                      <Typography style={{ color: '#606060' }}>{props?.data?.likes?.length}</Typography>
+                      {/* <Typography style={{ color: '#606060' }}>{props?.data?.likes?.length}</Typography> */}
                     </Box>
 
                     <Box sx={{ display: 'flex', marginLeft: '10px' }} onClick={clickable}>
                       <Box sx={{ alignSelf: 'center' }}>
                         <img style={{ margin: '0px', borderRadius: '0px' }} src={messagestore} alt=""></img>
                       </Box>
-                      <Typography style={{ color: '#606060' }}>3k</Typography>
+                      <Typography style={{ color: '#606060' }}>{props?.data?.comment?.length ? props?.data?.comment?.length : "0"}</Typography>
                     </Box>
                   </Box>
                 </Box>

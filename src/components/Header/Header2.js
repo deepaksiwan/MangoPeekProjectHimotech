@@ -276,11 +276,11 @@ const Header2 = ({messagecount}) => {
                 </Link>
               </ListItem>
 
-              <ListItem className={classes.listpadding}>
+              {/* <ListItem className={classes.listpadding}>
                 <Link className={classes.roundbutn} to="/not_link_wallet">
                   <Typography width={20} component="img" src={setting}></Typography>
                 </Link>
-              </ListItem>
+              </ListItem> */}
 
              {!token &&<ListItem className={classes.listpadding}>
                 <Link className={classes.roundbutn} onClick={handleRidirect}>

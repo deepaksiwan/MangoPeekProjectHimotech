@@ -10,13 +10,13 @@ const useStyle = makeStyles({
         backgroundColor: '#efefef96',
         borderRadius: '40px',
         padding: '8px 20px',
-        width : '83%',
+        width : '100%',
         textAlign : 'left',
         '@media(max-width : 1200px)':{
-            width : '80%',
+            width : '100%',
         },
         '@media(max-width : 900px)':{
-            width : '75%',
+            width : '100%',
         },
         '@media(max-width : 600px)':{
             width : '100%',
@@ -62,13 +62,13 @@ const ExploreNFTHeading = (props) => {
                 {/* <Typography variant="h3">Ethereum Feature Nfts</Typography> */}
 
                 <Box className={classes.hding}>
-                    <Typography variant="h5" fontWeight={700} color="#7B7B7B" letterSpacing={1} >Etherium  <Typography sx={{ fontSize: '20px' }} color="#ADADAD" component="span">{props.label}</Typography></Typography>
+                    <Typography variant="h5" fontWeight={700} color="#7B7B7B" letterSpacing={1} >Ethereum  <Typography sx={{ fontSize: '20px' }} color="#ADADAD" component="span">{props.label}</Typography></Typography>
                 </Box>
-                <Box>
+                {/* <Box>
                     <Button className={classes.viewbtn} endIcon={<Box sx={{ ml: '10px' }} component="img" src={arrow} />}>
                         View More
                     </Button>
-                </Box>
+                </Box> */}
 
             </Box>
         </>
